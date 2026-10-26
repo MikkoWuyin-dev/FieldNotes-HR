@@ -1,0 +1,394 @@
+/* ==========================================================================
+   FIELDNOTES DESIGN SYSTEM
+   Ported from MikkoWuyin-dev/Field-Notes_Nature-Photography (index.html, :root).
+   Extracted 2026-10-26. Pure CSS: no asset references, no external fonts, no images.
+   Layered on top of the skill's generated app so the vendored generator
+   stays byte-exact. All selectors target the generator's existing DOM.
+   ========================================================================== */
+
+/* ---------- 1. Primitive tokens (verbatim from the source :root) ---------- */
+:root{
+  color-scheme:light;
+  --fn-stack-gap:52px;
+  --fn-ink:#11142B;
+  --fn-paper:#FFF8E7;
+  --fn-cream:#FFFDF6;
+  --fn-line:#1E2553;
+  --fn-muted:#565C73;
+  --fn-shade:#D8D9EA;
+  --fn-blue:#3768FF;
+  --fn-blue-ink:#2C55DA;
+  --fn-cyan:#65E8FF;
+  --fn-pink:#FF4E91;
+  --fn-yellow:#FFE168;
+  --fn-green:#5EE780;
+  --fn-orange:#FF9958;
+  --fn-status-live-bg:#E9FFEF;
+  --fn-status-live-ink:#164D2D;
+  --fn-status-archive-bg:#FFE9F2;
+  --fn-status-archive-ink:#822444;
+  --fn-status-caveat-bg:#FFF1BD;
+  --fn-status-caveat-ink:#6E4A00;
+  --fn-tag-default:#65E8FF;
+  --fn-tag-playful:#FFC3DE;
+  --fn-tag-pixel:#FFE168;
+  --fn-tag-action:#5EE780;
+  --fn-tag-mobile:#DCD0FF;
+  --fn-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --fn-prose:system-ui,sans-serif;
+
+  /* Semantic aliases -> the generator's own variable names, so its rules
+     that already use var() pick up Fieldnotes values automatically. */
+  --navy:var(--fn-ink);
+  --blue:var(--fn-blue-ink);
+  --pale:var(--fn-paper);
+  --ink:var(--fn-ink);
+  --muted:var(--fn-muted);
+  --border:var(--fn-line);
+  --green:#15805D;
+  --amber:#B56A12;
+  --red:#A63B4B;
+}
+
+/* ---------- 2. Global canvas ---------- */
+html{background:var(--fn-ink);scroll-behavior:smooth;scroll-padding-top:20px}
+body{
+  margin:0;
+  background:var(--fn-ink);
+  color:var(--fn-ink);
+  font:16px/1.55 var(--fn-mono);
+  overflow-wrap:break-word;
+  -webkit-text-size-adjust:100%;
+}
+a{color:inherit;text-decoration-thickness:2px;text-underline-offset:3px}
+a:hover{color:var(--fn-blue-ink)}
+button{cursor:pointer}
+[hidden]{display:none!important}
+:where(a,button,input,summary):focus-visible{outline:3px solid var(--fn-blue);outline-offset:3px}
+.skip-link{
+  position:fixed;z-index:1000;top:10px;left:-999px;
+  padding:10px 14px;border:2px solid var(--fn-line);
+  background:var(--fn-yellow);color:var(--fn-ink);font-weight:900;
+}
+.skip-link:focus{left:10px}
+
+.app{
+  max-width:1320px;margin:0 auto;
+  /* No top padding: the hero starts at the very top of the sheet. The coloured
+     bar strip was removed on request, so there is no decorative band above it. */
+  padding:0 clamp(8px,2.2vw,14px) clamp(8px,2.2vw,14px);
+  background:var(--fn-paper);
+  border-right:4px solid var(--fn-cyan);
+  border-left:4px solid var(--fn-cyan);
+  border-bottom:4px solid var(--fn-cyan);
+}
+/* The source's cyan rule + three coloured bars lived here (.app::before).
+   Removed on request; the hero now fills that space. */
+
+/* ---------- 3. Hero ---------- */
+.hero{
+  position:relative;isolation:isolate;overflow:hidden;
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+  padding:clamp(18px,6.3vw,77px) clamp(14px,5.4vw,70px) 36px;
+  border:4px solid var(--fn-cyan);
+  border-radius:0;
+  background:var(--fn-blue);
+  color:#fff;
+  box-shadow:10px 10px 0 var(--fn-pink);
+}
+/* Banded grid square, the source's .hero::after decoration. */
+.hero::after{
+  content:"";position:absolute;z-index:0;right:-25px;bottom:-25px;
+  width:clamp(118px,30vw,190px);height:clamp(118px,30vw,190px);
+  opacity:.34;
+  background:
+    linear-gradient(90deg,transparent 45%,var(--fn-yellow) 45% 55%,transparent 55%),
+    linear-gradient(transparent 45%,var(--fn-yellow) 45% 55%,transparent 55%);
+  background-size:clamp(20px,5vw,32px) clamp(20px,5vw,32px);
+  transform:rotate(12deg);
+  pointer-events:none;
+  -webkit-mask-image:linear-gradient(to top left,#000 26%,transparent 74%);
+  mask-image:linear-gradient(to top left,#000 26%,transparent 74%);
+}
+.hero>div{position:relative;z-index:1}
+.eyebrow,.hero-eyebrow{
+  display:inline-block;margin:0 0 16px;padding:5px 8px;
+  background:var(--fn-yellow);color:var(--fn-ink);
+  font:800 .77rem/1.3 var(--fn-mono);
+  letter-spacing:.06em;text-transform:uppercase;
+}
+/* The generator ships `.hero p{color:#DCEAF1}` (specificity 0,1,1), which beats
+   the plain `.eyebrow` rule (0,1,0) and made this label render pale blue-white
+   instead of the dark ink. Raise specificity so the dark colour actually wins. */
+.hero .eyebrow,.hero .hero-eyebrow{color:var(--fn-ink)}
+.hero h1{
+  max-width:18ch;margin:0 0 18px;
+  font:900 clamp(1.85rem,5.4vw,4.75rem)/.98 var(--fn-prose);
+  letter-spacing:-.035em;
+}
+.hero p#subtitle{
+  max-width:66ch;margin:0;color:#fff;
+  font:clamp(1rem,2vw,1.27rem)/1.55 var(--fn-prose);
+}
+.hero-facts{display:flex;flex-wrap:wrap;gap:9px;margin-top:22px}
+.hero-facts span,.hero-stat{
+  min-width:0;max-width:100%;
+  padding:6px 9px;border:2px solid rgba(255,255,255,.76);
+  background:rgba(17,20,43,.62);color:#fff;
+  font:700 .76rem/1.4 var(--fn-mono);
+  overflow-wrap:break-word;
+}
+.hero-stats{display:flex;gap:9px;flex-wrap:wrap;position:relative;z-index:1}
+.hero-stat{min-width:88px;text-align:center;border-radius:0;background:rgba(17,20,43,.62)}
+.hero-stat strong{display:block;font:900 1.55rem/1 var(--fn-prose);letter-spacing:-.05em;color:#fff}
+.hero-stat span{display:block;color:#fff;font:700 .72rem/1.4 var(--fn-mono);text-transform:uppercase}
+
+/* ---------- 4. Dashboard panels ---------- */
+.dashboard{display:grid;grid-template-columns:1fr 1fr;gap:clamp(12px,3vw,18px);margin:var(--fn-stack-gap) 0 18px}
+.panel{
+  min-width:0;padding:clamp(13px,3.6vw,20px);
+  border:3px solid var(--fn-line);border-radius:0;
+  background:var(--fn-cream);
+  box-shadow:6px 6px 0 var(--fn-line);
+}
+.panel-head{display:flex;justify-content:space-between;gap:12px;align-items:baseline;margin-bottom:10px}
+.panel h2{margin:0;font:900 1rem/1.25 var(--fn-mono);letter-spacing:.04em;text-transform:uppercase;color:var(--fn-ink)}
+.panel-head strong{color:var(--fn-blue-ink);font:900 .78rem/1.3 var(--fn-mono)}
+.panel p{margin:12px 0 0;color:var(--fn-muted);font:.9rem/1.5 var(--fn-prose)}
+.progress-track{
+  height:13px;overflow:hidden;border:2px solid var(--fn-line);
+  border-radius:0;background:#fff;
+}
+.progress-fill{height:100%;width:0;background:var(--fn-blue);transition:width .2s ease}
+
+/* ---------- 5. Toolbar / buttons / inputs ---------- */
+.toolbar{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  margin:18px 0;padding:14px;
+  border:3px solid var(--fn-line);border-radius:0;
+  background:var(--fn-cream);box-shadow:6px 6px 0 var(--fn-line);
+}
+.toolbar button,.file-button{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  min-height:44px;padding:8px 12px;
+  border:2px solid var(--fn-line);border-radius:0;
+  background:var(--fn-cream);color:var(--fn-ink);
+  font:700 .76rem/1.3 var(--fn-mono);text-align:center;text-decoration:none;
+  transition:transform .14s ease,box-shadow .14s ease,background-color .14s ease;
+}
+.toolbar button.primary{background:var(--fn-yellow);border-color:var(--fn-line);color:var(--fn-ink)}
+.toolbar button:hover,.file-button:hover,.toolbar button:focus-visible,.file-button:focus-visible{
+  transform:translate(-1px,-1px);background:var(--fn-yellow);
+  box-shadow:3px 3px 0 var(--fn-line);color:var(--fn-ink);filter:none;
+}
+.toolbar label{color:var(--fn-muted);font:700 .76rem/1.3 var(--fn-mono);text-transform:uppercase;letter-spacing:.04em}
+.toolbar input[type=time]{
+  min-height:44px;padding:8px 10px;border:2px solid var(--fn-line);
+  border-radius:0;background:#fff;color:var(--fn-ink);font:700 .8rem/1.3 var(--fn-mono);
+}
+.file-button{position:relative}
+.file-button input{position:absolute;width:1px;height:1px;opacity:0}
+.toolbar .status{flex:1 1 260px;min-width:220px;color:var(--fn-muted);font:.78rem/1.45 var(--fn-prose)}
+
+/* ---------- 6. Notice (caveat panel) ---------- */
+.notice{
+  margin:18px 0 var(--fn-stack-gap);padding:clamp(13px,3.6vw,18px);
+  border:3px solid var(--fn-line);border-left:6px solid var(--fn-pink);border-radius:0;
+  background:var(--fn-status-caveat-bg);
+  box-shadow:6px 6px 0 var(--fn-line);
+  color:var(--fn-status-caveat-ink);font:.9rem/1.55 var(--fn-prose);
+}
+.notice strong{color:var(--fn-ink);font:900 .78rem/1.4 var(--fn-mono);letter-spacing:.04em;text-transform:uppercase}
+
+/* ---------- 7. Stage accordions ---------- */
+.stage{
+  background:var(--fn-paper);
+  border:3px solid var(--fn-line);border-radius:0;
+  margin:0 0 18px;overflow:visible;
+  box-shadow:6px 6px 0 var(--fn-line);
+  scroll-margin-top:18px;
+}
+.stage summary{
+  list-style:none;cursor:pointer;display:flex;align-items:center;gap:14px;
+  min-height:64px;padding:clamp(10px,2.7vw,14px);
+  background:var(--fn-cream);
+  border-bottom:0;
+}
+.stage summary::-webkit-details-marker{display:none}
+.stage summary:after{
+  content:"+";margin-left:auto;
+  color:var(--fn-blue-ink);font:900 1.5rem/1 var(--fn-mono);
+}
+.stage[open] summary:after{content:"\2212"}
+.stage[open] summary{border-bottom:3px solid var(--fn-line)}
+.stage-num{
+  flex:0 0 29px;width:29px;height:29px;display:grid;place-items:center;
+  border:2px solid var(--fn-line);border-radius:0;
+  background:var(--fn-pink);color:#fff;
+  font:900 .72rem/1 var(--fn-mono);
+}
+.stage-heading{min-width:0;flex:1}
+.stage-heading strong{display:block;color:var(--fn-ink);font:900 1rem/1.2 var(--fn-prose);letter-spacing:-.025em}
+.stage-heading small{display:block;color:var(--fn-muted);margin-top:5px;font:.72rem/1.35 var(--fn-prose)}
+.stage-meter{min-width:70px;text-align:right;color:var(--fn-blue-ink);font:900 .72rem/1.3 var(--fn-mono)}
+.stage-body{padding:clamp(11px,3.15vw,16px);background:var(--fn-paper)}
+.stage-description{max-width:78ch;margin:0 0 14px;color:var(--fn-ink);font:.94rem/1.55 var(--fn-prose)}
+.outcomes{display:grid;grid-template-columns:1fr;gap:10px;margin:0 0 18px;padding:0;list-style:none}
+.outcomes li{
+  position:relative;padding:8px 10px 8px 28px;
+  border:2px solid var(--fn-line);background:#fff;color:var(--fn-ink);
+  font:.84rem/1.4 var(--fn-prose);
+}
+.outcomes li::before{
+  content:"/";position:absolute;top:8px;left:9px;
+  color:var(--fn-blue-ink);font:900 .9rem/1.4 var(--fn-mono);
+}
+.stage-empty{
+  padding:12px;border:2px dashed var(--fn-line);border-radius:0;
+  background:var(--fn-cream);color:var(--fn-muted);font:.88rem/1.5 var(--fn-prose);
+}
+
+/* ---------- 8. Resource cards and tags ---------- */
+.resource-list{display:grid;grid-template-columns:1fr;gap:clamp(12px,3vw,18px)}
+.resource{
+  position:relative;min-width:0;
+  /* The bottom band is reserved for a card-foot row: link on the left, Done on
+     the right. Both are pinned to that band, so cards stretched to equal height
+     in the 2-up grid keep their foot rows aligned. */
+  padding:clamp(13px,3.6vw,18px);
+  padding-bottom:calc(clamp(13px,3.6vw,18px) + 56px);
+  border:3px solid var(--fn-line);border-radius:0;
+  background:var(--fn-cream);box-shadow:6px 6px 0 var(--fn-line);
+  transition:transform .14s ease,box-shadow .14s ease;
+}
+.resource:hover{transform:translate(-3px,-3px);box-shadow:10px 10px 0 var(--fn-pink)}
+.resource.done{
+  border-color:var(--fn-line);
+  background:var(--fn-status-live-bg);
+  box-shadow:6px 6px 0 var(--fn-line);
+}
+/* The generator nests the link inside an unclassed div and puts the completion
+   label beside it. Absolute positioning lets both land in the reserved foot
+   band without touching the vendored generator's markup or JS. */
+.resource-top{display:block}
+.resource-top>div{min-width:0}
+.resource h3{
+  min-width:0;margin:2px 0 0;
+  color:var(--fn-ink);font:900 1.2rem/1.1 var(--fn-prose);
+  letter-spacing:-.045em;overflow-wrap:anywhere;
+}
+.resource-meta{display:flex;gap:5px;flex-wrap:wrap;margin:13px 0}
+/* The generator emits five metadata chips per card (provider, modality, cost,
+   time, verification date). The source design uses bright tags only for short
+   key labels, so here the long metadata chips stay quiet and only the provider
+   key and the cost chip carry the accent palette. */
+.tag{
+  display:inline-flex;align-items:center;justify-content:flex-start;
+  min-width:35px;max-width:100%;padding:3px 6px;
+  border:2px solid var(--fn-line);border-radius:0;
+  background:var(--fn-cream);color:var(--fn-ink);
+  font:800 .68rem/1.3 var(--fn-mono);text-align:left;overflow-wrap:break-word;
+}
+.resource-meta .tag:first-child{background:var(--fn-tag-default)}
+.tag.cost{background:var(--fn-tag-action);color:var(--fn-ink)}
+.tag.paid{background:var(--fn-tag-pixel);color:var(--fn-ink)}
+.resource p{margin:6px 0;color:var(--fn-ink);font:.88rem/1.55 var(--fn-prose)}
+/* Card foot: resource link pinned bottom-left, Done pinned bottom-right. */
+.resource a{
+  position:absolute;
+  left:clamp(13px,3.6vw,18px);
+  bottom:clamp(13px,3.6vw,18px);
+  display:inline-flex;align-items:center;min-height:44px;
+  max-width:calc(100% - 130px);
+  color:var(--fn-blue-ink);font:900 .78rem/1.35 var(--fn-mono);
+  overflow-wrap:anywhere;
+}
+.completion{
+  position:absolute;
+  right:clamp(13px,3.6vw,18px);
+  bottom:clamp(13px,3.6vw,18px);
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  min-height:44px;padding:6px;
+  border:2px solid var(--fn-line);background:#fff;color:var(--fn-muted);
+  font:800 .67rem/1.3 var(--fn-mono);white-space:nowrap;cursor:pointer;
+}
+.completion input{width:18px;height:18px;margin:0;accent-color:#15805D;cursor:pointer}
+.resource.done .completion{background:var(--fn-status-live-bg);color:var(--fn-status-live-ink)}
+
+/* ---------- 9. Footer ---------- */
+.app-footer{
+  margin-top:var(--fn-stack-gap);padding:26px 0 0;
+  border-top:4px solid var(--fn-ink);
+  text-align:center;color:var(--fn-muted);font:.78rem/1.5 var(--fn-mono);
+}
+.app-footer::before{
+  content:"";display:block;width:66px;height:18px;margin:0 auto 18px;
+  background:
+    linear-gradient(var(--fn-pink),var(--fn-pink)) left top/18px 18px no-repeat,
+    linear-gradient(var(--fn-cyan),var(--fn-cyan)) 24px top/18px 18px no-repeat,
+    linear-gradient(var(--fn-yellow),var(--fn-yellow)) right top/18px 18px no-repeat;
+}
+
+/* ---------- 10. Responsive (source: mobile-first, 480/620/700/900/1000) ---------- */
+@media(min-width:620px){
+  .resource-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .outcomes{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(min-width:1000px){
+  .outcomes{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:720px){
+  .hero{align-items:flex-start;flex-direction:column}
+  .hero-stats{width:100%}
+  .hero-stat{flex:1}
+  .hero::after{opacity:.2}
+  .dashboard{grid-template-columns:1fr}
+  .stage summary{padding:14px}
+  .stage-body{padding:0 14px 15px}
+  .stage-meter{display:block}
+  .toolbar{align-items:flex-start}
+  .toolbar .status{flex-basis:100%}
+  .completion{white-space:normal}
+}
+
+/* ---------- 11. Web Interface Guidelines (web-design-guidelines skill) -----
+   Applied from the live rule set at
+   github.com/vercel-labs/web-interface-guidelines/blob/main/command.md        */
+/* Compound controls: the whole label lights up, not just the 18px checkbox. */
+.completion:focus-within{outline:3px solid var(--fn-blue);outline-offset:3px}
+/* Numbers are compared side by side (percent, counts, streak). */
+.hero-stat strong,.panel-head strong,.stage-meter,.progress-fill,
+#overall-percent,#streak-count{font-variant-numeric:tabular-nums}
+/* Avoid widows on short display headings. */
+.hero h1,.panel h2,.stage-heading strong,.resource h3{text-wrap:balance}
+/* Mobile: remove the 300ms double-tap delay; set the tap flash deliberately. */
+:where(a,button,input,label,summary){touch-action:manipulation}
+:where(a,button,input,label,summary){-webkit-tap-highlight-color:rgba(55,104,255,.18)}
+/* Flex children must be allowed to shrink or long words overflow the card. */
+.toolbar>*,.stage summary>*,.completion>*{min-width:0}
+
+/* ---------- 12. Motion and print ---------- */
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{scroll-behavior:auto!important;transition:none!important}
+  .resource,.resource:hover{transform:none}
+  .toolbar button,.file-button{transform:none}
+}
+@media print{
+  html,body,.app{background:#fff;color:#111}
+  .app{border:0;padding:0}
+  /* Undo the pinned foot row: in print the link and Done return to flow. */
+  .resource{position:static;padding-bottom:clamp(13px,3.6vw,18px)}
+  .resource a,.completion{position:static;display:inline-flex;max-width:none}
+  .completion{float:right}
+  .app::before,.hero::after,.app-footer::before{display:none}
+  .hero{border:2px solid #111;background:#fff;color:#111;box-shadow:none;padding:14pt}
+  .hero h1,.hero p#subtitle,.hero-stat strong,.hero-stat span{color:#111}
+  .eyebrow,.hero-facts span,.hero-stat{border:1px solid #111;background:#fff;color:#111}
+  .panel,.toolbar,.notice,.stage,.resource{border:1px solid #111;background:#fff;box-shadow:none}
+  .toolbar,.notice{display:none}
+  .stage,.resource{break-inside:avoid}
+  .tag{border:1px solid #111;background:#fff!important}
+  a{text-decoration:none}
+  a[href^="http"]::after{content:" (" attr(href) ")";font-size:.75em;word-break:break-all;color:#333}
+  @page{margin:14mm}
+}
