@@ -1,0 +1,34 @@
+{
+  "title": "Sample learning roadmap",
+  "subtitle": "Demo data only—replace these items with researched resources before sharing.",
+  "reminder_time": "19:00",
+  "stages": [
+    {
+      "title": "Stage 1: Getting oriented",
+      "description": "A sample stage showing how roadmap modules and learning resources appear.",
+      "duration": "1 week",
+      "estimated_hours": 3,
+      "outcomes": ["Understand the basic vocabulary", "Choose one small practice task"],
+      "resources": [
+        {
+          "title": "Example resource card",
+          "provider": "Example only",
+          "url": "https://example.com/",
+          "modality": "Written course",
+          "cost": "Demo data only",
+          "duration": "About 30 minutes",
+          "why": "Placeholder explanation of why the resource fits this stage.",
+          "action": "Replace this card with a provider-verified resource.",
+          "access_note": "Demo only. Confirm price, access, and any paywall before recommending."
+        }
+      ]
+    },
+    {
+      "title": "Stage 2: Practice",
+      "description": "A stage with no resource card can still be tracked as a milestone.",
+      "duration": "1 week",
+      "outcomes": ["Complete a small project"],
+      "resources": []
+    }
+  ]
+}
