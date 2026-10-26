@@ -32,7 +32,10 @@ appearance change: `out/roadmap-app.html` remains byte-identical at SHA-256
   network). `learning-library/check-links.sh` now runs in CI.
 - Added a reproducible 13-viewport Chromium harness in `tools/visual/` with a
   committed lock file. Verified locally: 13/13 widths pass, functional
-  tick/reset works, no console or page errors.
+  tick/reset works, no console or page errors. Both `verify` CI jobs
+  (`build + verify` and `13-viewport browser checks`) subsequently passed on
+  the push and pull-request runs; the weekly `link-check` sweep has not yet
+  fired.
 - Added `docs/SETUP.md` (canonical setup) and `docs/DESIGN-SPEC.md` (current
   design contract with measurable acceptance criteria).
 - Corrected the stale tag-colour claim in

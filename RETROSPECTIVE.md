@@ -237,13 +237,16 @@ byte-identical at SHA-256
 
 ### What this does **not** fix
 
-- **No CI run has been observed yet.** The workflow files are new on this
-  branch; they will execute on the next push / PR. They are syntactically
-  reviewed and their commands were run locally, but no GitHub Actions result is
-  being claimed here.
-- **The link sweep still has not been run.** `curl` from this sandbox still
-  returns `000` with an SSL error. CI is now able to run it, and reports results
-  as an artifact; still **no HTTP status codes are claimed** in this document.
+- **CI verification is now confirmed.** The `verify` workflow ran on both the
+  push (`40421681523`) and the pull request (`40421748294`); in each run both
+  `build + verify` and `13-viewport browser checks` passed in GitHub Actions.
+  The local results above are therefore reproducible on a clean runner. The
+  scheduled `link-check` workflow only fires weekly or on manual dispatch, so
+  **its results are still unobserved** and no HTTP status codes are claimed.
+- **The URL sweep still has not been run from this sandbox.** `curl` here still
+  returns `000` with an SSL error. GitHub Actions can now run it weekly and
+  publishes a TSV report as an artifact. A status code never proves a resource
+  is free — a human still has to read the provider page.
 - **The `skill-issue` MCP endpoint is still unreachable from this sandbox.**
   The registration is durable and documented, but skill discovery here still
   relies on the allowlisted GitHub API fallback.
