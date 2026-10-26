@@ -11,13 +11,34 @@ You chose: free-first (paid extras listed separately), a balanced blend of video
 | `out/Recruiter-TA-Library.pdf` | The full library, 15 pages. Best for printing or sharing. |
 | `out/Recruiter-TA-Library.docx` | Editable Word version of the same document. |
 | `out/Recruiter-TA-Library.html` | Self-contained static web page. No scripts, no external assets. |
-| `out/roadmap-app.html` | Single-file interactive tracker: 8 stages, checkboxes, progress, daily streak, export/import. Open it in a browser. |
+| `out/roadmap-app.html` | Single-file interactive tracker: 8 stages, checkboxes, progress, daily streak, export/import. **Styled with the Fieldnotes design system.** Open it in a browser. |
 | `src/recruiter-talent-acquisition-library.md` | The editable Markdown source. This is the file to change if you want a revision. |
 | `src/roadmap-app.json` | The structured roadmap and resource data behind the tracker. |
+| `src/fieldnotes-theme.css` | The ported Fieldnotes design tokens and component overrides. |
+| `tools/build_tracker.py` | Builds the themed tracker from the JSON while leaving the vendored skill untouched. |
+| `DESIGN-SYSTEM.md` | Provenance, token table, selector mapping, constraints and verification of the port. |
 | `out/Recruiter-TA-Library.md` | A byte-identical copy of the source, kept with the other outputs. |
 | `check-links.sh` | A repeatable HTTP status check for all 30 cited URLs. **Not run here** - see below. |
 
 The skill that produced everything here is vendored at **`.agents/skills/resource-learning-library/`** in the repository root, so it is version-controlled and persists across sessions. See `.agents/skills/README.md` for provenance and setup.
+
+## Design system
+
+The interactive tracker was restyled on **26 October 2026** with the design system from `MikkoWuyin-dev/Field-Notes_Nature-Photography`: dark navy frame, warm cream paper, bright blue/cyan/pink/yellow accents, monospace chrome, thick borders, hard offset shadows and square corners. The source uses only system fonts and CSS-generated decoration, so the whole look ported into a self-contained file with no external assets.
+
+The theme lives in `src/fieldnotes-theme.css` and is applied by `tools/build_tracker.py` as a second inline style block; the vendored skill's generator is imported but never modified. See `DESIGN-SYSTEM.md` for the full token table and what could not be copied (a tab icon and social preview tags, which the validator forbids). The PDF, DOCX, Markdown and static HTML library are unchanged.
+
+Four refinements were made afterwards: the coloured bars above the hero were removed so the hero fills the top; the footer reads **"Made with love and fried plantain, by Moyinoluwa"** (the three coloured squares above it stay); the hero eyebrow now renders dark ink on yellow rather than the generator's pale blue-white; and each resource card has a foot row with the link at bottom-left and the Done checkbox at bottom-right.
+
+A second round then: gave **every** tag its own coloured fill (cyan, pink, green, orange, lavender, with cost/paid keeping green/yellow); equalised the stage intro paragraph's top and bottom margins; swapped the outcomes slash for a centred filled square; added a small ↗ beside each resource link; and expanded the hero to the sheet's cyan edges with a 15% larger `h1` and 5px more eyebrow space.
+
+A third round scaled the hero's type: the subtitle and the four fact chips shrank by 25% (type and padding), while the two progress cards grew by 20% (min-width, padding, number and label). The shared chip/card rule was split so the two groups scale independently.
+
+A fourth round grew the h1 by 40%, switched the stage headers to baseline alignment so the badge/`0%`/`+`/`−` sit on the title's line, removed the visible "Reminder time" label (kept for screen readers, with `aria-label` and `title` on the time picker), and tightened the other three hero gaps while leaving eyebrow→h1 alone.
+
+All changes live in `src/fieldnotes-theme.css` (plus one input-attribute edit in `tools/build_tracker.py`) and were checked in headless Chromium 153 at 320-1920px.
+
+The `web-design-guidelines`, `design-system-patterns` and `accessibility-compliance` skills from the `skill-issue` MCP collection were applied to focus states, tap targets, tabular numerals, form-control semantics, component tokens and WCAG AA contrast.
 
 ## The shape of the plan
 
@@ -50,10 +71,11 @@ Provider terms change. Re-check any paid item and any free-certificate claim bef
 | Check | Result |
 |---|---|
 | `validate_build.py` on PDF, DOCX, static HTML | All 3 passed. PDF header valid, 15 pages. DOCX: 17 XML parts, 43 headings, 2 tables, 26 hyperlink elements, 21 external hyperlink relationships, no Markdown residue. Static HTML: no external assets, no scripts. |
-| `validate_build.py --interactive-html` on the tracker | Passed. One inline script, no external scripts, no external assets. |
+| `validate_build.py --interactive-html` on the tracker | Passed after the redesign. Two inline style blocks (generator + theme), one inline script, no external scripts, no external assets, no CSS asset references. |
 | `style_audit.py` on the Markdown source | 0 mechanical errors, 0 prose-pattern flags. |
 | `python3 -m unittest discover -s tests -v` | 5 tests, all OK. |
 | Re-reading the built files, not just the builder's exit code | DOCX `word/document.xml` contains the expected stage, price and date text plus theme fills `0B3D5C` and `F6FAFD`. PDF has 42,785 characters of extractable text. Static HTML has 26 clickable resource links. Tracker contains all 8 stages, localStorage, streak dates and the permission request. |
+| Headless Chromium 153 on the redesigned tracker | Computed colours match the ported tokens; no console or page errors; **zero horizontal overflow at 320/360/390/430/600/620/700/900/1024/1200/1320/1440/1920 px**; ticking a card updates the counter, percent, stage meter and localStorage; export and reminder buttons do not throw; reset returns to zero; headings `h1`×1 / `h2`×2 / `h3`×26; all tested controls ≥44px tall. After the refinements: eyebrow `rgb(17,20,43)` on yellow, hero starts at y=0, top bar pseudo-element has `content:none`, footer credit exact, link/Done on one row with no overlap at every width, all four chips plus both progress cards stay inside the hero with no 2D overlap, the 122px h1 never clips, and stage-header badge/counter sit within ~2.3px of the title's first baseline. |
 
 The `url()` strings you may spot in the tracker are JavaScript identifiers (`new URL`, `createObjectURL`, `safeUrl`), not CSS asset references. There are no `fetch`, `XMLHttpRequest`, WebSocket, external script tags, images or `@import` calls in that file.
 
@@ -63,9 +85,7 @@ Progress lives in **this browser's local storage**. The streak uses the device's
 
 ## If you want a revision
 
-The Markdown source and the JSON are the two files to edit. To rebuild everything (with the skill installed and `requirements.txt` installed):
-
-Run these from the `learning-library/` directory. `SKILL` points at the vendored copy in the repo, so no global skill install is needed:
+The Markdown source and the JSON are the two files to edit for content; `src/fieldnotes-theme.css` is the file to edit for appearance. Run these from the `learning-library/` directory. `SKILL` points at the vendored copy in the repo, so no global skill install is needed:
 
 ```bash
 SKILL=../.agents/skills/resource-learning-library
@@ -75,11 +95,13 @@ python3 "$SKILL/scripts/docx_render.py" src/recruiter-talent-acquisition-library
   --subtitle "A roadmap-ordered learning library for an absolute beginner" \
   --hero-meta "Lagos, Nigeria - verified 26 October 2026 - about 94 hours over 20 weeks" \
   --format pdf docx md html
-python3 "$SKILL/scripts/interactive_app.py" --input src/roadmap-app.json --output out/roadmap-app.html
+python3 tools/build_tracker.py
 python3 "$SKILL/scripts/validate_build.py" out/Recruiter-TA-Library.pdf out/Recruiter-TA-Library.docx out/Recruiter-TA-Library.html
 python3 "$SKILL/scripts/validate_build.py" --interactive-html out/roadmap-app.html
 python3 "$SKILL/scripts/style_audit.py" src/recruiter-talent-acquisition-library.md
 ```
+
+**Do not** run `scripts/interactive_app.py` directly on `src/roadmap-app.json` to build the delivered tracker - that produces the old unthemed look. `tools/build_tracker.py` calls that same generator internally and then layers the theme, so the vendored skill stays byte-exact.
 
 The skill is now vendored in this repository at `.agents/skills/resource-learning-library/`, so it is committed and survives session resets. Its 12 files were reconstructed from the transfer bundle and hash-verified against the bundle's SHA-256 inventory. Python dependencies are not vendored: on a fresh machine run `python3 -m pip install -r ../.agents/skills/resource-learning-library/requirements.txt` (use a venv or `--break-system-packages` on PEP 668 systems) before the commands above. A personal copy may also exist at `$HOME/.agents/skills/resource-learning-library/` for agents that scan a global skills root; treat the repo copy as authoritative.
 
