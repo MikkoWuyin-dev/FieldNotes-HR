@@ -50,50 +50,63 @@ def facts(data: dict) -> list[str]:
     ]
 
 
+def branding_edits(data: dict) -> list[tuple[str, str, str]]:
+    """The contract between this build layer and the vendored generator's HTML.
+
+    Each triple is (anchor regex, literal replacement, human label). These
+    anchors are exact strings emitted by the unmodified `interactive_app.py`.
+    `tools/check.py` verifies that every anchor still matches the generator's
+    live output and that breaking any single one fails the build loudly, so a
+    future generator update cannot silently drop the Fieldnotes branding.
+    """
+    title = str(data.get("title") or "Learning roadmap")
+    chips = "".join(f"<span>{text}</span>" for text in facts(data))
+    return [
+        (r"<title>Learning roadmap</title>",
+         f"<title>{title} | Fieldnotes HR</title>", "title"),
+
+        (r'<meta name="theme-color" content="#0B3D5C">',
+         '<meta name="theme-color" content="#11142B">\n'
+         '<meta name="color-scheme" content="light">\n'
+         '<meta name="description" content="A free-first, roadmap-ordered learning '
+         'library for breaking into HR through the Recruiter / Talent Acquisition '
+         'path, with browser-local progress tracking.">', "theme-color meta"),
+
+        (r"<body>",
+         '<body>\n<a class="skip-link" href="#roadmap">Skip to roadmap</a>', "body"),
+
+        (r'<p class="eyebrow">YOUR LEARNING ROADMAP</p>',
+         '<p class="eyebrow">FIELDNOTES / HR</p>', "eyebrow"),
+
+        (r'<footer class="app-footer">A self-contained roadmap tracker\. Your progress is stored locally in this browser\.</footer>',
+         '<footer class="app-footer">Made with love and fried plantain, by Moyinoluwa</footer>',
+         "footer credit"),
+
+        # Web Interface Guidelines: form controls need a meaningful name and an
+        # explicit autocomplete so password managers stay out of non-auth fields.
+        (r'<input id="reminder-time" type="time" value="19:00">',
+         '<input id="reminder-time" name="reminder-time" type="time" '
+         'autocomplete="off" aria-label="Reminder time" '
+         'title="Reminder time" value="19:00">', "reminder time input"),
+
+        (r'<input id="import-progress" type="file" accept="application/json,\.json">',
+         '<input id="import-progress" name="import-progress" type="file" '
+         'accept="application/json,.json">', "import file input"),
+
+        (r'<p id="subtitle"></p>',
+         '<p id="subtitle"></p>\n      '
+         f'<div class="hero-facts" aria-label="Roadmap overview">{chips}</div>',
+         "subtitle"),
+    ]
+
+
 def transform(html: str, data: dict, theme_css: str) -> str:
-    def sub(pattern: str, replacement: str, label: str) -> None:
-        nonlocal html
-        new, count = re.subn(pattern, lambda m: replacement, html, count=1)
+    for pattern, replacement, label in branding_edits(data):
+        # A lambda keeps the replacement literal: no backreference expansion.
+        new, count = re.subn(pattern, lambda _m, r=replacement: r, html, count=1)
         if count != 1:
             raise RuntimeError(f"branding anchor not found: {label}")
         html = new
-
-    title = str(data.get("title") or "Learning roadmap")
-    sub(r"<title>Learning roadmap</title>",
-        f"<title>{title} | Fieldnotes HR</title>", "title")
-
-    sub(r'<meta name="theme-color" content="#0B3D5C">',
-        '<meta name="theme-color" content="#11142B">\n'
-        '<meta name="color-scheme" content="light">\n'
-        '<meta name="description" content="A free-first, roadmap-ordered learning '
-        'library for breaking into HR through the Recruiter / Talent Acquisition '
-        'path, with browser-local progress tracking.">', "theme-color meta")
-
-    sub(r"<body>",
-        '<body>\n<a class="skip-link" href="#roadmap">Skip to roadmap</a>', "body")
-
-    sub(r'<p class="eyebrow">YOUR LEARNING ROADMAP</p>',
-        '<p class="eyebrow">FIELDNOTES / HR</p>', "eyebrow")
-
-    sub(r'<footer class="app-footer">A self-contained roadmap tracker\. Your progress is stored locally in this browser\.</footer>',
-        '<footer class="app-footer">Made with love and fried plantain, by Moyinoluwa</footer>',
-        "footer credit")
-
-    # Web Interface Guidelines: form controls need a meaningful name and an
-    # explicit autocomplete so password managers stay out of non-auth fields.
-    sub(r'<input id="reminder-time" type="time" value="19:00">',
-        '<input id="reminder-time" name="reminder-time" type="time" '
-        'autocomplete="off" aria-label="Reminder time" '
-        'title="Reminder time" value="19:00">', "reminder time input")
-    sub(r'<input id="import-progress" type="file" accept="application/json,\.json">',
-        '<input id="import-progress" name="import-progress" type="file" '
-        'accept="application/json,.json">', "import file input")
-
-    chips = "".join(f"<span>{text}</span>" for text in facts(data))
-    sub(r'<p id="subtitle"></p>',
-        '<p id="subtitle"></p>\n      '
-        f'<div class="hero-facts" aria-label="Roadmap overview">{chips}</div>',
-        "subtitle")
 
     style = '<style data-theme="fieldnotes">\n' + theme_css.rstrip() + "\n</style>\n"
     if "</head>" not in html:

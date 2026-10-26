@@ -1,5 +1,11 @@
 # Fieldnotes design system (ported)
 
+> **This is the historical port record (26 October 2026).** For the current
+> design contract — tokens, type scale, acceptance criteria and known
+> deviations — see `docs/DESIGN-SPEC.md`. Setup and verification are in
+> `docs/SETUP.md`. The four "refinements" sections below are a chronological
+> log, not a description of the final state; `CHANGELOG.md` summarises them.
+
 The interactive roadmap tracker in this repo uses the visual design system from
 **`MikkoWuyin-dev/Field-Notes_Nature-Photography`**, a single-file nature
 photography learning app. Extracted on **2026-10-26** from its `index.html`
@@ -75,14 +81,21 @@ explicitly.
 | `.tour-invite` (caveat styling) | `.notice` |
 | `.app-footer::before` decoration | three coloured squares (echoes the source's 3x3 accent grid) |
 
-**Adaptation:** the generator emits five metadata chips per resource (provider,
-modality, cost, time, verification date). The source uses bright tags only for
-short one-word keys, so here only the first (provider) chip and the cost chip
-carry the accent palette; the long metadata chips stay quiet cream with a 2px
-border. This keeps the visual language without turning every card into a wall of
-neon.
+**Adaptation (final state):** the generator emits five metadata chips per
+resource (provider, modality, cost, time, verification date). An early version
+of this port gave only the first chip and the cost chip accent colours, leaving
+the long metadata chips quiet cream. **That was changed in the second
+refinement:** every tag now receives its own coloured fill through the
+`--fn-tag-cycle-*` component tokens (cyan, pink, green, orange, lavender),
+while `.tag.cost` stays green for free and `.tag.paid` stays yellow. All six
+fills pass WCAG AA against `--fn-ink`. See `docs/DESIGN-SPEC.md` §2–3.
 
-### Requested refinements (2026-10-26)
+### Requested refinements (2026-10-26) — historical
+
+The four dated subsections below record each round in the order it happened;
+later rounds override earlier ones (for example the 1.15× h1 was subsequently
+replaced by a 1.4× clamp, not multiplied again). For the resulting values read
+`docs/DESIGN-SPEC.md`.
 
 Four changes were made after the first port. All live in `src/fieldnotes-theme.css`
 or `tools/build_tracker.py`, so a rebuild reproduces them.
@@ -254,6 +267,10 @@ Typography needed no substitution: `--fn-mono` and `--fn-prose` are both system
 stacks, so there are no `@font-face` or `@import` rules.
 
 ## 4. Verification
+
+> All of these checks are now reproducible with `make check`,
+> `make check-drift` and `make check-visual`, and run in CI via
+> `.github/workflows/verify.yml`. This section records the original manual run.
 
 Measured in **headless Chromium 153** (installed via the npm allowlist recipe in
 the source repo's `docs/headless-chromium.md`), driving the actual built file:

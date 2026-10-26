@@ -1,0 +1,29 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.smoke-out/
+
+# Node / browser QA tooling
+node_modules/
+tools/visual/.cache/
+playwright-report/
+test-results/
+
+# Generated verification reports (keep the scripts, not the output)
+link-status.tsv
+*.log
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Claude Code per-developer settings. The project-wide approval for the
+# skill-issue MCP lives in .claude/settings.json, which IS committed.
+.claude/settings.local.json

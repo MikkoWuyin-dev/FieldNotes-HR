@@ -1,0 +1,60 @@
+name: verify
+
+# Replaces the "checks actually run" table in the README with something a
+# reviewer can reproduce. PR #2 had no checks; this workflow fixes that.
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: build + verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # A shallow clone hid history during the original work. Fetch it all.
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'   # pinned to match requirements.lock
+          cache: pip
+          cache-dependency-path: requirements.lock
+
+      - name: Bootstrap pinned environment
+        run: make bootstrap
+
+      - name: Fast checks
+        run: make check
+
+      - name: Prove committed outputs reproduce from source
+        run: make check-drift
+
+      - name: Freshness report (non-blocking)
+        if: always()
+        run: .venv/bin/python tools/check.py freshness || true
+
+  visual:
+    name: 13-viewport browser checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.22.3'   # matches @sparticuz/chromium's engine range
+          cache: npm
+          cache-dependency-path: tools/visual/package-lock.json
+
+      # Chromium is bundled in the npm tarball, so no browser download is
+      # needed. The harness inflates its AL2023 shared libraries explicitly.
+      - name: Run headless geometry, colour and functionality checks
+        run: make check-visual

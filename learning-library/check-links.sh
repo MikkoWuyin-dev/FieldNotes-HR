@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 # Repeatable HTTP status check for every URL cited in the learning library.
-# NOT RUN in the generating sandbox: outbound traffic there is allowlisted.
-# Run this on your own machine:  bash check-links.sh > link-status.tsv
+# The generating sandbox had allowlisted egress, so the original sweep could not
+# run there (see RETROSPECTIVE.md). It now runs weekly in GitHub Actions
+# (.github/workflows/link-check.yml); locally, run: make links
 # A 403 can be bot filtering; a 526 can be an origin TLS issue; 000 means no response.
-# Status codes alone never prove that a resource is free - read the provider page.
+# Status codes alone never prove that a resource is free - read the provider page
+# and record what you find in src/verification-manifest.json.
 set -u
 printf "status\turl\n"
 urls=(

@@ -1,5 +1,10 @@
 # Your recruiter learning library
 
+> **Setup and verification:** `docs/SETUP.md` is canonical. Run `make bootstrap`
+> then `make check`; CI runs the same checks. The current design contract is
+> `docs/DESIGN-SPEC.md`; `learning-library/DESIGN-SYSTEM.md` is the historical
+> port record and `CHANGELOG.md` the change history.
+
 Built on **26 October 2026** with the `resource-learning-library` skill, for an absolute beginner in **Lagos, Nigeria** who wants to break into HR through the **Recruiter / Talent Acquisition** path.
 
 You chose: free-first (paid extras listed separately), a balanced blend of video series, official documentation and written courses, a brand-new custom roadmap, and every output format. I assumed about **5 hours a week** and beginner level. If your hours or level change, only the calendar changes - the order of the stages should stay.
@@ -18,7 +23,10 @@ You chose: free-first (paid extras listed separately), a balanced blend of video
 | `tools/build_tracker.py` | Builds the themed tracker from the JSON while leaving the vendored skill untouched. |
 | `DESIGN-SYSTEM.md` | Provenance, token table, selector mapping, constraints and verification of the port. |
 | `out/Recruiter-TA-Library.md` | A byte-identical copy of the source, kept with the other outputs. |
-| `check-links.sh` | A repeatable HTTP status check for all 30 cited URLs. **Not run here** - see below. |
+| `src/verification-manifest.json` | Per-URL verification status and date for all 30 checked URLs; read by `make check`. |
+| `check-links.sh` | A repeatable HTTP status check for all 30 cited URLs. It could not run in the generating sandbox; it now runs weekly in CI. |
+| `../tools/check.py` | The single verification runner behind `make check` and `make check-drift`. |
+| `../tools/visual/` | The committed 13-viewport Chromium harness behind `make check-visual`. |
 
 The skill that produced everything here is vendored at **`.agents/skills/resource-learning-library/`** in the repository root, so it is version-controlled and persists across sessions. See `.agents/skills/README.md` for provenance and setup.
 
@@ -28,15 +36,9 @@ The interactive tracker was restyled on **26 October 2026** with the design syst
 
 The theme lives in `src/fieldnotes-theme.css` and is applied by `tools/build_tracker.py` as a second inline style block; the vendored skill's generator is imported but never modified. See `DESIGN-SYSTEM.md` for the full token table and what could not be copied (a tab icon and social preview tags, which the validator forbids). The PDF, DOCX, Markdown and static HTML library are unchanged.
 
-Four refinements were made afterwards: the coloured bars above the hero were removed so the hero fills the top; the footer reads **"Made with love and fried plantain, by Moyinoluwa"** (the three coloured squares above it stay); the hero eyebrow now renders dark ink on yellow rather than the generator's pale blue-white; and each resource card has a foot row with the link at bottom-left and the Done checkbox at bottom-right.
+Four rounds of refinements followed the initial port: hero/footer/eyebrow/card-foot changes, coloured tags and stage markers, a rebalanced hero type scale, and finally a larger h1 with baseline-aligned stage headers and tighter spacing. Each round is recorded in `CHANGELOG.md` and in the historical `DESIGN-SYSTEM.md`. **The current values live in `docs/DESIGN-SPEC.md`** — read that rather than the chronological log, because later rounds replace earlier ones (the 40% h1 increase was requested twice and applied once).
 
-A second round then: gave **every** tag its own coloured fill (cyan, pink, green, orange, lavender, with cost/paid keeping green/yellow); equalised the stage intro paragraph's top and bottom margins; swapped the outcomes slash for a centred filled square; added a small ↗ beside each resource link; and expanded the hero to the sheet's cyan edges with a 15% larger `h1` and 5px more eyebrow space.
-
-A third round scaled the hero's type: the subtitle and the four fact chips shrank by 25% (type and padding), while the two progress cards grew by 20% (min-width, padding, number and label). The shared chip/card rule was split so the two groups scale independently.
-
-A fourth round grew the h1 by 40%, switched the stage headers to baseline alignment so the badge/`0%`/`+`/`−` sit on the title's line, removed the visible "Reminder time" label (kept for screen readers, with `aria-label` and `title` on the time picker), and tightened the other three hero gaps while leaving eyebrow→h1 alone.
-
-All changes live in `src/fieldnotes-theme.css` (plus one input-attribute edit in `tools/build_tracker.py`) and were checked in headless Chromium 153 at 320-1920px.
+All changes live in `src/fieldnotes-theme.css` (plus one input-attribute edit in `tools/build_tracker.py`). They are now checked reproducibly in Chromium 153 at 13 widths from 320 to 1920px by `make check-visual`, not by a throwaway script.
 
 The `web-design-guidelines`, `design-system-patterns` and `accessibility-compliance` skills from the `skill-issue` MCP collection were applied to focus states, tap targets, tabular numerals, form-control semantics, component tokens and WCAG AA contrast.
 
@@ -56,7 +58,7 @@ I read provider course pages, syllabuses, FAQs and policy pages with a page-retr
 
 Things I **could not** do:
 
-- **Run the HTTP status-code sweeps.** The sandbox blocks most outbound traffic. A request to `pypi.org` returned 200, while `kaggle.com` and `docs.python.org` failed at the TLS handshake. `check-links.sh` runs those checks on your machine instead; it was not run here, so no status codes are claimed.
+- **Run the HTTP status-code sweeps in the generating environment.** The sandbox blocks most outbound traffic: a request to `pypi.org` returned 200, while `kaggle.com` and `docs.python.org` failed at the TLS handshake. The original sweep was therefore **not run there and no status codes are claimed from it**. Since 27 October 2026 `.github/workflows/link-check.yml` runs `check-links.sh` weekly with unrestricted network and publishes a TSV report; `make links` runs the same sweep locally. A status code still never proves a resource is free.
 - **Create accounts or complete enrolment.** I cannot describe what any provider shows after sign-in. Free claims rest on public provider statements.
 - **Read LinkedIn's own help pages.** Both returned HTTP 500. Their prices come from third-party 2026 pricing guides and are labelled unconfirmed.
 - **Read past the Jobberman cookie banner.** That card is marked partially verified.
@@ -68,8 +70,12 @@ Provider terms change. Re-check any paid item and any free-certificate claim bef
 
 ## Checks actually run on the finished files
 
+Every row below is now reproducible: `make check` runs the validators, unit tests, style audit, builder contract, source consistency and doc lint; `make check-drift` proves all five outputs rebuild from source; `make check-visual` runs the browser checks. CI runs all three.
+
 | Check | Result |
 |---|---|
+| `make check` / `make check-drift` (27 October 2026) | Passed. Vendored skill 12/12 SHA-256 hashes exact; 8 branding anchors each fail loudly when broken; 8 stages / 26 cards / 94 h / 21 URLs agree across JSON, Markdown, tracker and manifest; all five outputs reproduce (PDF by extracted text, DOCX by archive entries). |
+| `make check-visual` (27 October 2026) | Headless Chromium 153: 13/13 widths passed, no console or page errors; tick → `1 of 26` / `4%` / localStorage, reset → `0 of 26`. Harness committed in `tools/visual/`. |
 | `validate_build.py` on PDF, DOCX, static HTML | All 3 passed. PDF header valid, 15 pages. DOCX: 17 XML parts, 43 headings, 2 tables, 26 hyperlink elements, 21 external hyperlink relationships, no Markdown residue. Static HTML: no external assets, no scripts. |
 | `validate_build.py --interactive-html` on the tracker | Passed after the redesign. Two inline style blocks (generator + theme), one inline script, no external scripts, no external assets, no CSS asset references. |
 | `style_audit.py` on the Markdown source | 0 mechanical errors, 0 prose-pattern flags. |
@@ -85,25 +91,19 @@ Progress lives in **this browser's local storage**. The streak uses the device's
 
 ## If you want a revision
 
-The Markdown source and the JSON are the two files to edit for content; `src/fieldnotes-theme.css` is the file to edit for appearance. Run these from the `learning-library/` directory. `SKILL` points at the vendored copy in the repo, so no global skill install is needed:
+The Markdown source and the JSON are the two files to edit for content; `src/fieldnotes-theme.css` is the file to edit for appearance. Run everything **from the repository root** — `docs/SETUP.md` is the canonical guide:
 
 ```bash
-SKILL=../.agents/skills/resource-learning-library
-python3 "$SKILL/scripts/docx_render.py" src/recruiter-talent-acquisition-library.md \
-  -o out --name Recruiter-TA-Library \
-  --title "From zero to first recruiter role" \
-  --subtitle "A roadmap-ordered learning library for an absolute beginner" \
-  --hero-meta "Lagos, Nigeria - verified 26 October 2026 - about 94 hours over 20 weeks" \
-  --format pdf docx md html
-python3 tools/build_tracker.py
-python3 "$SKILL/scripts/validate_build.py" out/Recruiter-TA-Library.pdf out/Recruiter-TA-Library.docx out/Recruiter-TA-Library.html
-python3 "$SKILL/scripts/validate_build.py" --interactive-html out/roadmap-app.html
-python3 "$SKILL/scripts/style_audit.py" src/recruiter-talent-acquisition-library.md
+make bootstrap     # .venv/ from the pinned requirements.lock
+make build         # regenerate all 5 outputs
+make check         # validators, tests, contract, consistency, doc lint
+make check-drift   # prove committed outputs reproduce
+make check-visual  # if appearance changed
 ```
 
 **Do not** run `scripts/interactive_app.py` directly on `src/roadmap-app.json` to build the delivered tracker - that produces the old unthemed look. `tools/build_tracker.py` calls that same generator internally and then layers the theme, so the vendored skill stays byte-exact.
 
-The skill is now vendored in this repository at `.agents/skills/resource-learning-library/`, so it is committed and survives session resets. Its 12 files were reconstructed from the transfer bundle and hash-verified against the bundle's SHA-256 inventory. Python dependencies are not vendored: on a fresh machine run `python3 -m pip install -r ../.agents/skills/resource-learning-library/requirements.txt` (use a venv or `--break-system-packages` on PEP 668 systems) before the commands above. A personal copy may also exist at `$HOME/.agents/skills/resource-learning-library/` for agents that scan a global skills root; treat the repo copy as authoritative.
+The skill is vendored at `.agents/skills/resource-learning-library/`, so it is committed and survives session resets. Its 12 SHA-256 hashes are recorded in `tools/skill-hashes.sha256` and checked by `make check`; never edit those files in place. Python dependencies are not vendored, but `make bootstrap` installs the exact tree from `requirements.lock` into `.venv/` - no global install, no PEP 668 workaround. A personal copy may also exist at `$HOME/.agents/skills/resource-learning-library/` for agents that scan a global skills root; treat the repo copy as authoritative.
 
 ## Your first hour
 

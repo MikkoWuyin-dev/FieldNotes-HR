@@ -1,0 +1,9 @@
+# Binary deliverables: don't attempt textual diffs or EOL conversion.
+*.pdf  binary
+*.docx binary
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+
+# Everything else: normalise line endings in the index.
+* text=auto eol=lf
