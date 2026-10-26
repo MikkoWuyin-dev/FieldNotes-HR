@@ -1,0 +1,194 @@
+{
+  "_comment": "Per-URL verification record transcribed from the library document, not new research. See learning-library/src/recruiter-talent-acquisition-library.md, sections \"Verification log\" and \"Paid extras\".",
+  "research_date": "2026-10-26",
+  "max_age_days": 90,
+  "status_legend": {
+    "confirmed": "Provider page was read and the free/paid finding is documented.",
+    "ambiguous": "Page was read but the free claim could not be confirmed; not counted as free.",
+    "partial": "Only a cookie banner or partial content was visible.",
+    "unreachable": "Provider page failed (HTTP 500); figures come from third parties.",
+    "not_confirmed": "Lead/paid extra only; no provider confirmation of free access."
+  },
+  "urls": [
+    {
+      "url": "https://www.youtube.com/@HRLearningLab",
+      "status": "confirmed",
+      "verified_at": "2026-10-26",
+      "note": "Public free playlist; creator discloses AI-assisted production."
+    },
+    {
+      "url": "https://learn.saylor.org/course/view.php?id=1292",
+      "status": "confirmed",
+      "verified_at": "2026-10-26",
+      "note": "PRDV226 syllabus: no tuition, free materials, free completion certificate at 70%."
+    },
+    {
+      "url": "https://openstax.org/books/principles-management/pages/11-introduction",
+      "status": "confirmed",
+      "verified_at": "2026-10-26",
+      "note": "Openly licensed textbook, free web view."
+    },
+    {
+      "url": "https://www.open.edu/openlearn/money-business/human-resources/human-resources-recruitment-and-selection/content-section-0",
+      "status": "confirmed",
+      "verified_at": "2026-10-26",
+      "note": "OpenLearn course page: free course, free statement of participation."
+    },
+    {
+      "url": "https://alison.com/course/diploma-in-human-resources-hr",
+      "status": "confirmed",
+      "verified_at": "2026-10-26",
+      "note": "Free to study; branded certificate paid; free Learner Record."
+    },
+    {
+      "url": "https://learn.saylor.org/course/BUS301",
+      "status": "confirmed",
+      "verified_at": "2026-10-26",
+      "note": "Saylor BUS301 course page read."
+    },
+    {
+      "url": "https://www.coursera.org/learn/recruiting-hiring-onboarding-employees",
+      "status": "ambiguous",
+      "verified_at": "2026-10-26",
+      "note": "Page read, but FAQ ties full access to purchase/trial/no-certificate option. NOT counted as free."
+    },
+    {
+      "url": "https://www.onetonline.org/",
+      "status": "confirmed",
+      "verified_at": "2026-10-26",
+      "note": "Free public occupational database."
+    },
+    {
+      "url": "https://resources.workable.com/hr-templates/",
+      "status": "confirmed",
+      "verified_at": "2026-10-26",
+      "note": "Templates free to download; no software trial required."
+    },
+    {
+      "url": "https://support.greenhouse.io/hc/en-us/articles/360007245452-Structured-hiring-Introduction",
+      "status": "confirmed",
+      "verified_at": "2026-10-26",
+      "note": "Free structured-hiring article and worksheets."
+    },
+    {
+      "url": "https://resources.workable.com/boolean-search-cheatsheets/",
+      "status": "confirmed",
+      "verified_at": "2026-10-26",
+      "note": "Free cheatsheets confirmed."
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=yMnw_2VNOVE",
+      "status": "confirmed",
+      "verified_at": "2026-10-26",
+      "note": "Public free video checked directly."
+    },
+    {
+      "url": "https://rework.withgoogle.com/intl/en/guides/",
+      "status": "confirmed",
+      "verified_at": "2026-10-26",
+      "note": "Guides index plus two guides read; other guides cited by name from the index."
+    },
+    {
+      "url": "https://www.jobberman.com/employer/free-listing",
+      "status": "partial",
+      "verified_at": null,
+      "note": "Returned only a cookie banner. Free-listing claim from provider search listing; card marked partially verified."
+    },
+    {
+      "url": "https://www.greenhouse.com/guidance",
+      "status": "confirmed",
+      "verified_at": "2026-10-26",
+      "note": "Free guidance hub read."
+    },
+    {
+      "url": "https://rework.withgoogle.com/intl/en/guides/a-guide-to-structured-interviewing-for-better-hiring-practices",
+      "status": "confirmed",
+      "verified_at": "2026-10-26",
+      "note": "Guides index plus two guides read; other guides cited by name from the index."
+    },
+    {
+      "url": "https://rework.withgoogle.com/intl/en/guides/effective-interviewer-training-for-better-candidate-experiences",
+      "status": "confirmed",
+      "verified_at": "2026-10-26",
+      "note": "Guides index plus two guides read; other guides cited by name from the index."
+    },
+    {
+      "url": "https://ndpc.gov.ng/wp-content/uploads/2025/07/NDP-ACT-GAID-2025-MARCH-20TH.pdf",
+      "status": "confirmed",
+      "verified_at": "2026-10-26",
+      "note": "Regulator PDF; arrangements of articles and opening provisions read, not cover to cover."
+    },
+    {
+      "url": "https://lawsofnigeria.placng.org/laws/L1.pdf",
+      "status": "confirmed",
+      "verified_at": "2026-10-26",
+      "note": "Statute copy; arrangements and opening provisions read, not cover to cover. Not legal advice."
+    },
+    {
+      "url": "https://academy.hubspot.com/lessons/managing-your-contacts-with-the-hubspot-crm",
+      "status": "confirmed",
+      "verified_at": "2026-10-26",
+      "note": "Academy catalogue described as free with a free account."
+    },
+    {
+      "url": "https://cipmnigeria.org/membership/membership-routes/",
+      "status": "confirmed",
+      "verified_at": "2026-10-26",
+      "note": "Paid route; naira fee table published. Prices subject to review."
+    },
+    {
+      "url": "https://www.linkedin.com/learning/",
+      "status": "unreachable",
+      "verified_at": null,
+      "note": "LinkedIn help pages returned HTTP 500 on 2026-10-26. Prices come from third-party 2026 guides and are unconfirmed."
+    },
+    {
+      "url": "https://www.linkedin.com/help/recruiter/answer/a6807901",
+      "status": "unreachable",
+      "verified_at": null,
+      "note": "HTTP 500 on 2026-10-26. Recruiter Lite figures are third-party and unconfirmed."
+    },
+    {
+      "url": "https://www.coursera.org/learn/aphri-talent-acquisition-and-onboarding",
+      "status": "not_confirmed",
+      "verified_at": null,
+      "note": "Paid extra; free status not confirmed from a provider page."
+    },
+    {
+      "url": "https://www.aihr.com/courses/sourcing-recruitment-certification/",
+      "status": "not_confirmed",
+      "verified_at": null,
+      "note": "Paid/subscription product; free status not confirmed from a provider page."
+    },
+    {
+      "url": "https://www.udemy.com/course/recruiter-training-hire-top-employees-in-30-days/",
+      "status": "not_confirmed",
+      "verified_at": null,
+      "note": "Paid product; prices change frequently."
+    },
+    {
+      "url": "https://helpcenter.alison.com/en/articles/8206417-is-alison-really-free",
+      "status": "confirmed",
+      "verified_at": "2026-10-26",
+      "note": "Alison help centre FAQ read."
+    },
+    {
+      "url": "https://support.saylor.org/hc/en-us/articles/23586212781844-FAQ-General",
+      "status": "confirmed",
+      "verified_at": "2026-10-26",
+      "note": "Saylor general FAQ read."
+    },
+    {
+      "url": "https://learn.saylor.org/mod/page/view.php?id=94644",
+      "status": "confirmed",
+      "verified_at": "2026-10-26",
+      "note": "Saylor course material page read."
+    },
+    {
+      "url": "https://www.jobberman.com/job-seeker",
+      "status": "not_confirmed",
+      "verified_at": null,
+      "note": "Lead page only; no access claim verified."
+    }
+  ]
+}

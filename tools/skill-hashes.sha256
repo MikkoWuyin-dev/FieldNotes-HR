@@ -1,0 +1,19 @@
+# SHA-256 inventory of the vendored resource-learning-library skill.
+# Recorded 27 October 2026. These 12 files are the transfer bundle,
+# reconstructed byte-exactly. They must never be edited in place.
+#
+# Verify:  python3 tools/check.py skill-hashes
+# Refresh (only after an intentional skill upgrade): make pin-skill
+#
+c5f1191fec77b67a23d58cf6c759919972e6ae9f4cf26f7436dc31152ce321a9  .agents/skills/resource-learning-library/.gitignore
+cae23217cabd2b917a6dac6dc7a701f519dc6c3bb9629acf8686436af86c729a  .agents/skills/resource-learning-library/INSTALL.md
+dc9d6571c395267af144dd14a1dd05e6dea26cf41ec580b6a7c3b1f3276f14bc  .agents/skills/resource-learning-library/README.md
+4b4eefce609469073f3ec20d76b64032080cec5e543b4e6a742dba92fe784fdd  .agents/skills/resource-learning-library/SKILL.md
+7a19b9a280368894b80b83cc1a1235af51abc34351ebf3b634a607fbbc4dddd0  .agents/skills/resource-learning-library/example/01-getting-started.md
+7a7e7253381ddca8fcf981779b350a8990b7618f06581ec77b93838f8e444793  .agents/skills/resource-learning-library/example/interactive-demo.json
+9c690c94974c01bc2d2e83c2fb9a756bb848314fedcf5efab3da791601ac7c37  .agents/skills/resource-learning-library/requirements.txt
+9b04901c3332d2fc8a1075ac344fd4f7d100ea53ca79746e9d086bf34b1e56dd  .agents/skills/resource-learning-library/scripts/docx_render.py
+684529f10150fe0b49e07b99bcc839ada0a02dcebdc68f4ad4c0fa9e0174b1d0  .agents/skills/resource-learning-library/scripts/interactive_app.py
+d7923bbf33ea95f7063422ed87b084d882fe2eacdf6cfaab4714675f9fefe7dc  .agents/skills/resource-learning-library/scripts/style_audit.py
+d4b2beaf202c691f70a9f3db7ac6b36069f3be038f89f09bd6923febdce2ca30  .agents/skills/resource-learning-library/scripts/validate_build.py
+f28f4bd6487bd939776324213f5e7bf5f0603d3e01b410af347dfe2b95318c8a  .agents/skills/resource-learning-library/tests/test_renderer.py

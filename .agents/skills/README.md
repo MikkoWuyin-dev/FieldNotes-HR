@@ -2,27 +2,31 @@
 
 Skills in this directory are committed to the repository so they survive session and sandbox resets. Keep this copy as the authoritative one.
 
+> **Canonical setup:** `docs/SETUP.md`. The skill's own `INSTALL.md` describes
+> generic agent locations such as `~/.claude/skills/`; those are conventions,
+> not instructions for this repo. Here the authoritative copy is the vendored
+> one, and dependencies come from `make bootstrap` using `requirements.lock` —
+> do not install globally or use `--break-system-packages`.
+
 ## `resource-learning-library/`
 
 A portable agent skill for building roadmap-ordered learning libraries from verified resources. It supports free, paid or mixed resources and PDF, DOCX, Markdown, static HTML and an interactive HTML roadmap tracker.
 
-**Provenance.** Reconstructed on 2026-10-26 from `resource-learning-library-transfer.md`, a portable transfer bundle attached to the session. All 12 files were copied from the bundle's fenced blocks and verified against its SHA-256 inventory table; every file matched its declared byte count and digest. No file was modified during vendoring.
+**Provenance.** Reconstructed on 2026-10-26 from `resource-learning-library-transfer.md`, a portable transfer bundle attached to the session. All 12 files were copied from the bundle's fenced blocks and verified against its SHA-256 inventory table; every file matched its declared byte count and digest. No file was modified during vendoring. That inventory is now committed as `tools/skill-hashes.sha256` and checked by `make check`, so the byte-exact claim no longer depends on a bundle that lives outside the repo. To upgrade the skill deliberately: replace the files, then run `make pin-skill`.
 
 Contents: `SKILL.md` (workflow), `INSTALL.md`, `README.md`, `requirements.txt`, four scripts in `scripts/`, an offline smoke test in `tests/`, and two examples in `example/`. See the skill's own `README.md` and `INSTALL.md` for details.
 
-**Dependencies are not vendored.** On a fresh machine, from the repository root:
+**Dependencies are not vendored.** From the repository root, `make bootstrap`
+installs the exact pinned tree from `requirements.lock` into `.venv/`. There is
+no global install and no PEP 668 workaround. The three top-level requirements
+are `python-docx`, `reportlab` and `pypdf`; the lock also pins their transitive
+dependencies, because unpinned installs changed PDF/DOCX bytes between runs.
+
+**Smoke test:** `make check` from the repository root runs the vendored unit
+tests alongside every other check. To run only that suite:
 
 ```bash
-python3 -m pip install -r .agents/skills/resource-learning-library/requirements.txt
-```
-
-On PEP 668 externally-managed systems, use a virtualenv or add `--break-system-packages`. The requirements are `python-docx`, `reportlab` and `pypdf`.
-
-**Smoke test:**
-
-```bash
-cd .agents/skills/resource-learning-library
-python3 -m unittest discover -s tests -v
+.venv/bin/python -m unittest discover -s .agents/skills/resource-learning-library/tests -v
 ```
 
 Deliverables produced with this skill live in `learning-library/` at the repository root; see `learning-library/README.md`. A global copy may also be placed at `$HOME/.agents/skills/resource-learning-library/` for agents that scan a personal skills root, but that copy is not the source of truth.

@@ -1,0 +1,69 @@
+name: link-check
+
+# The generating sandbox could not reach provider sites, so check-links.sh was
+# never run. GitHub Actions has general outbound network, so run the sweep here
+# on a schedule and on demand. This is a REPORT, not a gate: many providers
+# return 403 to automated clients, and a status code never proves "free".
+on:
+  schedule:
+    - cron: '17 6 * * 1'   # Mondays, 06:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  links:
+    name: sweep cited URLs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Sweep all cited URLs
+        run: bash learning-library/check-links.sh | tee link-status.tsv
+
+      - name: Summarise results
+        if: always()
+        run: |
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          from collections import Counter
+          from pathlib import Path
+          p = Path('link-status.tsv')
+          if not p.exists() or not p.read_text().strip():
+              print('No link-status.tsv was produced.')
+              raise SystemExit(0)
+          rows = [l.split('\t', 1) for l in p.read_text().splitlines()[1:] if '\t' in l]
+          counts = Counter(r[0] for r in rows)
+          print('## Link sweep')
+          print()
+          print(f'{len(rows)} URLs checked. Status counts: '
+                + ', '.join(f'`{k}` × {v}' for k, v in sorted(counts.items())))
+          print()
+          print('A `403` is usually bot filtering; `000` means no response. '
+                '**A status code never proves that a resource is free** — read '
+                'the provider page and update '
+                '`learning-library/src/verification-manifest.json`.')
+          print()
+          print('### Non-2xx responses')
+          print()
+          for code, url in rows:
+              if not code.startswith('2'):
+                  print(f'- `{code}` {url}')
+          PY
+
+      - name: Research freshness
+        if: always()
+        run: python3 tools/check.py freshness || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: link-status
+          path: link-status.tsv
+          if-no-files-found: warn
