@@ -28,7 +28,17 @@ The interactive tracker was restyled on **26 October 2026** with the design syst
 
 The theme lives in `src/fieldnotes-theme.css` and is applied by `tools/build_tracker.py` as a second inline style block; the vendored skill's generator is imported but never modified. See `DESIGN-SYSTEM.md` for the full token table and what could not be copied (a tab icon and social preview tags, which the validator forbids). The PDF, DOCX, Markdown and static HTML library are unchanged.
 
-Four refinements were made afterwards: the coloured bars above the hero were removed so the hero fills the top; the footer reads **"Made with love and fried plantain, by Moyinoluwa"** (the three coloured squares above it stay); the hero eyebrow now renders dark ink on yellow rather than the generator's pale blue-white; and each resource card has a foot row with the link at bottom-left and the Done checkbox at bottom-right. These were checked in headless Chromium 153 at 320-1920px. The `web-design-guidelines` skill from the `skill-issue` MCP collection was applied to focus states, tap targets, tabular numerals and form-control semantics.
+Four refinements were made afterwards: the coloured bars above the hero were removed so the hero fills the top; the footer reads **"Made with love and fried plantain, by Moyinoluwa"** (the three coloured squares above it stay); the hero eyebrow now renders dark ink on yellow rather than the generator's pale blue-white; and each resource card has a foot row with the link at bottom-left and the Done checkbox at bottom-right.
+
+A second round then: gave **every** tag its own coloured fill (cyan, pink, green, orange, lavender, with cost/paid keeping green/yellow); equalised the stage intro paragraph's top and bottom margins; swapped the outcomes slash for a centred filled square; added a small ↗ beside each resource link; and expanded the hero to the sheet's cyan edges with a 15% larger `h1` and 5px more eyebrow space.
+
+A third round scaled the hero's type: the subtitle and the four fact chips shrank by 25% (type and padding), while the two progress cards grew by 20% (min-width, padding, number and label). The shared chip/card rule was split so the two groups scale independently.
+
+A fourth round grew the h1 by 40%, switched the stage headers to baseline alignment so the badge/`0%`/`+`/`−` sit on the title's line, removed the visible "Reminder time" label (kept for screen readers, with `aria-label` and `title` on the time picker), and tightened the other three hero gaps while leaving eyebrow→h1 alone.
+
+All changes live in `src/fieldnotes-theme.css` (plus one input-attribute edit in `tools/build_tracker.py`) and were checked in headless Chromium 153 at 320-1920px.
+
+The `web-design-guidelines`, `design-system-patterns` and `accessibility-compliance` skills from the `skill-issue` MCP collection were applied to focus states, tap targets, tabular numerals, form-control semantics, component tokens and WCAG AA contrast.
 
 ## The shape of the plan
 
@@ -65,7 +75,7 @@ Provider terms change. Re-check any paid item and any free-certificate claim bef
 | `style_audit.py` on the Markdown source | 0 mechanical errors, 0 prose-pattern flags. |
 | `python3 -m unittest discover -s tests -v` | 5 tests, all OK. |
 | Re-reading the built files, not just the builder's exit code | DOCX `word/document.xml` contains the expected stage, price and date text plus theme fills `0B3D5C` and `F6FAFD`. PDF has 42,785 characters of extractable text. Static HTML has 26 clickable resource links. Tracker contains all 8 stages, localStorage, streak dates and the permission request. |
-| Headless Chromium 153 on the redesigned tracker | Computed colours match the ported tokens; no console or page errors; **zero horizontal overflow at 320/390/430/600/620/700/900/1024/1440/1920 px**; ticking a card updates the counter, percent, stage meter and localStorage; export and reminder buttons do not throw; reset returns to zero; headings `h1`×1 / `h2`×2 / `h3`×26; all tested controls ≥44px tall. After the four refinements: eyebrow `rgb(17,20,43)` on yellow, hero starts at y=0, top bar pseudo-element has `content:none`, footer credit exact, and link/Done sit on one row bottom-left/bottom-right with no overlap at every width. |
+| Headless Chromium 153 on the redesigned tracker | Computed colours match the ported tokens; no console or page errors; **zero horizontal overflow at 320/360/390/430/600/620/700/900/1024/1200/1320/1440/1920 px**; ticking a card updates the counter, percent, stage meter and localStorage; export and reminder buttons do not throw; reset returns to zero; headings `h1`×1 / `h2`×2 / `h3`×26; all tested controls ≥44px tall. After the refinements: eyebrow `rgb(17,20,43)` on yellow, hero starts at y=0, top bar pseudo-element has `content:none`, footer credit exact, link/Done on one row with no overlap at every width, all four chips plus both progress cards stay inside the hero with no 2D overlap, the 122px h1 never clips, and stage-header badge/counter sit within ~2.3px of the title's first baseline. |
 
 The `url()` strings you may spot in the tracker are JavaScript identifiers (`new URL`, `createObjectURL`, `safeUrl`), not CSS asset references. There are no `fetch`, `XMLHttpRequest`, WebSocket, external script tags, images or `@import` calls in that file.
 

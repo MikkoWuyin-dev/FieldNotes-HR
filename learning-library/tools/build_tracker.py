@@ -83,7 +83,8 @@ def transform(html: str, data: dict, theme_css: str) -> str:
     # explicit autocomplete so password managers stay out of non-auth fields.
     sub(r'<input id="reminder-time" type="time" value="19:00">',
         '<input id="reminder-time" name="reminder-time" type="time" '
-        'autocomplete="off" value="19:00">', "reminder time input")
+        'autocomplete="off" aria-label="Reminder time" '
+        'title="Reminder time" value="19:00">', "reminder time input")
     sub(r'<input id="import-progress" type="file" accept="application/json,\.json">',
         '<input id="import-progress" name="import-progress" type="file" '
         'accept="application/json,.json">', "import file input")
