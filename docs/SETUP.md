@@ -201,3 +201,14 @@ copy is the vendored one.
 | `libnspr4.so: cannot open shared object file` | The visual harness handles this itself; if you launch Chromium manually, inflate the AL2023 libs first. |
 | `make check-drift` says a binary drifted | A source changed without `make build`, or the dependency tree changed. Check `requirements.lock`. |
 | Preview shows no Pals, or the preview server vanished after a reset | `learning-library/out/` and `tools/visual/.cache/` are snapshot-excluded. Run `make preview` (rebuild + serve) rather than starting the server by hand. |
+
+## Inline favicon exception
+
+The tracker embeds the reference site's SVG favicon as a data URI. The vendored
+validator rejects every link element, so `tools/check.py` first enforces the
+builder's exact hash-pinned exception, removes only that tag from a temporary
+copy, and runs the original validator on the rest. The actual output keeps the
+favicon. Run `python3 -m unittest discover -s tools -p 'test_*.py'` for deployment
+and favicon tests; CI runs the same tests. Directly invoking the unmodified
+skill validator on the final tracker will flag its favicon link; use `make check`
+for the repository's complete validation policy.
