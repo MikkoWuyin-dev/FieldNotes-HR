@@ -5,6 +5,8 @@
 > deviations — see `docs/DESIGN-SPEC.md`. Setup and verification are in
 > `docs/SETUP.md`. The four "refinements" sections below are a chronological
 > log, not a description of the final state; `CHANGELOG.md` summarises them.
+> The ten decorative pixel pals were added later and are **not** documented
+> here; see `docs/DESIGN-SPEC.md` §7 and `THIRD-PARTY-NOTICES.md`.
 
 The interactive roadmap tracker in this repo uses the visual design system from
 **`MikkoWuyin-dev/Field-Notes_Nature-Photography`**, a single-file nature

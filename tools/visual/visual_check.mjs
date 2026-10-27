@@ -9,6 +9,11 @@
  * shared libraries are inflated explicitly because the package only does that
  * automatically on Amazon Linux; this makes the harness work on any runner.
  *
+ * Pal rules come from the reference project's browser suite: a pal canvas has
+ * pointer-events:auto, so no pal may cover a control's centre and no pal may
+ * overlap a control by more than 1100px². Pals are also expected to disappear
+ * when paused and under prefers-reduced-motion: reduce.
+ *
  * This is a real browser, but not a real phone: touch momentum, browser chrome
  * and device-specific storage behaviour are out of scope.
  */
@@ -26,6 +31,8 @@ const REPO = resolve(HERE, '..', '..');
 const TARGET = join(REPO, 'learning-library', 'out', 'roadmap-app.html');
 const REPORT_DIR = join(HERE, '.cache');
 const WIDTHS = [320, 360, 390, 430, 600, 620, 700, 900, 1024, 1200, 1320, 1440, 1920];
+const PAL_COUNT = 10;
+const MAX_CONTROL_OVERLAP = 1100; // px², per the reference project's rule
 const EXPECTED = {
   hero: 'rgb(55, 104, 255)',
   eyebrowInk: 'rgb(17, 20, 43)',
@@ -53,6 +60,16 @@ await inflate(join(bin, 'al2023.tar.br'));
 setupLambdaEnvironment(join(tmpdir(), 'al2023', 'lib'));
 const executablePath = await chromium.executablePath(bin);
 
+function waitForPals(page, timeout = 15000) {
+  return page.waitForFunction((count) => {
+    const els = document.querySelectorAll('piix-pal[data-fieldnotes-pal]').length;
+    const layer = document.querySelector('div[data-piixpal]');
+    const actors = layer && layer.shadowRoot
+      ? layer.shadowRoot.querySelectorAll('.a').length : 0;
+    return els === count && actors >= count;
+  }, { timeout }, PAL_COUNT);
+}
+
 let browser;
 const runtimeErrors = [];
 try {
@@ -67,13 +84,66 @@ try {
     if (msg.type() === 'error') runtimeErrors.push(`console.error: ${msg.text()}`);
   });
   page.on('dialog', (dialog) => dialog.accept());
+  await page.setViewport({ width: 1440, height: 900, deviceScaleFactor: 1 });
   await page.goto(URL, { waitUntil: 'load' });
+
+  // The engine is lazy-loaded on idle; wait for the pal elements AND their
+  // actors (some behaviours spawn a small companion, so actors >= pals).
+  let palsMounted = true;
+  try {
+    await waitForPals(page);
+  } catch (_) {
+    palsMounted = false;
+  }
+
+  // 8b. The default view has the stage bodies collapsed. That is what a
+  // visitor sees first, and it is where the pals control panel sits directly
+  // above the stage list, so check control overlap in that state too.
+  const collapsed = [];
+  for (const width of [320, 900, 1440]) {
+    await page.setViewport({ width, height: 900, deviceScaleFactor: 1 });
+    const measured = await page.evaluate(async (maxOverlap) => {
+      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+      const layer = document.querySelector('div[data-piixpal]');
+      const canvases = layer && layer.shadowRoot
+        ? [...layer.shadowRoot.querySelectorAll('.a canvas')] : [];
+      let centreHits = 0;
+      let worstOverlap = 0;
+      let worstControl = '';
+      const openStages = document.querySelectorAll('details.stage[open]').length;
+      for (const control of document.querySelectorAll(
+        '.toolbar button, .file-button, input, summary, .resource a, .completion, .pals-controls button'
+      )) {
+        const r = control.getBoundingClientRect();
+        if (!r.width || !r.height) continue;
+        if (r.bottom < -200 || r.top > innerHeight + 200) continue;
+        const cx = r.left + r.width / 2;
+        const cy = r.top + r.height / 2;
+        for (const canvas of canvases) {
+          const p = canvas.getBoundingClientRect();
+          if (!p.width || !p.height) continue;
+          if (cx >= p.left && cx <= p.right && cy >= p.top && cy <= p.bottom) centreHits++;
+          const ow = Math.max(0, Math.min(r.right, p.right) - Math.max(r.left, p.left));
+          const oh = Math.max(0, Math.min(r.bottom, p.bottom) - Math.max(r.top, p.top));
+          if (ow * oh > worstOverlap) {
+            worstOverlap = ow * oh;
+            worstControl = control.id || String(control.className).split(' ')[0] || control.tagName;
+          }
+        }
+      }
+      return { centreHits, worstOverlap: Math.round(worstOverlap), worstControl, openStages,
+               maxOverlap };
+    }, MAX_CONTROL_OVERLAP);
+    collapsed.push({ width, ...measured });
+  }
 
   const results = [];
   for (const width of WIDTHS) {
     await page.setViewport({ width, height: 900, deviceScaleFactor: 1 });
-    const measured = await page.evaluate((expected) => {
+    const measured = await page.evaluate(async (expected, palCount, maxOverlap) => {
       document.querySelectorAll('details.stage').forEach((d) => { d.open = true; });
+      // Let the engine reposition after the viewport and accordion changes.
+      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
       const failures = [];
       const rect = (el) => el.getBoundingClientRect();
       const overlaps = (a, b) => !(
@@ -153,8 +223,9 @@ try {
       }
 
       // 7. Tap targets and heading outline.
-      const small = [...document.querySelectorAll('.toolbar button, .stage summary')]
-        .filter((el) => rect(el).height < 44).length;
+      const small = [...document.querySelectorAll(
+        '.toolbar button, .pals-controls button, .stage summary'
+      )].filter((el) => rect(el).height < 44).length;
       if (small) failures.push(`${small} controls are under 44px tall`);
       const outline = ['h1', 'h2', 'h3'].map((s) => document.querySelectorAll(s).length);
       if (outline[0] !== 1 || outline[2] !== expected.cards) {
@@ -162,18 +233,65 @@ try {
       }
       if (!document.querySelector('.skip-link')) failures.push('skip link missing');
 
+      // 8. Pals: count, fixed layer, no control-centre hits, bounded overlap.
+      const palEls = document.querySelectorAll('piix-pal[data-fieldnotes-pal]').length;
+      if (palEls !== palCount) failures.push(`${palEls} pals, expected ${palCount}`);
+      const layer = document.querySelector('div[data-piixpal]');
+      const canvases = layer && layer.shadowRoot
+        ? [...layer.shadowRoot.querySelectorAll('.a canvas')] : [];
+      if (!layer) failures.push('pals layer missing');
+      else if (getComputedStyle(layer).position !== 'fixed') failures.push('pals layer is not fixed');
+      if (canvases.length < palCount) failures.push(`only ${canvases.length} pal actors rendered`);
+
+      let centreHits = 0;
+      let worstOverlap = 0;
+      let worstControl = '';
+      const controls = [...document.querySelectorAll(
+        '.toolbar button, .file-button, input, summary, .resource a, .completion, .pals-controls button'
+      )];
+      for (const control of controls) {
+        const r = rect(control);
+        if (!r.width || !r.height) continue;
+        if (r.bottom < -200 || r.top > innerHeight + 200) continue;
+        const cx = r.left + r.width / 2;
+        const cy = r.top + r.height / 2;
+        for (const canvas of canvases) {
+          const p = rect(canvas);
+          if (!p.width || !p.height) continue;
+          if (cx >= p.left && cx <= p.right && cy >= p.top && cy <= p.bottom) centreHits++;
+          const ow = Math.max(0, Math.min(r.right, p.right) - Math.max(r.left, p.left));
+          const oh = Math.max(0, Math.min(r.bottom, p.bottom) - Math.max(r.top, p.top));
+          const area = ow * oh;
+          if (area > worstOverlap) {
+            worstOverlap = area;
+            worstControl = control.id || String(control.className).split(' ')[0] || control.tagName;
+          }
+        }
+      }
+      if (centreHits) failures.push(`${centreHits} pal(s) cover a control centre`);
+      if (worstOverlap > maxOverlap) {
+        failures.push(`pal overlaps ${worstControl} by ${Math.round(worstOverlap)}px² (max ${maxOverlap})`);
+      }
+      const controlsVisible = !document.getElementById('pals-controls')?.hidden;
+      if (!controlsVisible) failures.push('pals control panel is hidden');
+
       return {
         failures: [...new Set(failures)],
         scrollW,
         h1FontPx: h1 ? px(parseFloat(getComputedStyle(h1).fontSize)) : 0,
         tagFills: fills.size,
         worstBottomDelta: px(worstBottomDelta),
+        palEls,
+        actors: canvases.length,
+        centreHits,
+        worstOverlap: Math.round(worstOverlap),
+        worstControl,
       };
-    }, EXPECTED);
+    }, EXPECTED, PAL_COUNT, MAX_CONTROL_OVERLAP);
     results.push({ width, ...measured });
   }
 
-  // 8. Functional checks at desktop width, on a clean localStorage.
+  // 9. Functional checks at desktop width, on a clean localStorage.
   await page.setViewport({ width: 1440, height: 900, deviceScaleFactor: 1 });
   await page.evaluate(() => localStorage.clear());
   await page.reload({ waitUntil: 'load' });
@@ -198,39 +316,90 @@ try {
     document.getElementById('enable-notifications').click();
   });
   await new Promise((r) => setTimeout(r, 250));
-
   await page.evaluate(() => document.getElementById('reset-progress').click());
   await new Promise((r) => setTimeout(r, 150));
   const reset = await page.$eval('#progress-label', (el) => el.textContent.trim());
   if (!reset.includes('0 of 26')) functional.push(`after reset: ${reset}`);
 
+  // 10. Pause toggle removes every pal; enabling brings them back.
+  try { await waitForPals(page); } catch (_) { functional.push('pals did not return after reset'); }
+  const toggleChecks = [];
+  await page.click('#pals-toggle');
+  await new Promise((r) => setTimeout(r, 200));
+  const paused = await page.evaluate(() => ({
+    count: document.querySelectorAll('piix-pal[data-fieldnotes-pal]').length,
+    pressed: document.getElementById('pals-toggle').getAttribute('aria-pressed'),
+    status: document.getElementById('pals-status').textContent,
+  }));
+  if (paused.count !== 0) toggleChecks.push(`pause left ${paused.count} pals`);
+  if (paused.pressed !== 'false') toggleChecks.push('aria-pressed not false when paused');
+  if (!/paused/i.test(paused.status)) toggleChecks.push('status line does not say paused');
+  await page.click('#pals-toggle');
+  try { await waitForPals(page); } catch (_) { toggleChecks.push('pals did not return after enable'); }
+  const resumed = await page.$eval('#pals-toggle', (el) => el.getAttribute('aria-pressed'));
+  if (resumed !== 'true') toggleChecks.push('aria-pressed not true when enabled');
+
+  // 11. Reduced motion: no pal elements at all.
+  await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
+  await page.reload({ waitUntil: 'load' });
+  await new Promise((r) => setTimeout(r, 700));
+  const reduced = await page.evaluate(() => ({
+    count: document.querySelectorAll('piix-pal[data-fieldnotes-pal]').length,
+    status: document.getElementById('pals-status').textContent,
+    pressed: document.getElementById('pals-toggle').getAttribute('aria-pressed'),
+  }));
+  if (reduced.count !== 0) toggleChecks.push(`${reduced.count} pals under reduced motion`);
+  if (!/reduced-motion/i.test(reduced.status)) toggleChecks.push('reduced-motion status text missing');
+  await page.emulateMediaFeatures([]);
+
   // ---- report ------------------------------------------------------------
   console.log(`\nFieldNotes-HR visual check — Chromium ${await browser.version()}`);
-  console.log('-'.repeat(78));
-  console.log('width  overflow  h1(px)  tag fills  foot-row Δ(px)  result');
+  console.log('-'.repeat(94));
+  console.log('width  overflow  h1(px)  tags  foot Δ  pals  hits  overlap  result');
   for (const r of results) {
     const ok = r.failures.length === 0;
     console.log(
       `${String(r.width).padEnd(6)} ${String(r.scrollW).padEnd(9)} ` +
-      `${String(r.h1FontPx).padEnd(7)} ${String(r.tagFills).padEnd(10)} ` +
-      `${String(r.worstBottomDelta).padEnd(15)} ${ok ? 'PASS' : 'FAIL'}`
+      `${String(r.h1FontPx).padEnd(7)} ${String(r.tagFills).padEnd(5)} ` +
+      `${String(r.worstBottomDelta).padEnd(6)} ${String(r.palEls).padEnd(5)} ` +
+      `${String(r.centreHits).padEnd(5)} ${String(r.worstOverlap).padEnd(8)} ${ok ? 'PASS' : 'FAIL'}`
     );
     for (const f of r.failures) console.log(`         - ${f}`);
   }
-  console.log('-'.repeat(78));
-  const failedWidths = results.filter((r) => r.failures.length);
+  console.log('-'.repeat(94));
+  const collapsedFailures = [];
+  for (const c of collapsed) {
+    const ok = c.centreHits === 0 && c.worstOverlap <= MAX_CONTROL_OVERLAP;
+    console.log(`collapsed @${c.width}px: ${String(c.openStages)} stage(s) open, ` +
+                `${c.centreHits} centre hits, worst overlap ${c.worstOverlap}px² ` +
+                `(${c.worstControl || 'none'}) — ${ok ? 'PASS' : 'FAIL'}`);
+    if (c.centreHits) collapsedFailures.push(`${c.width}px: ${c.centreHits} control-centre hits`);
+    if (c.worstOverlap > MAX_CONTROL_OVERLAP) {
+      collapsedFailures.push(`${c.width}px: ${c.worstOverlap}px² over ${c.worstControl}`);
+    }
+  }
+  console.log('-'.repeat(94));
+  if (!palsMounted) console.log('initial pals mount: TIMED OUT');
   console.log(`functional: ${functional.length ? 'FAIL' : 'PASS'}` +
               (functional.length ? ` — ${functional.join('; ')}` : ` (${before} → ${after.label} / ${after.pct} → ${reset})`));
+  console.log(`pause + reduced motion: ${toggleChecks.length ? 'FAIL' : 'PASS'}` +
+              (toggleChecks.length ? ` — ${toggleChecks.join('; ')}` : ` (0 paused, ${reduced.count} under reduced motion, ${palsMounted ? 10 : '?'} on)`));
   console.log(`runtime errors: ${runtimeErrors.length ? runtimeErrors.join('; ') : 'none'}`);
-  const failures = failedWidths.length + functional.length + runtimeErrors.length;
-  console.log(`RESULT: ${WIDTHS.length - failedWidths.length}/${WIDTHS.length} widths passed, ${failures} failure(s)`);
+  const failures = results.filter((r) => r.failures.length).length + functional.length +
+                   toggleChecks.length + runtimeErrors.length + collapsedFailures.length +
+                   (palsMounted ? 0 : 1);
+  console.log(`RESULT: ${WIDTHS.length - results.filter((r) => r.failures.length).length}/${WIDTHS.length} widths passed, ${failures} failure(s)`);
 
   await mkdir(REPORT_DIR, { recursive: true });
   await writeFile(join(REPORT_DIR, 'last-run.json'), JSON.stringify({
     generatedAt: new Date().toISOString(),
     chromium: await browser.version(),
     widths: results,
+    collapsed,
+    collapsedFailures,
     functional,
+    toggleChecks,
+    reduced,
     runtimeErrors,
   }, null, 2) + '\n');
   console.log(`Report: ${join(REPORT_DIR, 'last-run.json')}`);

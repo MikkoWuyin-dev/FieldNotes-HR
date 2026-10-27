@@ -3,7 +3,9 @@
 
 Every claim this repository makes about its own output is checked here, so a
 reviewer (or CI) can reproduce the verification instead of trusting prose in a
-README. Run via `make check` / `make check-drift`, or directly:
+README. This includes the ten MIT-licensed Piixpal creatures: their count,
+sprite coverage, prose-only targets, pinned payload hash and licence notice.
+Run via `make check` / `make check-drift`, or directly:
 
     .venv/bin/python tools/check.py                 # all fast checks
     .venv/bin/python tools/check.py drift          # full output reproduction
@@ -36,6 +38,7 @@ SCRIPTS = SKILL / "scripts"
 LIB = REPO / "learning-library"
 SRC = LIB / "src"
 OUT = LIB / "out"
+PALS_DIR = SRC / "pals"
 BUILD_TOOLS = LIB / "tools"
 DOCS = REPO / "docs"
 MD = SRC / "recruiter-talent-acquisition-library.md"
@@ -191,7 +194,9 @@ def check_contract() -> str:
     bt, interactive_app = import_builder()
     data = load_data()
     theme = (SRC / "fieldnotes-theme.css").read_text(encoding="utf-8")
+    pals_src = bt.load_pals_sources()
     edits = bt.branding_edits(data)
+    pals_edits = bt.pals_edits(pals_src)
 
     with tempfile.TemporaryDirectory() as td:
         base_path = Path(td) / "base.html"
@@ -200,6 +205,7 @@ def check_contract() -> str:
 
         # A clean build reproduces the committed tracker exactly.
         themed = bt.transform(base, data, theme)
+        themed = bt.inject_pals(themed, pals_src)
         bt.assert_self_contained(themed)
         if themed != TRACKER.read_text(encoding="utf-8"):
             raise AssertionError("a fresh build no longer matches out/roadmap-app.html")
@@ -230,6 +236,22 @@ def check_contract() -> str:
         else:
             raise AssertionError("removing </head> did not fail the build")
 
+        # The three pals anchors are a separate contract from the branding ones.
+        for pattern, _replacement, label in pals_edits:
+            m = re.search(pattern, themed)
+            if not m:
+                raise AssertionError(f"pals anchor no longer present: {label}")
+            broken = themed[:m.start()] + "__BROKEN_PALS_ANCHOR__" + themed[m.end():]
+            try:
+                bt.inject_pals(broken, pals_src)
+            except RuntimeError as exc:
+                if label not in str(exc):
+                    raise AssertionError(
+                        f"pals anchor {label!r} failed with the wrong message: {exc}"
+                    ) from exc
+            else:
+                raise AssertionError(f"breaking pals anchor {label!r} did not fail")
+
         # Self-containment is enforced, not just asserted in a doc.
         try:
             bt.assert_self_contained(themed.replace("<body>", '<img src="x"><body>', 1))
@@ -238,7 +260,7 @@ def check_contract() -> str:
         else:
             raise AssertionError("assert_self_contained accepted an <img> element")
 
-    return (f"{len(edits)} branding anchors + </head> verified; "
+    return (f"{len(edits)} branding + {len(pals_edits)} pals anchors + </head> verified; "
             "each fails loudly when broken; tracker bit-exact")
 
 
@@ -300,7 +322,7 @@ def check_docs() -> str:
         REPO / "README.md", LIB / "README.md", LIB / "DESIGN-SYSTEM.md",
         REPO / ".agents" / "skills" / "README.md", DOCS / "SETUP.md",
         DOCS / "DESIGN-SPEC.md", REPO / "RETROSPECTIVE.md",
-        REPO / "CHANGELOG.md",
+        REPO / "CHANGELOG.md", REPO / "THIRD-PARTY-NOTICES.md",
     ]
     for p in doc_paths:
         if not p.is_file():
@@ -368,7 +390,112 @@ def check_docs() -> str:
 
 
 # --------------------------------------------------------------------------
-# 8. Research freshness (warning by default, fatal under --strict).
+# 8. The decorative pals: count, sprites, prose targets, licence, integrity.
+# --------------------------------------------------------------------------
+@check("pals")
+def check_pals() -> str:
+    problems: list[str] = []
+    for name in ("pals.json", "pals.css", "pals-controller.js",
+                 "piixpal-payload.html", "LICENSE-MIT.txt"):
+        if not (PALS_DIR / name).is_file():
+            problems.append(f"missing pals source: {name}")
+    if problems:
+        raise AssertionError("; ".join(problems))
+
+    config = json.loads((PALS_DIR / "pals.json").read_text(encoding="utf-8"))
+    pals = config.get("pals", [])
+    sprites = set(config.get("sprites", []))
+    if len(pals) != 10:
+        problems.append(f"expected 10 pals, got {len(pals)}")
+    names = [p.get("pal") for p in pals]
+    unknown = sorted(set(names) - sprites)
+    missing = sorted(sprites - set(names))
+    if unknown:
+        problems.append(f"unknown sprites: {unknown}")
+    if missing:
+        problems.append(f"sprites never used: {missing}")
+    for name in set(names):
+        occurrences = [p for p in pals if p.get("pal") == name]
+        # The first appearance keeps the sprite's own palette; every repeat
+        # must be hue-rotated so two identical creatures don't sit together.
+        if len(occurrences) > 1 and any(p.get("hue") is None for p in occurrences[1:]):
+            problems.append(f"repeated sprite {name!r} needs a hue on each repeat")
+
+    targets = [p.get("target") for p in pals]
+    if len(set(targets)) != len(targets):
+        problems.append("two pals share a target")
+    control_word = re.compile(
+        r"(?:^|[\s>,+])(?:button|input|select|textarea|label|summary|a)\b", re.I
+    )
+    for target in targets:
+        if not target:
+            problems.append("a pal has no target")
+        elif control_word.search(target):
+            problems.append(f"pal targets a control: {target}")
+        elif not (target.startswith(("#", ".")) and len(target) > 1):
+            problems.append(f"pal target is not a CSS selector: {target}")
+
+    payload_bytes = (PALS_DIR / "piixpal-payload.html").read_bytes()
+    if hashlib.sha256(payload_bytes).hexdigest() != config.get("payload_sha256"):
+        problems.append("payload SHA-256 mismatch — an engine upgrade must be intentional")
+    payload = payload_bytes.decode(encoding="utf-8")
+    for needle in ("Piixpal v0.4.0", "MIT", "github.com/diiviikk5/Piixpal"):
+        if needle not in payload:
+            problems.append(f"payload missing provenance: {needle}")
+    script_count = len(re.findall(r"<\s*script\b", payload, re.I))
+    if script_count != 9:
+        problems.append(f"payload has {script_count} scripts, expected 9 (core + 8 sprites)")
+    for pattern, label in (
+        (r"<\s*script[^>]*\bsrc\s*=", "external script src"),
+        (r"<\s*link\b", "link element"),
+        (r"<\s*img\b", "img element"),
+        (r"<\s*iframe\b", "iframe element"),
+        (r"url\s*\(", "CSS url() reference"),
+        (r"\bfetch\s*\(", "fetch call"),
+        (r"XMLHttpRequest", "XHR call"),
+        (r"WebSocket", "WebSocket call"),
+        (r"javascript:", "javascript: URL"),
+    ):
+        if re.search(pattern, payload, re.I):
+            problems.append(f"payload contains {label}")
+
+    licence = (PALS_DIR / "LICENSE-MIT.txt").read_text(encoding="utf-8")
+    if "MIT License" not in licence or "Piixpal" not in licence:
+        problems.append("MIT licence text is incomplete")
+    if not (REPO / "THIRD-PARTY-NOTICES.md").is_file():
+        problems.append("THIRD-PARTY-NOTICES.md missing")
+
+    controller = (PALS_DIR / "pals-controller.js").read_text(encoding="utf-8")
+    for marker in ("__SITE_PALS_JSON__", "prefers-reduced-motion",
+                   "requestIdleCallback", "MutationObserver",
+                   "PALS_COUNT = SITE_PALS.length"):
+        if marker not in controller:
+            problems.append(f"controller missing: {marker}")
+    css = (PALS_DIR / "pals.css").read_text(encoding="utf-8")
+    if "position: fixed !important" not in css:
+        problems.append("pals.css is missing the fixed-layer rule")
+    if re.search(r"url\s*\(", css, re.I):
+        problems.append("pals.css contains a url() reference")
+
+    tracker_html = TRACKER.read_text(encoding="utf-8")
+    for marker in ('data-pals="fieldnotes"', 'id="pals-payload"',
+                   'id="pals-controls"', 'id="pals-toggle"',
+                   "data-fieldnotes-pals-controller"):
+        if tracker_html.count(marker) != 1:
+            problems.append(f"tracker marker missing or duplicated: {marker}")
+    if "Piixpal v0.4.0" not in tracker_html:
+        problems.append("tracker is missing the Piixpal MIT provenance header")
+
+    if problems:
+        raise AssertionError("; ".join(problems[:8]) + (
+            f" … and {len(problems) - 8} more" if len(problems) > 8 else ""
+        ))
+    return (f"10 pals / {len(set(names))} sprites / {len(set(targets))} prose targets; "
+            "payload SHA-256 + MIT notice verified")
+
+
+# --------------------------------------------------------------------------
+# 9. Research freshness (warning by default, fatal under --strict).
 # --------------------------------------------------------------------------
 @check("freshness")
 def check_freshness(today: dt.date | None = None, strict: bool = False) -> str:
@@ -398,13 +525,14 @@ def check_freshness(today: dt.date | None = None, strict: bool = False) -> str:
 
 
 # --------------------------------------------------------------------------
-# 9. Full rebuild: every shipped output still reproduces from source.
+# 10. Full rebuild: every shipped output still reproduces from source.
 # --------------------------------------------------------------------------
 @check("drift")
 def check_drift() -> str:
     bt, interactive_app = import_builder()
     data = load_data()
     theme = (SRC / "fieldnotes-theme.css").read_text(encoding="utf-8")
+    pals_src = bt.load_pals_sources()
 
     with tempfile.TemporaryDirectory() as td:
         tmp = Path(td)
@@ -412,6 +540,7 @@ def check_drift() -> str:
         built = tmp / "roadmap-app.html"
         interactive_app.build_app(data, built)
         themed = bt.transform(built.read_text(encoding="utf-8"), data, theme)
+        themed = bt.inject_pals(themed, pals_src)
         if themed != TRACKER.read_text(encoding="utf-8"):
             raise AssertionError("out/roadmap-app.html has drifted from src/")
 
@@ -466,7 +595,7 @@ def pin_hashes() -> None:
 
 
 FAST = ("skill-hashes", "unit", "validators", "style", "contract",
-        "sources", "docs", "freshness")
+        "sources", "docs", "pals", "freshness")
 
 
 def main(argv: list[str] | None = None) -> int:

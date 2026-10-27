@@ -18,7 +18,7 @@ SUBTITLE := A roadmap-ordered learning library for an absolute beginner
 HERO_META := Lagos, Nigeria - verified 26 October 2026 - about 94 hours over 20 weeks
 NAME := Recruiter-TA-Library
 
-.PHONY: help bootstrap build check check-drift check-visual links pin-skill clean ci
+.PHONY: help bootstrap build preview check check-drift check-visual links pin-skill clean ci
 
 help: ## Show available targets
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) \
@@ -41,6 +41,15 @@ build: $(PY) ## Regenerate all 5 outputs from src/ (PDF/DOCX embed a new timesta
 		--format pdf docx md html
 	$(PY) $(LIB)/tools/build_tracker.py
 	@echo "Built. Run 'make check' and 'make check-drift' before committing."
+
+# --- local preview ---------------------------------------------------------
+# learning-library/out/ is excluded from workspace snapshots, so a reset can
+# restore the committed (pre-Pals) tracker. Rebuild the tracker from source on
+# every preview start. build_tracker.py is stdlib-only, so plain python3 works
+# even when .venv/ has been wiped; no PDF/DOCX timestamp churn is introduced.
+preview: ## Rebuild the tracker and serve it on 0.0.0.0:8000 for live preview
+	python3 $(LIB)/tools/build_tracker.py
+	python3 tools/serve_preview.py --port $(or $(PORT),8000)
 
 # --- verification ----------------------------------------------------------
 check: $(PY) ## Run every fast check (unit, validators, contract, sources, docs)
