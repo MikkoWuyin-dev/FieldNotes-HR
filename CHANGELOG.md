@@ -4,6 +4,15 @@ All notable changes to this repository. Dates are in the user's local timezone
 (Africa/Lagos). Verification claims below were actually run; see
 `docs/SETUP.md` for how to reproduce them.
 
+## 27 October 2026 — matching Nature Photography favicon
+
+- Copied the reference site's inline SVG icon tag into the tracker build source:
+  navy square with yellow, cyan and pink bars, no external asset request.
+- Added a single exact-tag, hash-pinned validation exception; the vendored skill
+  is untouched. Validation uses a temporary copy with only this tag removed.
+- Added rejection/contents tests and browser SVG decoding; CI runs the tests.
+- No static library content, progress keys or deployment settings changed.
+
 ## 27 October 2026 — mobile hero, playlists and scroll alignment
 
 - Reduced the hero h1 clamp by 25% (35.784px mobile / 91.728px max).

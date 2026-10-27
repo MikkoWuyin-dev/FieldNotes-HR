@@ -87,6 +87,30 @@ try {
   await page.setViewport({ width: 1440, height: 900, deviceScaleFactor: 1 });
   await page.goto(URL, { waitUntil: 'load' });
 
+  // Decode the actual favicon in Chromium, not just its source XML.
+  const faviconResult = await page.evaluate(async () => {
+    const icons = [...document.querySelectorAll('link[rel="icon"]')];
+    if (icons.length !== 1) return {ok:false, count:icons.length};
+    const image = new Image();
+    const loaded = await new Promise(resolve => {
+      image.onload = () => resolve(true);
+      image.onerror = () => resolve(false);
+      image.src = icons[0].href;
+    });
+    if (!loaded) return {ok:false,inline:true};
+    const canvas = document.createElement('canvas');
+    canvas.width = canvas.height = 32;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(image,0,0,32,32);
+    const pixels = [[1,1],[5,8],[5,15],[5,22]].map(([x,y]) =>
+      Array.from(ctx.getImageData(x,y,1,1).data));
+    const expected = [[17,20,43,255],[255,225,104,255],[101,232,255,255],[255,78,145,255]];
+    return {ok:JSON.stringify(pixels) === JSON.stringify(expected), pixels,
+            inline:icons[0].href.startsWith('data:image/svg+xml,')};
+  });
+  console.log('Inline favicon decode:',JSON.stringify(faviconResult));
+  if (!faviconResult.ok || !faviconResult.inline) runtimeErrors.push('favicon did not render expected colours at 32px');
+
   // The engine is lazy-loaded on idle; wait for the pal elements AND their
   // actors (some behaviours spawn a small companion, so actors >= pals).
   let palsMounted = true;

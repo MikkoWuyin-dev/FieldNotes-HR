@@ -14,7 +14,7 @@ Tokens were copied from that repository's `:root` block on 26 October 2026.
 ## 1. Non-negotiable constraints
 
 1. `out/roadmap-app.html` is **one self-contained file**: inline CSS and JS
-   only. No `<link>`, `<img>`, `<iframe>`, external scripts, `@import`, web
+   only. No external `<link>`, `<img>`, `<iframe>`, external scripts, `@import`, web
    fonts or CSS `url(...)` references. Enforced by `make check`.
 2. The vendored skill stays byte-exact. Core appearance changes live in
    `learning-library/src/fieldnotes-theme.css`; the optional decorative pals
@@ -129,10 +129,10 @@ explicit user decision or an unresolved trade-off.
    change.
 3. **Hero scale reduced 25% after mobile feedback.** Now 35.784px on narrow
    screens and capped at 91.728px. Verify wrapping on a real phone too.
-4. **A tab icon and social preview tags were not ported.** The skill's
-   validator forbids `<link>` elements and any CSS `url(...)`, including data
-   URIs. All decoration is CSS gradients, borders, shadows and
-   pseudo-elements.
+4. **The tab icon now matches Nature Photography.** The exact inline SVG
+   favicon is stored in `learning-library/src/favicon-link.html` and injected
+   by the builder. One hash-pinned exception permits this data-URI link tag;
+   all other link elements remain forbidden. Social preview tags remain unported.
 5. **Headless Chromium is not a real phone.** Touch momentum, browser chrome
    and device-specific storage behaviour were not tested.
 
@@ -232,3 +232,16 @@ correct cards are checked. The skill and Piixpal payload remain byte-exact.
 The scroll regression compares document positioning against the old fixed layer
 in the same JS task, before an animation frame can compensate for scrolling.
 Physical iOS/Android momentum scrolling and YouTube app handoff remain untested.
+
+## 10. Favicon validation exception
+
+`learning-library/src/favicon-link.html` is copied byte-exactly (apart from its
+trailing newline) from the reference project's icon link in `index.html`.
+The builder pins the complete tag by SHA-256 and requires exactly one occurrence.
+It removes only that tag from a temporary validation copy before the unchanged
+vendored HTML validator runs. This is a repository policy exception, not a claim
+that the original skill accepts favicon links. The delivered app retains it.
+
+`tools/test_favicon.py` covers SVG contents and rejection of missing, duplicate,
+modified, remote or extra link tags. Browser QA decodes the actual inline image, renders it at
+32×32 and checks the four colours. Browser tab display/cache behaviour still needs a live-device check.

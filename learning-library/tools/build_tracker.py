@@ -22,6 +22,7 @@ Or from learning-library/:
 from __future__ import annotations
 
 import json
+import hashlib
 import re
 import sys
 from pathlib import Path
@@ -38,6 +39,33 @@ DATA_PATH = ROOT / "src" / "roadmap-app.json"
 THEME_PATH = ROOT / "src" / "fieldnotes-theme.css"
 PALS_DIR = ROOT / "src" / "pals"
 OUTPUT_PATH = ROOT / "out" / "roadmap-app.html"
+
+
+FAVICON_SHA256 = "ab629e3127cc247eb5077d4168f0a612b19d4c7cb05e2a43d5c3dc016449c9dd"
+
+
+def favicon_tag() -> str:
+    """Exact inline SVG favicon copied from Nature Photography's index.html.
+
+    Pin the whole tag, not just the href scheme, so the validation exception
+    cannot admit remote links, event handlers or modified active SVG content.
+    """
+    tag = (ROOT / "src" / "favicon-link.html").read_text(encoding="utf-8").strip()
+    if hashlib.sha256(tag.encode()).hexdigest() != FAVICON_SHA256:
+        raise RuntimeError("favicon source differs from the pinned reference tag")
+    return tag
+
+
+def without_inline_favicon(html: str) -> str:
+    """Require exactly one pinned favicon, then remove only that exact tag.
+
+    Used solely for validation. The delivered HTML retains the inline favicon;
+    every other link tag remains subject to the original no-link restriction.
+    """
+    tag = favicon_tag()
+    if html.count(tag) != 1:
+        raise RuntimeError("expected exactly one pinned inline favicon")
+    return html.replace(tag, "", 1)
 
 
 def facts(data: dict) -> list[str]:
@@ -187,11 +215,12 @@ def transform(html: str, data: dict, theme_css: str) -> str:
     style = '<style data-theme="fieldnotes">\n' + theme_css.rstrip() + "\n</style>\n"
     if "</head>" not in html:
         raise RuntimeError("branding anchor not found: </head>")
-    html = html.replace("</head>", style + "</head>", 1)
+    html = html.replace("</head>", favicon_tag() + "\n" + style + "</head>", 1)
     return html
 
 
 def assert_self_contained(html: str) -> None:
+    html = without_inline_favicon(html)
     problems = []
     for pattern, label in (
         (r"<\s*link\b", "link element"),

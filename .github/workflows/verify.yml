@@ -31,7 +31,7 @@ jobs:
         run: make bootstrap
 
       - name: Static deployment contract
-        run: python3 -m unittest discover -s tools -p 'test_deployment.py'
+        run: python3 -m unittest discover -s tools -p 'test_*.py'
 
       - name: Fast checks
         run: make check
