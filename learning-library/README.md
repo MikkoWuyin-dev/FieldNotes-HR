@@ -24,8 +24,8 @@ You chose: free-first (paid extras listed separately), a balanced blend of video
 | `tools/build_tracker.py` | Builds the themed tracker from the JSON while leaving the vendored skill untouched, then injects the pals. |
 | `DESIGN-SYSTEM.md` | Provenance, token table, selector mapping, constraints and verification of the port. |
 | `out/Recruiter-TA-Library.md` | A byte-identical copy of the source, kept with the other outputs. |
-| `src/verification-manifest.json` | Per-URL verification status and date for all 30 checked URLs; read by `make check`. |
-| `check-links.sh` | A repeatable HTTP status check for all 30 cited URLs. It could not run in the generating sandbox; it now runs weekly in CI. |
+| `src/verification-manifest.json` | Per-URL verification status and date for all 30 checked URLs, plus the first CI link-sweep record; read by `make check`. |
+| `check-links.sh` | A repeatable HTTP status check for all 30 cited URLs. It could not run in the generating sandbox; it now runs weekly in CI and was first dispatched on 27 October 2026. |
 | `../tools/check.py` | The single verification runner behind `make check` and `make check-drift`. |
 | `../tools/visual/` | The committed 13-viewport Chromium harness behind `make check-visual`. |
 
@@ -79,7 +79,8 @@ I read provider course pages, syllabuses, FAQs and policy pages with a page-retr
 
 Things I **could not** do:
 
-- **Run the HTTP status-code sweeps in the generating environment.** The sandbox blocks most outbound traffic: a request to `pypi.org` returned 200, while `kaggle.com` and `docs.python.org` failed at the TLS handshake. The original sweep was therefore **not run there and no status codes are claimed from it**. Since 27 October 2026 `.github/workflows/link-check.yml` runs `check-links.sh` weekly with unrestricted network and publishes a TSV report; `make links` runs the same sweep locally. A status code still never proves a resource is free.
+- **Run the HTTP status-code sweeps in the generating environment.** The sandbox blocks most outbound traffic: a request to `pypi.org` returned 200, while `kaggle.com` and `docs.python.org` failed at the TLS handshake. The original sweep was therefore **not run there and no status codes are claimed from it**. `.github/workflows/link-check.yml` runs `check-links.sh` weekly with unrestricted network; `make links` runs the same sweep locally.
+  **First result (manual dispatch, 27 October 2026, run `40471064309`):** 30 URLs checked — **27 × 200, 3 × 403**. The three 403s (OpenLearn course, NDPC GAID PDF, Saylor FAQ) were all **bot filtering**: each page was re-read via a browser-like fetch and its free claim still holds. LinkedIn's pages returned 200 to curl but 403/500 to a browser, so they remain unverified. A status code still never proves a resource is free; the record is in `src/verification-manifest.json`.
 - **Create accounts or complete enrolment.** I cannot describe what any provider shows after sign-in. Free claims rest on public provider statements.
 - **Read LinkedIn's own help pages.** Both returned HTTP 500. Their prices come from third-party 2026 pricing guides and are labelled unconfirmed.
 - **Read past the Jobberman cookie banner.** That card is marked partially verified.

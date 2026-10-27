@@ -163,9 +163,21 @@ were never confirmed (LinkedIn, Jobberman, Coursera and the paid extras). Run
 fatal.
 
 `.github/workflows/link-check.yml` runs the URL sweep weekly with unrestricted
-network and uploads a TSV report as an artifact. A status code never proves a
-resource is free — read the provider page and update
-`learning-library/src/verification-manifest.json` when anything changes.
+network and uploads a TSV report as an artifact. It was first dispatched on
+27 October 2026 (run `40471064309`): 30 URLs, 27 × 200 and 3 × 403. The three
+403s were bot filtering, not broken links — a browser-like fetch re-read the
+OpenLearn course page, the NDPC GAID PDF and the Saylor FAQ, and their free
+claims still hold. LinkedIn returned 200 to curl but 403/500 to a browser, so
+it stays unverified. The result is recorded in the `link_sweep` block of
+`learning-library/src/verification-manifest.json` and checked by `make check`.
+
+**A status code never proves a resource is free** — read the provider page and
+update `learning-library/src/verification-manifest.json` when anything changes.
+Note that this sandbox cannot dispatch that workflow (its GitHub App token
+lacks `actions: write`); trigger it from the GitHub Actions UI, or wait for the
+Monday 06:17 UTC cron. CI logs and artifacts are also unreadable from here, so
+paste the job summary or the `link-status` artifact into the conversation to
+have the manifest updated.
 
 ## Skill discovery (standing workflow)
 

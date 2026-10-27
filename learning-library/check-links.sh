@@ -3,6 +3,7 @@
 # The generating sandbox had allowlisted egress, so the original sweep could not
 # run there (see RETROSPECTIVE.md). It now runs weekly in GitHub Actions
 # (.github/workflows/link-check.yml); locally, run: make links
+# First CI result (run 40471064309, 2026-10-27): 30 URLs, 27 x 200, 3 x 403.
 # A 403 can be bot filtering; a 526 can be an origin TLS issue; 000 means no response.
 # Status codes alone never prove that a resource is free - read the provider page
 # and record what you find in src/verification-manifest.json.

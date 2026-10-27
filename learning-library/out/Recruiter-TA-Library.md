@@ -25,7 +25,7 @@ Three distinctions matter throughout:
 
 Prices are quoted in the currency the provider publishes. CIPM publishes in naira. The LinkedIn figures come from third-party 2026 pricing guides and are marked as unconfirmed, because LinkedIn's own help pages failed when I tried to read them. I did not convert currencies or add taxes, bank charges or data costs.
 
-One check in this skill's normal workflow could not run. The sandbox blocks most outbound traffic: a request to pypi.org returned 200, while requests to kaggle.com and docs.python.org failed at the TLS handshake. So the batch of HTTP status-code checks over every candidate URL was not performed. A ready-to-run script, `check-links.sh`, sits next to these files so you can repeat it on your own machine. Where a specific provider page could not be read, the card says so.
+One check in this skill's normal workflow could not run in the generating sandbox. It blocks most outbound traffic: a request to pypi.org returned 200, while requests to kaggle.com and docs.python.org failed at the TLS handshake. So no HTTP status codes were obtained there. The batch sweep over all 30 cited URLs has since run in GitHub Actions (workflow run 40471064309, 27 October 2026): 27 returned 200 and 3 returned 403. Those three 403s were bot filtering, not broken links — the OpenLearn course page, the NDPC GAID PDF and the Saylor FAQ were each re-read and their free claims still hold. A 200 never proves a resource is free: LinkedIn's pages answer 200 to a plain curl but still return 403 and 500 to a browser, and remain unverified. A ready-to-run script, `check-links.sh`, sits next to these files so you can repeat the sweep; `src/verification-manifest.json` records the result. Where a specific provider page could not be read, the card says so.
 
 ## Roadmap at a glance
 
@@ -502,8 +502,8 @@ Primary provider pages read on 26 October 2026:
 
 Checks I could not run, stated plainly:
 
-- **HTTP status-code sweeps over the candidate URLs.** Blocked by the sandbox egress allowlist. `check-links.sh` in this folder runs the same checks locally. Page retrieval succeeded for every URL I opened except two, noted next.
-- **LinkedIn help pages.** Both returned HTTP 500 on 26 October 2026. Their prices in this document come from third-party 2026 pricing guides and are labelled unconfirmed.
+- **HTTP status-code sweeps in the generating sandbox.** Blocked by the egress allowlist, so no status codes came from there. The sweep has since run in GitHub Actions (27 October 2026): 30 URLs, 27 with 200 and 3 with 403. `check-links.sh` in this folder repeats it. A status code never proves a resource is free — the provider page still has to be read. Page retrieval succeeded for every URL I opened except two, noted next.
+- **LinkedIn help pages.** Both returned HTTP 500 on 26 October 2026. The CI sweep recorded 200 for them, but that is a login wall: a browser-like recheck on 27 October 2026 returned 403 for the learning index and 500 for the Recruiter help article. Neither has been read. Their prices in this document come from third-party 2026 pricing guides and are labelled unconfirmed.
 - **The Jobberman free-listing page.** Returned only a cookie banner. Its free-listing claim comes from the provider's own search listing, so that card is marked partially verified.
 - **Creating accounts and completing enrolment.** Not done. I cannot describe what any provider shows after sign-in.
 - **Every individual Google re:Work guide.** I read the guides index in full and two guides directly. The rest are cited by name from the index.

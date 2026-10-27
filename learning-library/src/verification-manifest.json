@@ -1,5 +1,5 @@
 {
-  "_comment": "Per-URL verification record transcribed from the library document, not new research. See learning-library/src/recruiter-talent-acquisition-library.md, sections \"Verification log\" and \"Paid extras\".",
+  "_comment": "Per-URL verification record, originally transcribed from the library document (see learning-library/src/recruiter-talent-acquisition-library.md, sections \"Verification log\" and \"Paid extras\"), then updated with the first CI link sweep and provider re-reads on 2026-10-27. `status` and `verified_at` describe CONTENT verification, not HTTP status codes.",
   "research_date": "2026-10-26",
   "max_age_days": 90,
   "status_legend": {
@@ -31,8 +31,8 @@
     {
       "url": "https://www.open.edu/openlearn/money-business/human-resources/human-resources-recruitment-and-selection/content-section-0",
       "status": "confirmed",
-      "verified_at": "2026-10-26",
-      "note": "OpenLearn course page: free course, free statement of participation."
+      "verified_at": "2026-10-27",
+      "note": "OpenLearn course page: free course, free statement of participation. CI sweep 2026-10-27 got 403 (bot filtering); page re-read the same day and the claim still holds."
     },
     {
       "url": "https://alison.com/course/diploma-in-human-resources-hr",
@@ -115,8 +115,8 @@
     {
       "url": "https://ndpc.gov.ng/wp-content/uploads/2025/07/NDP-ACT-GAID-2025-MARCH-20TH.pdf",
       "status": "confirmed",
-      "verified_at": "2026-10-26",
-      "note": "Regulator PDF; arrangements of articles and opening provisions read, not cover to cover."
+      "verified_at": "2026-10-27",
+      "note": "Regulator PDF; arrangements of articles and opening provisions read, not cover to cover. CI sweep 2026-10-27 got 403 (bot filtering); PDF re-read the same day and is intact."
     },
     {
       "url": "https://lawsofnigeria.placng.org/laws/L1.pdf",
@@ -140,13 +140,13 @@
       "url": "https://www.linkedin.com/learning/",
       "status": "unreachable",
       "verified_at": null,
-      "note": "LinkedIn help pages returned HTTP 500 on 2026-10-26. Prices come from third-party 2026 guides and are unconfirmed."
+      "note": "LinkedIn help pages returned HTTP 500 on 2026-10-26. Prices come from third-party 2026 guides and are unconfirmed. CI sweep 2026-10-27 got 200 (a login wall); a browser-like recheck the same day got 403, so the content has still not been read."
     },
     {
       "url": "https://www.linkedin.com/help/recruiter/answer/a6807901",
       "status": "unreachable",
       "verified_at": null,
-      "note": "HTTP 500 on 2026-10-26. Recruiter Lite figures are third-party and unconfirmed."
+      "note": "HTTP 500 on 2026-10-26. Recruiter Lite figures are third-party and unconfirmed. CI sweep 2026-10-27 got 200 (a login wall); a browser-like recheck the same day got 500, so the content has still not been read."
     },
     {
       "url": "https://www.coursera.org/learn/aphri-talent-acquisition-and-onboarding",
@@ -175,8 +175,8 @@
     {
       "url": "https://support.saylor.org/hc/en-us/articles/23586212781844-FAQ-General",
       "status": "confirmed",
-      "verified_at": "2026-10-26",
-      "note": "Saylor general FAQ read."
+      "verified_at": "2026-10-27",
+      "note": "Saylor general FAQ: no tuition or fees, completion certificates free. CI sweep 2026-10-27 got 403 (bot filtering); FAQ re-read the same day and the claim still holds."
     },
     {
       "url": "https://learn.saylor.org/mod/page/view.php?id=94644",
@@ -190,5 +190,40 @@
       "verified_at": null,
       "note": "Lead page only; no access claim verified."
     }
-  ]
+  ],
+  "link_sweep": {
+    "_comment": "Mechanical HTTP status sweep from GitHub Actions run 40471064309 (workflow_dispatch on main, 2026-10-27). NOT content verification: a 200 does not prove a resource is free and a 403 is usually bot filtering. Research statuses in `urls` were changed only where the provider page was actually re-read.",
+    "run_id": 40471064309,
+    "run_url": "https://github.com/MikkoWuyin-dev/FieldNotes-HR/actions/runs/40471064309",
+    "event": "workflow_dispatch",
+    "ref": "main",
+    "checked_at": "2026-10-27",
+    "checked": 30,
+    "status_counts": {
+      "200": 27,
+      "403": 3
+    },
+    "non_2xx": [
+      {
+        "url": "https://www.open.edu/openlearn/money-business/human-resources/human-resources-recruitment-and-selection/content-section-0",
+        "status": 403,
+        "finding": "Bot filtering, not a dead link. Page re-read 2026-10-27 via a browser-like fetch: 'Free course' and 'Free statement of participation on completion' are still displayed. Claim holds."
+      },
+      {
+        "url": "https://ndpc.gov.ng/wp-content/uploads/2025/07/NDP-ACT-GAID-2025-MARCH-20TH.pdf",
+        "status": 403,
+        "finding": "Bot filtering. PDF re-read 2026-10-27: Nigeria Data Protection Act GAID 2025, arrangement of articles and opening provisions still present. Claim holds."
+      },
+      {
+        "url": "https://support.saylor.org/hc/en-us/articles/23586212781844-FAQ-General",
+        "status": 403,
+        "finding": "Bot filtering. FAQ re-read 2026-10-27: 'We do not charge tuition or fees' and 'Yes, our course completion certificates are free of cost' are still published. Claim holds."
+      }
+    ],
+    "notes": [
+      "The other 27 URLs returned 200 to curl. This is inferred from the job summary's counts (200 x 27, 403 x 3) plus its complete non-2xx list; the raw link-status.tsv artifact could not be downloaded from this sandbox because its Azure Blob redirect is outside the egress allowlist.",
+      "A 200 does not resolve an ambiguous, partial or not_confirmed status. Coursera, Jobberman, LinkedIn and the paid extras were not re-read, so their research statuses are unchanged.",
+      "LinkedIn re-checked 2026-10-27 with a browser-like fetch: /learning/ returned 403 and the Recruiter help article returned 500. The sweep's 200 is a login wall, not readable content; both remain 'unreachable'."
+    ]
+  }
 }
