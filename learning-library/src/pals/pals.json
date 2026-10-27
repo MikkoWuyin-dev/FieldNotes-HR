@@ -1,0 +1,24 @@
+{
+  "_comment": "Single source of truth for the 10 decorative pals. The build layer injects this array into pals-controller.js; tools/check.py asserts the count, sprite coverage, unique targets and payload hash. Targets must be visible prose, never a control: a pal's canvas has pointer-events:auto and one parked on a button swallows the tap.",
+  "engine": {
+    "name": "Piixpal",
+    "version": "0.4.0",
+    "licence": "MIT",
+    "source": "https://github.com/diiviikk5/Piixpal",
+    "vendored_from": "MikkoWuyin-dev/Field-Notes_Nature-Photography (index.html, template#pals-payload)"
+  },
+  "payload_sha256": "298776d7bbe408cd3146f61fbb38ec8fddaa2facb1db99c3f013638f5d20ea75",
+  "sprites": ["bitbug", "lurk", "moss", "pip", "capy", "bumble", "shel", "frog"],
+  "pals": [
+    {"pal": "bitbug", "target": "#title", "at": 0.9, "edge": "text"},
+    {"pal": "lurk", "target": "#subtitle", "at": 0.88},
+    {"pal": "moss", "target": ".dashboard > .panel:nth-child(1) h2", "at": 0.9},
+    {"pal": "pip", "target": "#next-step", "at": 0.85},
+    {"pal": "capy", "target": "#reminder-summary", "at": 0.5},
+    {"pal": "bumble", "target": ".stage[data-stage=\"0\"] .stage-heading strong", "at": 0.9, "scale": 3},
+    {"pal": "shel", "target": ".stage[data-stage=\"2\"] .stage-heading strong", "at": 0.9, "scale": 3},
+    {"pal": "frog", "target": ".stage[data-stage=\"4\"] .stage-heading strong", "at": 0.9, "scale": 3},
+    {"pal": "moss", "target": ".stage[data-stage=\"6\"] .stage-heading strong", "at": 0.88, "hue": 320, "scale": 3},
+    {"pal": "bumble", "target": ".app-footer", "at": 0.5, "hue": 205, "scale": 3}
+  ]
+}

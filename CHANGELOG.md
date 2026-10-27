@@ -4,7 +4,48 @@ All notable changes to this repository. Dates are in the user's local timezone
 (Africa/Lagos). Verification claims below were actually run; see
 `docs/SETUP.md` for how to reproduce them.
 
-## 27 October 2026 — reproducibility and CI (current branch)
+## 27 October 2026 — ten decorative pals (current branch)
+
+Added the reference project's animated pixel creatures to the interactive
+tracker only. No library content changed; PDF, DOCX, Markdown and static HTML
+are untouched.
+
+- Vendored the MIT-licensed **Piixpal v0.4.0** engine (core + 8 sprite scripts)
+  byte-exactly as an inert `<template>` at
+  `learning-library/src/pals/piixpal-payload.html`. Added the full licence text
+  and `THIRD-PARTY-NOTICES.md`; pinned the payload SHA-256.
+- Added `learning-library/src/pals/pals.json` (10 placements against visible
+  prose), `learning-library/src/pals/pals-controller.js` (idle load, pause,
+  reduced motion, re-anchoring) and `learning-library/src/pals/pals.css`
+  (fixed unclipped layer, control panel, print rules).
+- `learning-library/tools/build_tracker.py` now injects the pals as three more
+  anchors, separate from the eight Fieldnotes branding anchors. Both sets are
+  covered by the contract check.
+- All 8 sprites used once; `moss` and `bumble` repeat with hue rotations.
+- Tracker grows from 72,721 to 164,554 bytes. Still a single self-contained
+  file: 11 inline scripts, no external assets, no network calls.
+- `make check` gained a `pals` check; `make check-visual` now waits for the
+  10 pals and asserts count, fixed layer, zero control-centre hits, ≤1100px²
+  overlap, pause, and reduced motion — at 13 widths plus the default
+  collapsed state.
+- Added `make preview` and `tools/serve_preview.py`. A sandbox reset had wiped
+  the previous preview script (it lived in the gitignored, snapshot-excluded
+  `tools/visual/.cache/`) and silently restored the committed no-Pals tracker,
+  because `learning-library/out/` is snapshot-excluded too. `make preview` now
+  rebuilds the tracker from source before serving on `0.0.0.0:8000`, warns if
+  the Pals payload is absent, and needs only stdlib Python — no `.venv` or
+  `node_modules`. Documented in `docs/SETUP.md`.
+
+Verified: `make check` 8 passed / 1 known freshness warning / 0 failed;
+`make check-drift` passed; `make check-visual` 13/13 widths plus 3 collapsed
+checks passed, no console errors. Skills consulted from the `skill-issue`
+catalogue: `web-design-guidelines`, `accessibility-compliance`,
+`frontend-design`, `taste-skill`, `ui-ux-pro-max-skill`, `responsive-design`.
+
+Known limitation: the pals pause preference is stored separately from the
+tracker's export/import JSON, because the vendored generator cannot be modified.
+
+## 27 October 2026 — reproducibility and CI
 
 Fixes the recurring friction documented in `RETROSPECTIVE.md`. No content or
 appearance change: `out/roadmap-app.html` remains byte-identical at SHA-256

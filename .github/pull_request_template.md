@@ -8,6 +8,8 @@
       `recruiter-talent-acquisition-library.md` **and** `roadmap-app.json`?
 - [ ] Appearance edit in `learning-library/src/fieldnotes-theme.css` — did you
       run `make build` so `out/roadmap-app.html` is regenerated, not hand-edited?
+- [ ] Pal placement edit in `learning-library/src/pals/pals.json` — did you
+      re-run `make check-visual` and confirm zero control overlap at every width?
 - [ ] Neither (tooling / docs / CI only).
 
 ## Verification

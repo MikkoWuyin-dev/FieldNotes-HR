@@ -16,11 +16,15 @@ Tokens were copied from that repository's `:root` block on 26 October 2026.
 1. `out/roadmap-app.html` is **one self-contained file**: inline CSS and JS
    only. No `<link>`, `<img>`, `<iframe>`, external scripts, `@import`, web
    fonts or CSS `url(...)` references. Enforced by `make check`.
-2. The vendored skill stays byte-exact. All appearance changes live in
-   `learning-library/src/fieldnotes-theme.css`; the only other build-layer
-   edits are HTML branding anchors in
-   `learning-library/tools/build_tracker.py`.
+2. The vendored skill stays byte-exact. Core appearance changes live in
+   `learning-library/src/fieldnotes-theme.css`; the optional decorative pals
+   live in `learning-library/src/pals/`. The only build-layer edits are HTML
+   anchors in `learning-library/tools/build_tracker.py`.
 3. Never hand-edit `out/roadmap-app.html`. `make build` must reproduce it.
+4. The pals engine is a vendored **MIT-licensed** third-party payload. It is
+   never edited in place; its SHA-256 is pinned in
+   `learning-library/src/pals/pals.json` and checked by `make check`. See
+   `THIRD-PARTY-NOTICES.md`.
 
 ## 2. Primitive tokens
 
@@ -139,11 +143,75 @@ Skills consulted for the port: `web-design-guidelines`,
 `ui-ux-pro-max` from the `skill-issue` catalogue. Deviations 1 and 2 above are
 where their advice was consciously overridden.
 
-## 7. Making a change
+## 7. Decorative pals
 
-1. Edit `learning-library/src/fieldnotes-theme.css` (or, rarely, the anchors in
-   `learning-library/tools/build_tracker.py`).
+Ten optional pixel creatures were ported from the reference project's
+**Piixpal v0.4.0** engine (MIT, https://github.com/diiviikk5/Piixpal). They are
+decoration only: the tracker is fully usable with them paused.
+
+- **Source of truth:** `learning-library/src/pals/pals.json` — 10 entries, each
+  `{pal, target, at, hue?, scale?, edge?}`. `PALS_COUNT` in the controller is
+  derived from that array, never hard-coded. The build layer injects the array
+  into `learning-library/src/pals/pals-controller.js`.
+- **Sprites:** all eight available (`bitbug`, `lurk`, `moss`, `pip`, `capy`,
+  `bumble`, `shel`, `frog`) appear once; `moss` and `bumble` each repeat with a
+  hue rotation (320° and 205°) so no two identical creatures sit together.
+- **Placement:** spread down the whole page against **visible prose** targets —
+  hero title and subtitle, both dashboard panels, stage headings for stages 1,
+  3, 5 and 7, and the footer. A pal's canvas has `pointer-events:auto`, so pals
+  are never anchored to a button, link, input or `<summary>`.
+- **Engine:** the core plus eight sprite scripts are vendored byte-exact as an
+  inert `<template>` in `learning-library/src/pals/piixpal-payload.html` (9
+  inline scripts, ~83 KB). The controller clones them into the document on
+  `requestIdleCallback`, so content renders first. The layer is
+  `position:fixed` and **never clipped**; clipping silently hides every pal
+  outside the clip region. A `MutationObserver` re-anchors pals when the
+  generator rebuilds the stage list on reset/import.
+- **Control:** a "Pause tiny pals" toggle with an `aria-live` status line sits
+  between the caveat notice and the roadmap. Preference is stored under
+  `fieldnotes-hr-pals-v1`. Pals are **off by default** under
+  `prefers-reduced-motion: reduce`; a visitor can still opt in explicitly.
+- **Styling:** `learning-library/src/pals/pals.css` (fixed layer, control
+  panel, print and reduced-motion rules). No CSS `url()` references.
+
+### Pals acceptance criteria
+
+`make check` verifies the static invariants; `make check-visual` verifies the
+rendered behaviour:
+
+- Exactly 10 pals, all 8 sprites used, every repeat hue-rotated, 10 unique
+  prose targets, no target that is a control.
+- Payload SHA-256 matches the pin; MIT headers, licence text and
+  `THIRD-PARTY-NOTICES.md` present; payload has no external script, image,
+  link, CSS `url()`, `fetch`, XHR, WebSocket or `javascript:` URL.
+- Tracker contains exactly one pals style block, payload template, control
+  panel, toggle and controller script.
+- At all 13 widths, both with the stage list expanded **and** in the default
+  collapsed state: no horizontal overflow, **zero** control-centre hits, and no
+  pal overlapping a control by more than **1100px²** (the reference project's
+  rule).
+- Pausing removes all `piix-pal` elements and sets `aria-pressed="false"`;
+  enabling restores 10. Under `prefers-reduced-motion: reduce`, **zero** pals
+  are created.
+- No console or page errors.
+
+### Pals limitations
+
+- The pals preference is **not** included in the tracker's export/import JSON:
+  the vendored generator cannot be modified, so progress export is unchanged.
+- The engine adds ~92 KB: `out/roadmap-app.html` grows from ~72 KB to ~165 KB.
+  It is lazy-loaded on idle, so content is not blocked.
+- Pals can be poked and dragged (that is the engine's charm), but the
+  hit-testing above guarantees they never swallow a tap on a control.
+
+## 8. Making a change
+
+1. Edit `learning-library/src/fieldnotes-theme.css` for core appearance,
+   `learning-library/src/pals/pals.json` for pal placement, or (rarely) the
+   anchors in `learning-library/tools/build_tracker.py`.
 2. `make build` → `make check` → `make check-drift` → `make check-visual`.
-3. Update this document if a token or acceptance criterion changed, and add a
+3. If you changed a pal target, re-check the no-overlap measurements at every
+   width before merging.
+4. Update this document if a token or acceptance criterion changed, and add a
    line to `CHANGELOG.md`. Do not append another dated "refinements" section
-   to `learning-library/DESIGN-SYSTEM.md`.
+   to this document.

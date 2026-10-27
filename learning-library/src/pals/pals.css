@@ -1,0 +1,74 @@
+/* Decorative pals (Piixpal v0.4.0, MIT) — Fieldnotes styling.
+   Injected as a third inline <style> block by tools/build_tracker.py. */
+
+/* The engine creates a 0x0 layer with an inline position:absolute. Left
+   absolute, a pal drifting past the footer lengthens the document and leaves
+   blank space. Fixed removes it from scrollable overflow entirely, and the
+   engine recomputes its origin every animation frame so pals still track their
+   targets as the page scrolls. NEVER clip or hide this layer with overflow:
+   an overflow:clip region silently makes every pal outside it invisible. */
+div[data-piixpal] {
+  position: fixed !important;
+  overflow: visible !important;
+}
+
+/* The optional control panel sits between the caveat notice and the roadmap.
+   Styled with the same square, thick-bordered, hard-shadow language as the
+   toolbar. */
+.pals-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  margin: 0 0 var(--fn-stack-gap);
+  padding: 12px 14px;
+  border: 3px solid var(--fn-line);
+  border-radius: 0;
+  background: var(--fn-cream);
+  box-shadow: 6px 6px 0 var(--fn-line);
+}
+.pals-controls[hidden] { display: none; }
+
+.pals-controls button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 2px solid var(--fn-line);
+  border-radius: 0;
+  background: var(--fn-yellow);
+  color: var(--fn-ink);
+  font: 700 .76rem/1.3 var(--fn-mono);
+  text-align: center;
+  cursor: pointer;
+  transition: transform .14s ease, box-shadow .14s ease;
+}
+.pals-controls button:hover,
+.pals-controls button:focus-visible {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 var(--fn-line);
+}
+.pals-controls button[aria-pressed="false"] { background: var(--fn-cream); }
+
+.pals-status {
+  flex: 1 1 240px;
+  min-width: 0;
+  margin: 0;
+  color: var(--fn-muted);
+  font: .78rem/1.45 var(--fn-prose);
+}
+
+/* Decoration never belongs on paper. */
+@media print {
+  .pals-controls,
+  div[data-piixpal] { display: none !important; }
+}
+
+/* The engine already stops stepping under reduced motion; the controller also
+   declines to create any pals at all. This belt-and-braces rule removes any
+   residual motion if a visitor explicitly opts in anyway. */
+@media (prefers-reduced-motion: reduce) {
+  div[data-piixpal] .a { transition: none !important; animation: none !important; }
+}

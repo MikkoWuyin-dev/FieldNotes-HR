@@ -101,10 +101,62 @@ See `docs/DESIGN-SPEC.md`. In short: change
 anchors are checked by `make check`; if the vendored generator ever changes,
 that check fails loudly instead of silently dropping the branding.
 
+## Decorative pals
+
+Ten optional pixel creatures (Piixpal v0.4.0, MIT) are injected into the
+tracker only. Their sources live in `learning-library/src/pals/`:
+
+- `learning-library/src/pals/pals.json` — the 10 placements (single source of
+  truth). Edit this to move a pal; `PALS_COUNT` is derived from its length.
+- `learning-library/src/pals/pals-controller.js` — idle loading, pause toggle,
+  reduced-motion default and re-anchoring after a roadmap rebuild.
+- `learning-library/src/pals/pals.css` — fixed unclipped layer and control panel.
+- `learning-library/src/pals/piixpal-payload.html` — the vendored engine (9
+  inline scripts, ~83 KB). **Never edit it in place**; its SHA-256 is pinned in
+  `learning-library/src/pals/pals.json` and checked by `make check`.
+- `learning-library/src/pals/LICENSE-MIT.txt` and `THIRD-PARTY-NOTICES.md` —
+  licence text and attribution.
+
+`make check` verifies count, sprite coverage, prose-only targets and payload
+integrity. `make check-visual` verifies rendered behaviour at 13 widths plus the
+default collapsed state: no control-centre hit, bounded overlap, pause, and
+reduced motion. Pals load on `requestIdleCallback`, can be paused in the
+tracker, and are off by default under `prefers-reduced-motion: reduce`. Changing
+a target means re-running `make check-visual`; see `docs/DESIGN-SPEC.md` §7.
+
+The engine is lazy-loaded, but it still grows `learning-library/out/roadmap-app.html`
+from ~72 KB to ~165 KB. That is the cost of a faithful port with no external
+assets.
+
+## Previewing the tracker
+
+From the repository root:
+
+```
+make preview
+```
+
+This regenerates `learning-library/out/roadmap-app.html` from source and serves
+`learning-library/out/` on `0.0.0.0:8000`, with `/` mapped to the tracker. It is
+deliberately stdlib-only (`tools/serve_preview.py`), so it still works when
+`.venv/` and `node_modules/` have been wiped. Pass a different port with
+`make preview PORT=8080`.
+
+**Why it rebuilds every time:** `learning-library/out/` is excluded from
+workspace snapshots. After a sandbox reset, the tracked output file falls back
+to the last committed version, which may silently lack the Pals even though all
+the Pals sources are still present. The rebuild is deterministic and
+`make check-drift` proves it. The server also prints a warning if the tracker is
+missing the Pals payload. Progress checkboxes use `localStorage` on the preview
+origin, so they behave the same as opening the file locally.
+
 ## Verification claims
 
-`make check` prints one line per check and a final `RESULT:` summary. CI runs
-the same command, so a green check means the same thing locally and on GitHub.
+`make check` prints one line per check and a final `RESULT:` summary — it covers
+skill hashes, unit tests, both validators, style audit, the branding/pals anchor
+contract, cross-source consistency, doc lint, the pals invariants and research
+freshness. CI runs the same command, so a green check means the same thing
+locally and on GitHub.
 A freshness warning is **not** a failure: it lists URLs whose provider pages
 were never confirmed (LinkedIn, Jobberman, Coursera and the paid extras). Run
 `.venv/bin/python tools/check.py all --strict` if you want those gaps to be
@@ -136,3 +188,4 @@ copy is the vendored one.
 | `CHANGED: …` in the skill-hashes check | A vendored file was edited. Restore it, or upgrade the skill intentionally and run `make pin-skill`. |
 | `libnspr4.so: cannot open shared object file` | The visual harness handles this itself; if you launch Chromium manually, inflate the AL2023 libs first. |
 | `make check-drift` says a binary drifted | A source changed without `make build`, or the dependency tree changed. Check `requirements.lock`. |
+| Preview shows no Pals, or the preview server vanished after a reset | `learning-library/out/` and `tools/visual/.cache/` are snapshot-excluded. Run `make preview` (rebuild + serve) rather than starting the server by hand. |

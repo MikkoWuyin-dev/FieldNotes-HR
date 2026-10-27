@@ -16,11 +16,12 @@ You chose: free-first (paid extras listed separately), a balanced blend of video
 | `out/Recruiter-TA-Library.pdf` | The full library, 15 pages. Best for printing or sharing. |
 | `out/Recruiter-TA-Library.docx` | Editable Word version of the same document. |
 | `out/Recruiter-TA-Library.html` | Self-contained static web page. No scripts, no external assets. |
-| `out/roadmap-app.html` | Single-file interactive tracker: 8 stages, checkboxes, progress, daily streak, export/import. **Styled with the Fieldnotes design system.** Open it in a browser. |
+| `out/roadmap-app.html` | Single-file interactive tracker: 8 stages, checkboxes, progress, daily streak, export/import. **Styled with the Fieldnotes design system and decorated with 10 optional pixel pals.** Open it in a browser. |
 | `src/recruiter-talent-acquisition-library.md` | The editable Markdown source. This is the file to change if you want a revision. |
 | `src/roadmap-app.json` | The structured roadmap and resource data behind the tracker. |
 | `src/fieldnotes-theme.css` | The ported Fieldnotes design tokens and component overrides. |
-| `tools/build_tracker.py` | Builds the themed tracker from the JSON while leaving the vendored skill untouched. |
+| `src/pals/` | The 10 decorative pals: `src/pals/pals.json` (placements), `src/pals/pals-controller.js`, `src/pals/pals.css`, the vendored MIT-licensed Piixpal engine and its licence. |
+| `tools/build_tracker.py` | Builds the themed tracker from the JSON while leaving the vendored skill untouched, then injects the pals. |
 | `DESIGN-SYSTEM.md` | Provenance, token table, selector mapping, constraints and verification of the port. |
 | `out/Recruiter-TA-Library.md` | A byte-identical copy of the source, kept with the other outputs. |
 | `src/verification-manifest.json` | Per-URL verification status and date for all 30 checked URLs; read by `make check`. |
@@ -41,6 +42,26 @@ Four rounds of refinements followed the initial port: hero/footer/eyebrow/card-f
 All changes live in `src/fieldnotes-theme.css` (plus one input-attribute edit in `tools/build_tracker.py`). They are now checked reproducibly in Chromium 153 at 13 widths from 320 to 1920px by `make check-visual`, not by a throwaway script.
 
 The `web-design-guidelines`, `design-system-patterns` and `accessibility-compliance` skills from the `skill-issue` MCP collection were applied to focus states, tap targets, tabular numerals, form-control semantics, component tokens and WCAG AA contrast.
+
+## The ten decorative pals
+
+The tracker now carries **10 optional animated pixel creatures** ported from the
+reference project's Piixpal v0.4.0 engine. They are MIT-licensed; the full
+notice is in `THIRD-PARTY-NOTICES.md` and the licence text in
+`src/pals/LICENSE-MIT.txt`.
+
+All eight sprites (`bitbug`, `lurk`, `moss`, `pip`, `capy`, `bumble`, `shel`,
+`frog`) appear once, with `moss` and `bumble` repeating under hue rotations.
+They are spread from the hero to the footer against **visible prose** targets —
+never a button or link, because a pal's canvas would swallow the tap. The
+engine is an inert `<template>` loaded on idle, so it never blocks the roadmap;
+there is a **Pause tiny pals** toggle with a live status line, and pals are off
+by default for visitors who prefer reduced motion.
+
+Placement is edited in `src/pals/pals.json`. Current-state rules and acceptance
+criteria are in `docs/DESIGN-SPEC.md` §7. The engine adds about 92 KB, taking
+the self-contained tracker from ~72 KB to ~165 KB. Pals do not appear in the
+PDF, DOCX, Markdown or static HTML.
 
 ## The shape of the plan
 
@@ -75,7 +96,8 @@ Every row below is now reproducible: `make check` runs the validators, unit test
 | Check | Result |
 |---|---|
 | `make check` / `make check-drift` (27 October 2026) | Passed. Vendored skill 12/12 SHA-256 hashes exact; 8 branding anchors each fail loudly when broken; 8 stages / 26 cards / 94 h / 21 URLs agree across JSON, Markdown, tracker and manifest; all five outputs reproduce (PDF by extracted text, DOCX by archive entries). |
-| `make check-visual` (27 October 2026) | Headless Chromium 153: 13/13 widths passed, no console or page errors; tick → `1 of 26` / `4%` / localStorage, reset → `0 of 26`. Harness committed in `tools/visual/`. |
+| `make check-visual` (27 October 2026, after the pals) | Headless Chromium 153: 13/13 widths passed plus 3 collapsed-state checks; 10 pals mounted on a fixed layer, **zero control-centre hits and zero control overlap**, pause removes all 10, reduced motion creates none; no console or page errors; tick → `1 of 26` / `4%` / localStorage, reset → `0 of 26`. Harness committed in `tools/visual/`. |
+| `make check` (after the pals) | 8 passed, 1 known freshness warning, 0 failed. New `pals` check verifies 10 placements, all 8 sprites, hue-rotated repeats, prose-only targets, pinned payload SHA-256, MIT notice and tracker markers. |
 | `validate_build.py` on PDF, DOCX, static HTML | All 3 passed. PDF header valid, 15 pages. DOCX: 17 XML parts, 43 headings, 2 tables, 26 hyperlink elements, 21 external hyperlink relationships, no Markdown residue. Static HTML: no external assets, no scripts. |
 | `validate_build.py --interactive-html` on the tracker | Passed after the redesign. Two inline style blocks (generator + theme), one inline script, no external scripts, no external assets, no CSS asset references. |
 | `style_audit.py` on the Markdown source | 0 mechanical errors, 0 prose-pattern flags. |

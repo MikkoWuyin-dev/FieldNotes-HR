@@ -20,11 +20,12 @@ commands plus `make check-visual` on every push and pull request.
 ## Repository contents
 
 - **`learning-library/`** — the deliverables: PDF, DOCX, Markdown, static HTML
-  and an interactive roadmap tracker styled with the Fieldnotes design system,
-  together with sources and a verification log. Start with
-  `learning-library/README.md`; the current design contract is
-  `docs/DESIGN-SPEC.md` and the historical port record is
-  `learning-library/DESIGN-SYSTEM.md`.
+  and an interactive roadmap tracker styled with the Fieldnotes design system
+  and decorated with 10 optional MIT-licensed pixel pals, together with sources
+  and a verification log. Start with `learning-library/README.md`; the current
+  design contract is `docs/DESIGN-SPEC.md` and the historical port record is
+  `learning-library/DESIGN-SYSTEM.md`. See `THIRD-PARTY-NOTICES.md` for the
+  Piixpal licence.
 - **`.agents/skills/resource-learning-library/`** — the agent skill that
   produced the library, vendored byte-exact so it persists across sessions.
   Includes `SKILL.md`, renderer/validator scripts, requirements and offline
