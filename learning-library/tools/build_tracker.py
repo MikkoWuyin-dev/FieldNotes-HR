@@ -172,6 +172,18 @@ def transform(html: str, data: dict, theme_css: str) -> str:
             raise RuntimeError(f"branding anchor not found: {label}")
         html = new
 
+    # Preserve all pre-existing positional keys, including imported backups.
+    # Stage 1's new first card must not inherit the former first card's tick.
+    original = 'function resourceKey(stageIndex, resourceIndex) { return `s${stageIndex}-r${resourceIndex}`; }'
+    replacement = ('function resourceKey(stageIndex, resourceIndex) { '
+                   'if (stageIndex === 0) { '
+                   'if (resourceIndex === 0) return "hr-essentials-v1"; '
+                   'return `s0-r${resourceIndex - 1}`; } '
+                   'return `s${stageIndex}-r${resourceIndex}`; }')
+    if html.count(original) != 1:
+        raise RuntimeError('progress-key anchor missing or duplicated')
+    html = html.replace(original, replacement)
+
     style = '<style data-theme="fieldnotes">\n' + theme_css.rstrip() + "\n</style>\n"
     if "</head>" not in html:
         raise RuntimeError("branding anchor not found: </head>")

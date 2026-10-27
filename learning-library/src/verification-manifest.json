@@ -11,10 +11,16 @@
   },
   "urls": [
     {
-      "url": "https://www.youtube.com/@HRLearningLab",
+      "url": "https://www.youtube.com/playlist?list=PLeDNHX61_qlQWYcxZNB19TDOKbl625W2c",
       "status": "confirmed",
-      "verified_at": "2026-10-26",
-      "note": "Public free playlist; creator discloses AI-assisted production."
+      "verified_at": "2026-10-27",
+      "note": "Checked 2026-10-27: public Talent Acquisition playlist, 43 listed videos, description and lesson titles readable without sign-in; playback and mobile app handoff not tested. Creator discloses AI-supported production; confirm consequential claims against primary sources."
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLeDNHX61_qlQeRK1_i5flRpz2T0wjQXN2",
+      "status": "confirmed",
+      "verified_at": "2026-10-27",
+      "note": "Checked 2026-10-27: public HR Essentials playlist, 16 listed videos; description and initial lesson titles readable without sign-in. The fetch also exposed a YouTube error banner, so playback and mobile app handoff remain untested. Content developed by Dr. Heather Staples; videos produced using AI-supported tools. This is introductory study, not a professional qualification."
     },
     {
       "url": "https://learn.saylor.org/course/view.php?id=1292",
@@ -223,7 +229,40 @@
     "notes": [
       "The other 27 URLs returned 200 to curl. This is inferred from the job summary's counts (200 x 27, 403 x 3) plus its complete non-2xx list; the raw link-status.tsv artifact could not be downloaded from this sandbox because its Azure Blob redirect is outside the egress allowlist.",
       "A 200 does not resolve an ambiguous, partial or not_confirmed status. Coursera, Jobberman, LinkedIn and the paid extras were not re-read, so their research statuses are unchanged.",
-      "LinkedIn re-checked 2026-10-27 with a browser-like fetch: /learning/ returned 403 and the Recruiter help article returned 500. The sweep's 200 is a login wall, not readable content; both remain 'unreachable'."
+      "LinkedIn re-checked 2026-10-27 with a browser-like fetch: /learning/ returned 403 and the Recruiter help article returned 500. The sweep's 200 is a login wall, not readable content; both remain 'unreachable'.",
+      "Historical 30-URL snapshot: predates the two direct playlist URLs added on 2026-10-27; no CI HTTP codes are claimed for those new URLs."
+    ],
+    "urls": [
+      "https://www.youtube.com/@HRLearningLab",
+      "https://learn.saylor.org/course/view.php?id=1292",
+      "https://openstax.org/books/principles-management/pages/11-introduction",
+      "https://www.open.edu/openlearn/money-business/human-resources/human-resources-recruitment-and-selection/content-section-0",
+      "https://alison.com/course/diploma-in-human-resources-hr",
+      "https://learn.saylor.org/course/BUS301",
+      "https://www.coursera.org/learn/recruiting-hiring-onboarding-employees",
+      "https://www.onetonline.org/",
+      "https://resources.workable.com/hr-templates/",
+      "https://support.greenhouse.io/hc/en-us/articles/360007245452-Structured-hiring-Introduction",
+      "https://resources.workable.com/boolean-search-cheatsheets/",
+      "https://www.youtube.com/watch?v=yMnw_2VNOVE",
+      "https://rework.withgoogle.com/intl/en/guides/",
+      "https://www.jobberman.com/employer/free-listing",
+      "https://www.greenhouse.com/guidance",
+      "https://rework.withgoogle.com/intl/en/guides/a-guide-to-structured-interviewing-for-better-hiring-practices",
+      "https://rework.withgoogle.com/intl/en/guides/effective-interviewer-training-for-better-candidate-experiences",
+      "https://ndpc.gov.ng/wp-content/uploads/2025/07/NDP-ACT-GAID-2025-MARCH-20TH.pdf",
+      "https://lawsofnigeria.placng.org/laws/L1.pdf",
+      "https://academy.hubspot.com/lessons/managing-your-contacts-with-the-hubspot-crm",
+      "https://cipmnigeria.org/membership/membership-routes/",
+      "https://www.linkedin.com/learning/",
+      "https://www.linkedin.com/help/recruiter/answer/a6807901",
+      "https://www.coursera.org/learn/aphri-talent-acquisition-and-onboarding",
+      "https://www.aihr.com/courses/sourcing-recruitment-certification/",
+      "https://www.udemy.com/course/recruiter-training-hire-top-employees-in-30-days/",
+      "https://helpcenter.alison.com/en/articles/8206417-is-alison-really-free",
+      "https://support.saylor.org/hc/en-us/articles/23586212781844-FAQ-General",
+      "https://learn.saylor.org/mod/page/view.php?id=94644",
+      "https://www.jobberman.com/job-seeker"
     ]
   }
 }

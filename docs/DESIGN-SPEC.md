@@ -84,7 +84,7 @@ Fieldnotes palette; remaining hard-coded colours are overridden explicitly.
 
 | Element | Value |
 |---|---|
-| `h1` | `clamp(2.982rem, 8.694vw, 7.644rem)` — 122.304px at 1440px |
+| `h1` | `clamp(2.2365rem, 6.5205vw, 5.733rem)` — 91.728px at 1440px |
 | Subtitle | `clamp(.75rem, 1.5vw, .9525rem)` — 15.24px desktop, 12px mobile |
 | Fact chips | 9.12px font, `4.5px 6.75px` padding |
 | Progress cards | min-width 105.6px, `7.2px 10.8px` padding, number 1.86rem, label `.864rem` |
@@ -103,15 +103,15 @@ non-visual invariants.
 - Zero horizontal overflow; `h1` never clips (`scrollWidth <= clientWidth`).
 - Hero background `rgb(55,104,255)`; eyebrow dark ink on yellow; footer credit
   exact — at every width.
-- At least five distinct tag fills; 26 resource links each with a ↗
+- At least five distinct tag fills; 27 resource links each with a ↗
   pseudo-element; 8 stages.
 - Link and Done on one row, link left of Done, no 2D rectangle overlap.
 - All four chips and both progress cards inside the hero; the two progress
   cards never overlap.
-- Buttons and stage summaries ≥44px tall; heading outline `h1`×1, `h3`×26;
+- Buttons and stage summaries ≥44px tall; heading outline `h1`×1, `h3`×27;
   skip link present.
-- Ticking a card → `1 of 26` / `4%` and a localStorage write; export and
-  notification buttons do not throw; reset → `0 of 26`.
+- Ticking a card → `1 of 27` / `4%` and a localStorage write; export and
+  notification buttons do not throw; reset → `0 of 27`.
 - No console or page errors.
 
 ## 6. Known, deliberate deviations
@@ -127,10 +127,8 @@ explicit user decision or an unresolved trade-off.
    visible-label rule in the same skill. Mitigated with a screen-reader label,
    `aria-label` and `title`. Restoring a visible label is also a one-line
    change.
-3. **The 122px h1 wraps to five lines at 1440px**, making the hero roughly
-   880px tall. It does not clip or overflow, but it pushes the roadmap far down
-   the page. This is the most likely future design change and is currently
-   **open** — see `RETROSPECTIVE.md`, issue 3.7.
+3. **Hero scale reduced 25% after mobile feedback.** Now 35.784px on narrow
+   screens and capped at 91.728px. Verify wrapping on a real phone too.
 4. **A tab icon and social preview tags were not ported.** The skill's
    validator forbids `<link>` elements and any CSS `url(...)`, including data
    URIs. All decoration is CSS gradients, borders, shadows and
@@ -164,14 +162,15 @@ decoration only: the tracker is fully usable with them paused.
   inert `<template>` in `learning-library/src/pals/piixpal-payload.html` (9
   inline scripts, ~83 KB). The controller clones them into the document on
   `requestIdleCallback`, so content renders first. The layer is
-  `position:fixed` and **never clipped**; clipping silently hides every pal
-  outside the clip region. A `MutationObserver` re-anchors pals when the
+  a full-body `position:absolute` layer, clipped only at the complete document
+  boundary. This avoids frame-delayed scroll corrections on mobile. Never
+  clip a zero-size or viewport-height layer: that hides lower-page pals. A `MutationObserver` re-anchors pals when the
   generator rebuilds the stage list on reset/import.
 - **Control:** a "Pause tiny pals" toggle with an `aria-live` status line sits
   between the caveat notice and the roadmap. Preference is stored under
   `fieldnotes-hr-pals-v1`. Pals are **off by default** under
   `prefers-reduced-motion: reduce`; a visitor can still opt in explicitly.
-- **Styling:** `learning-library/src/pals/pals.css` (fixed layer, control
+- **Styling:** `learning-library/src/pals/pals.css` (document-positioned layer, control
   panel, print and reduced-motion rules). No CSS `url()` references.
 
 ### Pals acceptance criteria
@@ -215,3 +214,21 @@ rendered behaviour:
 4. Update this document if a token or acceptance criterion changed, and add a
    line to `CHANGELOG.md`. Do not append another dated "refinements" section
    to this document.
+
+## 9. Playlist and progress compatibility update
+
+Stage 1 now starts with HR Essentials, followed by the direct Talent Acquisition
+playlist. Both use canonical YouTube playlist URLs without sharing parameters.
+There are 27 cards and 25 free cards. The total remains 94 hours: HR Essentials
+uses a one-hour starter budget within Stage 1's existing eight hours, not an
+additional full-course requirement. Playlist runtimes/playback are not verified.
+
+The build layer preserves the old Stage 1 checkbox keys: the new card uses
+`hr-essentials-v1`; existing cards keep `s0-r0`, `s0-r1`, `s0-r2`. Storage ID
+and import/export format stay unchanged, so existing progress needs no migration.
+Browser regression checks restore a legacy saved-state fixture and verify the
+correct cards are checked. The skill and Piixpal payload remain byte-exact.
+
+The scroll regression compares document positioning against the old fixed layer
+in the same JS task, before an animation frame can compensate for scrolling.
+Physical iOS/Android momentum scrolling and YouTube app handoff remain untested.

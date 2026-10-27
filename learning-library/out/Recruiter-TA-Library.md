@@ -5,7 +5,7 @@
 
 ## Start here
 
-This library has 8 stages and 26 resource cards, about 94 hours of study in total. At five hours a week that is roughly 20 weeks. 24 cards were confirmed free from provider pages; 2 are paid or conditional and are labelled on the card. The free set mixes video series, official documentation and written courses, as you asked.
+This library has 8 stages and 27 resource cards, about 94 hours of study in total. At five hours a week that is roughly 20 weeks. 25 cards were confirmed free from provider pages; 2 are paid or conditional and are labelled on the card. The free set mixes video series, official documentation and written courses, as you asked.
 
 The most useful idea in the whole plan sits in Stage 6: ask every candidate the same well-designed questions and score the answers against a rubric you wrote before you met them. Stages 1 to 5 exist so that you can do that well. Stage 7 keeps you on the right side of Nigerian law. Stage 8 turns the practice into evidence you can show an employer.
 
@@ -52,7 +52,7 @@ Learn the hiring lifecycle end to end, the vocabulary of talent acquisition, and
 
 **Level:** Absolute beginner; no prerequisites.
 
-**Effort:** about 8 hours across weeks 1-2.
+**Effort:** about 8 hours across weeks 1-2. This includes a one-hour HR Essentials starter budget; use selected lessons, not both full playlists.
 
 **You will be able to:**
 
@@ -62,17 +62,27 @@ Learn the hiring lifecycle end to end, the vocabulary of talent acquisition, and
 
 **Practice task:** Draw the hiring lifecycle from workforce planning to onboarding and label who owns each step.
 
-**Resources in this stage:** 3.
+**Resources in this stage:** 4.
+
+### The HR Learning Lab: HR Essentials (video playlist)
+
+- **Provider and link:** HR Learning Lab (YouTube) - [Open the playlist](https://www.youtube.com/playlist?list=PLeDNHX61_qlQeRK1_i5flRpz2T0wjQXN2)
+- **Format:** Free video series
+- **Cost and access:** Free
+- **Time:** 1 hour for starter lessons and notes (study budget)
+- **What it teaches, and why this stage:** Start with what HR does, the employee life cycle and the wider HR profession before specialising in talent acquisition.
+- **Next action:** Watch lessons 1-4, then sketch the employee life cycle and explain where recruitment fits. Use remaining study time for notes and review.
+- **Verification:** Checked 2026-10-27: public HR Essentials playlist, 16 listed videos; description and initial lesson titles readable without sign-in. The fetch also exposed a YouTube error banner, so playback and mobile app handoff remain untested. Content developed by Dr. Heather Staples; videos produced using AI-supported tools. This is introductory study, not a professional qualification.
 
 ### The HR Learning Lab: Talent Acquisition (video playlist)
 
-- **Provider and link:** HR Learning Lab (YouTube) - [Open the channel](https://www.youtube.com/@HRLearningLab)
+- **Provider and link:** HR Learning Lab (YouTube) - [Open the playlist](https://www.youtube.com/playlist?list=PLeDNHX61_qlQWYcxZNB19TDOKbl625W2c)
 - **Format:** Free video series
 - **Cost and access:** Free
-- **Time:** About 2 hours for the short lessons
+- **Time:** About 2 hours of selected lessons and notes (study budget)
 - **What it teaches, and why this stage:** Short, beginner-oriented lessons on job analysis, workforce planning, recruiting, selection and hiring practice. The fastest way to hear the vocabulary before reading heavier material.
 - **Next action:** Watch the first five lessons and write a one-page diagram of the hiring lifecycle in your own words.
-- **Verification:** Verified 2026-10-26: public channel, playlist described in the video description. No account or payment seen. The creator states the videos are produced using AI-supported tools, so treat them as a primer and confirm anything consequential against a primary source.
+- **Verification:** Checked 2026-10-27: public Talent Acquisition playlist, 43 listed videos, description and lesson titles readable without sign-in; playback and mobile app handoff not tested. Creator discloses AI-supported production; confirm consequential claims against primary sources.
 
 ### PRDV226: Introduction to Human Resource Management
 

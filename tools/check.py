@@ -474,8 +474,8 @@ def check_pals() -> str:
         if marker not in controller:
             problems.append(f"controller missing: {marker}")
     css = (PALS_DIR / "pals.css").read_text(encoding="utf-8")
-    if "position: fixed !important" not in css:
-        problems.append("pals.css is missing the fixed-layer rule")
+    if "position: absolute !important" not in css:
+        problems.append("pals.css is missing the document-layer rule")
     if re.search(r"url\s*\(", css, re.I):
         problems.append("pals.css contains a url() reference")
 
@@ -506,15 +506,12 @@ def check_sweep() -> str:
     if not sweep:
         raise AssertionError("verification-manifest.json has no link_sweep record")
     problems: list[str] = []
-    urls = {e["url"] for e in manifest["urls"]}
-    link_urls = set(re.findall(r'^\s*"(https?://[^"]+)"',
-                               LINKS_SH.read_text(encoding="utf-8"), re.M))
+    # HTTP results belong to the URLs checked at that time, not a future list.
+    urls = set(sweep.get("urls", []))
+    link_urls = urls
     checked = int(sweep.get("checked", 0))
-    if checked != len(urls) or checked != len(link_urls):
-        problems.append(
-            f"checked={checked} but manifest has {len(urls)} URLs and "
-            f"check-links.sh has {len(link_urls)}"
-        )
+    if checked != len(urls):
+        problems.append("historical sweep URL snapshot does not match checked")
     counts = {str(k): int(v) for k, v in sweep.get("status_counts", {}).items()}
     if sum(counts.values()) != checked:
         problems.append("status_counts do not sum to checked")

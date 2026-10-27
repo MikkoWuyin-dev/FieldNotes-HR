@@ -24,8 +24,8 @@ You chose: free-first (paid extras listed separately), a balanced blend of video
 | `tools/build_tracker.py` | Builds the themed tracker from the JSON while leaving the vendored skill untouched, then injects the pals. |
 | `DESIGN-SYSTEM.md` | Provenance, token table, selector mapping, constraints and verification of the port. |
 | `out/Recruiter-TA-Library.md` | A byte-identical copy of the source, kept with the other outputs. |
-| `src/verification-manifest.json` | Per-URL verification status and date for all 30 checked URLs, plus the first CI link-sweep record; read by `make check`. |
-| `check-links.sh` | A repeatable HTTP status check for all 30 cited URLs. It could not run in the generating sandbox; it now runs weekly in CI and was first dispatched on 27 October 2026. |
+| `src/verification-manifest.json` | Per-URL verification status and date for all 31 current URLs (the historical sweep checked 30), plus the first CI link-sweep record; read by `make check`. |
+| `check-links.sh` | A repeatable HTTP status check for all 31 current cited URLs. It could not run in the generating sandbox; it now runs weekly in CI and was first dispatched on 27 October 2026. |
 | `../tools/check.py` | The single verification runner behind `make check` and `make check-drift`. |
 | `../tools/visual/` | The committed 13-viewport Chromium harness behind `make check-visual`. |
 
@@ -65,9 +65,9 @@ PDF, DOCX, Markdown or static HTML.
 
 ## The shape of the plan
 
-**8 stages, 26 resource cards, 21 distinct resource URLs, about 94 hours of study - roughly 20 weeks at 5 hours a week.** The source document is 6,829 words.
+**8 stages, 27 resource cards, 22 distinct resource URLs, about 94 hours of study - roughly 20 weeks at 5 hours a week.** Stage 1 starts with HR Essentials, then the direct Talent Acquisition playlist; study budgets remain 94 hours.
 
-**24 cards were confirmed free** from provider pages. **2 cards are paid or conditional** and are labelled that way on the card. The paid section of the document discusses a further five paid options, with naira figures from CIPM and clearly marked third-party figures for LinkedIn.
+**25 cards were confirmed free** from provider pages. **2 cards are paid or conditional** and are labelled that way on the card. The paid section of the document discusses a further five paid options, with naira figures from CIPM and clearly marked third-party figures for LinkedIn.
 
 The stages run: orientation -> foundations and fairness -> defining the role -> sourcing -> screening -> structured interviewing -> offers and Nigerian law -> tools, metrics and getting hired. The single most valuable stage is number 6, on structured interviewing. Google's guide there was updated in March 2026 and is free.
 
@@ -131,3 +131,12 @@ The skill is vendored at `.agents/skills/resource-learning-library/`, so it is c
 ## Your first hour
 
 Open the HR Learning Lab channel, watch the first three Talent Acquisition lessons, and draw the hiring lifecycle on one sheet of paper. Then open the Stage 1 Saylor course, create your free account, and tick the first item in the tracker.
+
+### Mobile and playlist correction (27 October 2026)
+
+Hero h1 reduced by 25%; Pals now scroll natively in document space rather than
+using a fixed layer with frame-delayed corrections. New browser regressions cover
+native scroll alignment and legacy saved progress. Historical verification rows
+above describe the earlier 26-card build; the current build has 27 cards. The two
+new playlist URLs have not yet been included in a CI HTTP sweep; their public
+metadata was read, but playback and mobile app handoff still need device testing.
