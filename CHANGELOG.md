@@ -4,7 +4,37 @@ All notable changes to this repository. Dates are in the user's local timezone
 (Africa/Lagos). Verification claims below were actually run; see
 `docs/SETUP.md` for how to reproduce them.
 
-## 27 October 2026 — ten decorative pals (current branch)
+## 27 October 2026 — first link sweep results (current branch)
+
+The weekly URL sweep ran for the first time. It was triggered manually from the
+GitHub Actions UI (run `40471064309`, `workflow_dispatch` on `main`); the
+sandbox's GitHub App token lacks `actions: write`, so `gh workflow run` returns
+403 here. All seven job steps passed.
+
+- **Result: 30 URLs — 27 × 200, 3 × 403.** The three non-2xx URLs were the
+  OpenLearn course page, the NDPC GAID PDF and the Saylor general FAQ.
+- All three 403s were **bot filtering**, not dead links. Each provider page was
+  re-read with a browser-like fetch on 27 October 2026: OpenLearn still says
+  "Free course" / "Free statement of participation"; Saylor still says no
+  tuition or fees and free completion certificates; the NDPC PDF is intact.
+  Their `verified_at` dates were advanced to 2026-10-27.
+- LinkedIn's two pages returned 200 to curl but 403 (`/learning/`) and 500
+  (Recruiter help) to a browser-like recheck, so both remain `unreachable`.
+- Added a `link_sweep` block to
+  `learning-library/src/verification-manifest.json` recording the run, counts,
+  non-2xx findings and the caveat that a 200 does not prove free access. Added
+  a `sweep` check to `tools/check.py` that keeps this record consistent with
+  `check-links.sh` and the 30 manifest URLs.
+- Updated `learning-library/src/recruiter-talent-acquisition-library.md` so the
+  library no longer says the sweep was never performed, and rebuilt all five
+  outputs. Updated `learning-library/README.md`, `docs/SETUP.md`,
+  `RETROSPECTIVE.md` and the workflow/script header comments.
+- Not claimed: the raw `link-status.tsv` artifact (its Azure Blob redirect is
+  outside this sandbox's egress allowlist). The 27 × 200 figure comes from the
+  job summary's counts plus its complete non-2xx list. A status code never
+  proves a resource is free.
+
+## 27 October 2026 — ten decorative pals
 
 Added the reference project's animated pixel creatures to the interactive
 tracker only. No library content changed; PDF, DOCX, Markdown and static HTML

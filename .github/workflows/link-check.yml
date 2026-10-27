@@ -1,8 +1,10 @@
 name: link-check
 
 # The generating sandbox could not reach provider sites, so check-links.sh was
-# never run. GitHub Actions has general outbound network, so run the sweep here
-# on a schedule and on demand. This is a REPORT, not a gate: many providers
+# never run there. First CI run: manual dispatch 40471064309 on 2026-10-27
+# (30 URLs, 27 x 200, 3 x 403; all three 403s were bot filtering and the pages
+# were re-read). GitHub Actions has general outbound network, so run the sweep
+# here on a schedule and on demand. This is a REPORT, not a gate: many providers
 # return 403 to automated clients, and a status code never proves "free".
 on:
   schedule:

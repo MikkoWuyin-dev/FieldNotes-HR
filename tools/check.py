@@ -5,6 +5,8 @@ Every claim this repository makes about its own output is checked here, so a
 reviewer (or CI) can reproduce the verification instead of trusting prose in a
 README. This includes the ten MIT-licensed Piixpal creatures: their count,
 sprite coverage, prose-only targets, pinned payload hash and licence notice.
+It also keeps the first CI link-sweep record internally consistent with
+`check-links.sh` and the per-URL manifest.
 Run via `make check` / `make check-drift`, or directly:
 
     .venv/bin/python tools/check.py                 # all fast checks
@@ -495,7 +497,49 @@ def check_pals() -> str:
 
 
 # --------------------------------------------------------------------------
-# 9. Research freshness (warning by default, fatal under --strict).
+# 9. The first CI link sweep: keep the recorded result internally consistent.
+# --------------------------------------------------------------------------
+@check("sweep")
+def check_sweep() -> str:
+    manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    sweep = manifest.get("link_sweep")
+    if not sweep:
+        raise AssertionError("verification-manifest.json has no link_sweep record")
+    problems: list[str] = []
+    urls = {e["url"] for e in manifest["urls"]}
+    link_urls = set(re.findall(r'^\s*"(https?://[^"]+)"',
+                               LINKS_SH.read_text(encoding="utf-8"), re.M))
+    checked = int(sweep.get("checked", 0))
+    if checked != len(urls) or checked != len(link_urls):
+        problems.append(
+            f"checked={checked} but manifest has {len(urls)} URLs and "
+            f"check-links.sh has {len(link_urls)}"
+        )
+    counts = {str(k): int(v) for k, v in sweep.get("status_counts", {}).items()}
+    if sum(counts.values()) != checked:
+        problems.append("status_counts do not sum to checked")
+    non_2xx = sweep.get("non_2xx", [])
+    if len(non_2xx) != counts.get("403", 0):
+        problems.append("non_2xx list length does not match the 403 count")
+    for row in non_2xx:
+        if row.get("url") not in urls or row.get("url") not in link_urls:
+            problems.append(f"non-2xx URL not in manifest/script: {row.get('url')}")
+        if str(row.get("status", "")).startswith("2"):
+            problems.append(f"non-2xx row has a 2xx status: {row.get('url')}")
+        if not row.get("finding") or "bot filtering" not in row["finding"].lower():
+            problems.append(f"non-2xx row lacks a bot-filtering finding: {row.get('url')}")
+    for field in ("run_id", "run_url", "event", "ref", "checked_at", "notes"):
+        if not sweep.get(field):
+            problems.append(f"link_sweep missing {field}")
+    if problems:
+        raise AssertionError("; ".join(problems))
+    return (f"run {sweep['run_id']}: {checked} URLs, "
+            f"{counts.get('200', 0)}×200 / {counts.get('403', 0)}×403; "
+            "3 bot-filtering 403s re-read")
+
+
+# --------------------------------------------------------------------------
+# 10. Research freshness (warning by default, fatal under --strict).
 # --------------------------------------------------------------------------
 @check("freshness")
 def check_freshness(today: dt.date | None = None, strict: bool = False) -> str:
@@ -525,7 +569,7 @@ def check_freshness(today: dt.date | None = None, strict: bool = False) -> str:
 
 
 # --------------------------------------------------------------------------
-# 10. Full rebuild: every shipped output still reproduces from source.
+# 11. Full rebuild: every shipped output still reproduces from source.
 # --------------------------------------------------------------------------
 @check("drift")
 def check_drift() -> str:
@@ -595,7 +639,7 @@ def pin_hashes() -> None:
 
 
 FAST = ("skill-hashes", "unit", "validators", "style", "contract",
-        "sources", "docs", "pals", "freshness")
+        "sources", "docs", "pals", "sweep", "freshness")
 
 
 def main(argv: list[str] | None = None) -> int:

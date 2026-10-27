@@ -241,11 +241,19 @@ byte-identical at SHA-256
   push (`40421681523`) and the pull request (`40421748294`); in each run both
   `build + verify` and `13-viewport browser checks` passed in GitHub Actions.
   The local results above are therefore reproducible on a clean runner. The
-  scheduled `link-check` workflow only fires weekly or on manual dispatch, so
-  **its results are still unobserved** and no HTTP status codes are claimed.
+  scheduled `link-check` workflow only fires weekly or on manual dispatch.
+  **Postscript, 27 October 2026:** it has now been dispatched manually (run
+  `40471064309`) and all steps passed — 30 URLs, 27 × 200, 3 × 403. The three
+  403s were bot filtering; those provider pages were re-read and their free
+  claims still hold. Results are in
+  `learning-library/src/verification-manifest.json`.
 - **The URL sweep still has not been run from this sandbox.** `curl` here still
-  returns `000` with an SSL error. GitHub Actions can now run it weekly and
-  publishes a TSV report as an artifact. A status code never proves a resource
+  returns `000` with an SSL error, and the sandbox's GitHub App token cannot
+  dispatch the workflow (`actions: write` is missing), so the run was started
+  from the GitHub Actions UI. CI log and artifact hosts are also outside the
+  egress allowlist, so the raw TSV was not downloaded; counts come from the job
+  summary. GitHub Actions can now run it weekly and publishes a TSV report as
+  an artifact. A status code never proves a resource
   is free — a human still has to read the provider page.
 - **The `skill-issue` MCP endpoint is still unreachable from this sandbox.**
   The registration is durable and documented, but skill discovery here still
