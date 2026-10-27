@@ -4,6 +4,15 @@ All notable changes to this repository. Dates are in the user's local timezone
 (Africa/Lagos). Verification claims below were actually run; see
 `docs/SETUP.md` for how to reproduce them.
 
+## 27 October 2026 — static Vercel deployment configuration
+
+- Added root `vercel.json`: publish only `learning-library/out`, rewrite `/`
+  to the tracker, and skip install/build commands for committed static assets.
+- Added `docs/DEPLOYMENT.md` with import settings, localStorage migration,
+  reminder limitations and a production smoke-test checklist; linked from README.
+- Added two stdlib deployment contract tests and wired them into verify CI.
+- No live deployment or Vercel account settings were changed.
+
 ## 27 October 2026 — first link sweep results (current branch)
 
 The weekly URL sweep ran for the first time. It was triggered manually from the
