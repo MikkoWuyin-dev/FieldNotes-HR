@@ -17,6 +17,13 @@ make check-drift   # prove the shipped outputs reproduce from source
 `docs/SETUP.md` is the canonical setup and verification guide. CI runs the same
 commands plus `make check-visual` on every push and pull request.
 
+## Deployment
+
+Vercel configuration is in `vercel.json`: only `learning-library/out` is
+published, with `/` mapped to the tracker and no server/build dependencies.
+Keep the Vercel project root at the repository root. See `docs/DEPLOYMENT.md`
+for import settings, progress migration and the production smoke-test checklist.
+
 ## Repository contents
 
 - **`learning-library/`** — the deliverables: PDF, DOCX, Markdown, static HTML

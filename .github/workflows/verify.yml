@@ -30,6 +30,9 @@ jobs:
       - name: Bootstrap pinned environment
         run: make bootstrap
 
+      - name: Static deployment contract
+        run: python3 -m unittest discover -s tools -p 'test_deployment.py'
+
       - name: Fast checks
         run: make check
 
