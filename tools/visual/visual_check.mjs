@@ -38,7 +38,7 @@ const EXPECTED = {
   eyebrowInk: 'rgb(17, 20, 43)',
   eyebrowFill: 'rgb(255, 225, 104)',
   footer: 'Made with love and fried plantain, by Moyinoluwa',
-  cards: 26,
+  cards: 27,
   stages: 8,
 };
 
@@ -95,6 +95,37 @@ try {
   } catch (_) {
     palsMounted = false;
   }
+
+  // Scroll coupling regression: with RAF paused, compositor/native scrolling
+  // must move every actor by exactly the same amount as its document target.
+  await page.setViewport({width:390,height:900,deviceScaleFactor:1});
+  const scrollRegression = await page.evaluate(() => {
+    const layer = document.querySelector('div[data-piixpal]');
+    const actors = [...layer.shadowRoot.querySelectorAll('.a')];
+    cancelAnimationFrame(window.Piixpal._k.raf);
+    // Measure in a single JS task, before the next engine frame can compensate.
+    const before = actors.map(a => a.getBoundingClientRect().top);
+    const y = scrollY;
+    window.scrollTo({top:y + 240, behavior:'instant'});
+    const delta = scrollY - y;
+    const errors = actors.map((a,i) => Math.abs(a.getBoundingClientRect().top - before[i] + delta));
+    window.scrollTo({top:y, behavior:'instant'});
+    // Control experiment: the former fixed layer lags by the full scroll delta
+    // until its engine frame updates the origin.
+    layer.style.setProperty('position','fixed','important');
+    const fixedBefore = actors.map(a => a.getBoundingClientRect().top);
+    window.scrollTo({top:y+240,behavior:'instant'});
+    const fixedError = Math.max(...actors.map((a,i) => Math.abs(a.getBoundingClientRect().top-fixedBefore[i]+240)));
+    window.scrollTo({top:y,behavior:'instant'});
+    layer.style.removeProperty('position');
+    return {delta, maxError:Math.max(...errors), fixedError};
+  });
+  if (scrollRegression.delta === 0 || scrollRegression.maxError > 1 || scrollRegression.fixedError < 200) {
+    runtimeErrors.push('scroll coupling failed: '+JSON.stringify(scrollRegression));
+  }
+  console.log('Native scroll coupling:', JSON.stringify(scrollRegression));
+  await page.reload({waitUntil:'load'});
+  await waitForPals(page);
 
   // 8b. The default view has the stage bodies collapsed. That is what a
   // visitor sees first, and it is where the pals control panel sits directly
@@ -240,7 +271,7 @@ try {
       const canvases = layer && layer.shadowRoot
         ? [...layer.shadowRoot.querySelectorAll('.a canvas')] : [];
       if (!layer) failures.push('pals layer missing');
-      else if (getComputedStyle(layer).position !== 'fixed') failures.push('pals layer is not fixed');
+      else if (getComputedStyle(layer).position !== 'absolute') failures.push('pals layer is not document-positioned');
       if (canvases.length < palCount) failures.push(`only ${canvases.length} pal actors rendered`);
 
       let centreHits = 0;
@@ -275,12 +306,27 @@ try {
       const controlsVisible = !document.getElementById('pals-controls')?.hidden;
       if (!controlsVisible) failures.push('pals control panel is hidden');
 
+      // Hit-test actual links, not only sprite rectangles. Shadow-root :host
+      // rules can make the *empty overlay* intercept clicks even with no
+      // creature overlapping a link. Scroll every link into the viewport.
+      let blockedLinks = 0;
+      const originalY = scrollY;
+      for (const link of links) {
+        link.scrollIntoView({block:'center', behavior:'instant'});
+        const r = rect(link);
+        const hit = document.elementFromPoint(r.left+r.width/2, r.top+r.height/2);
+        if (!(hit === link || link.contains(hit))) blockedLinks++;
+      }
+      window.scrollTo({top:originalY, behavior:'instant'});
+      if (blockedLinks) failures.push(`${blockedLinks} resource links intercepted by another element`);
+
       return {
         failures: [...new Set(failures)],
         scrollW,
         h1FontPx: h1 ? px(parseFloat(getComputedStyle(h1).fontSize)) : 0,
         tagFills: fills.size,
         worstBottomDelta: px(worstBottomDelta),
+        blockedLinks,
         palEls,
         actors: canvases.length,
         centreHits,
@@ -291,10 +337,75 @@ try {
     results.push({ width, ...measured });
   }
 
+  // Real pointer input, with only external navigation suppressed so the
+  // sandbox's YouTube egress restriction does not masquerade as a link bug.
+  const activationChecks = [];
+  for (const width of [390, 1440]) {
+    await page.setViewport({width,height:900,deviceScaleFactor:1,hasTouch:true});
+    await page.evaluate(() => {
+      document.querySelector('details.stage').open = true;
+      window.linkActivations = [];
+      window.captureResourceActivation = event => {
+        const link = event.target.closest('.resource a');
+        if (!link) return;
+        event.preventDefault();
+        window.linkActivations.push({href:link.href, trusted:event.isTrusted});
+      };
+      document.addEventListener('click', window.captureResourceActivation);
+    });
+    const links = await page.$$('.stage[data-stage="0"] .resource a');
+    for (const link of links.slice(0,2)) {
+      await link.evaluate(el => el.scrollIntoView({block:'center',behavior:'instant'}));
+      await link.click();
+      await link.tap();
+    }
+    const activated = await page.evaluate(() => {
+      document.removeEventListener('click',window.captureResourceActivation);
+      return window.linkActivations;
+    });
+    const ok = activated.length === 4 && activated.every(a=>a.trusted && a.href.includes('/playlist?list='));
+    activationChecks.push({width, ok, activated});
+    if (!ok) runtimeErrors.push('mouse/touch link activation failed at '+width);
+  }
+  // Confirm default target=_blank navigation is requested, without the
+  // capture/preventDefault instrumentation above. External loading itself is
+  // not a test here: provider hosts are blocked by the sandbox's egress policy.
+  const session = await page.createCDPSession();
+  await session.send('Page.enable');
+  const windowRequests = [];
+  session.on('Page.windowOpen', event => windowRequests.push(event.url));
+  const pagesBefore = new Set(await browser.pages());
+  const firstLink = await page.$('.stage[data-stage="0"] .resource a');
+  await firstLink.evaluate(el=>el.scrollIntoView({block:'center',behavior:'instant'}));
+  await firstLink.click();
+  await new Promise(resolve=>setTimeout(resolve,250));
+  if (!windowRequests.some(url=>url.includes('list=PLeDNHX61_qlQeRK1_i5flRpz2T0wjQXN2'))) {
+    runtimeErrors.push('default playlist click did not request new-tab navigation');
+  }
+  console.log('Default new-tab navigation requests:',JSON.stringify(windowRequests));
+  for (const opened of await browser.pages()) {
+    if (!pagesBefore.has(opened)) await opened.close();
+  }
+  await session.detach();
+  console.log('Mouse + touch playlist activation:', JSON.stringify(activationChecks));
+
   // 9. Functional checks at desktop width, on a clean localStorage.
   await page.setViewport({ width: 1440, height: 900, deviceScaleFactor: 1 });
   await page.evaluate(() => localStorage.clear());
   await page.reload({ waitUntil: 'load' });
+  // Old localStorage/backups retain positional keys for the existing cards.
+  const oldKeys = await page.evaluate(() => [0,1,2,3].map(i => resourceKey(0,i)));
+  if (JSON.stringify(oldKeys) !== JSON.stringify(['hr-essentials-v1','s0-r0','s0-r1','s0-r2'])) {
+    runtimeErrors.push('existing Stage 1 keys shifted: '+JSON.stringify(oldKeys));
+  }
+  await page.evaluate(() => localStorage.setItem(STORAGE_KEY, JSON.stringify({done:{'s0-r0':true,'s0-r2':true},activityDates:[]})));
+  await page.reload({waitUntil:'load'});
+  const restored = await page.$$eval('.stage[data-stage="0"] .completion input', inputs => inputs.map(i=>i.checked));
+  if (JSON.stringify(restored) !== JSON.stringify([false,true,false,true])) {
+    runtimeErrors.push('old progress restored to wrong cards: '+JSON.stringify(restored));
+  }
+  await page.evaluate(() => localStorage.clear());
+  await page.reload({waitUntil:'load'});
   const before = await page.$eval('#progress-label', (el) => el.textContent.trim());
   await page.evaluate(() => {
     document.querySelector('.resource .completion input[type="checkbox"]').click();
@@ -305,8 +416,8 @@ try {
     stored: Object.keys(localStorage).length > 0,
   }));
   const functional = [];
-  if (!before.includes('0 of 26')) functional.push(`initial label unexpected: ${before}`);
-  if (!after.label.includes('1 of 26')) functional.push(`after tick: ${after.label}`);
+  if (!before.includes('0 of 27')) functional.push(`initial label unexpected: ${before}`);
+  if (!after.label.includes('1 of 27')) functional.push(`after tick: ${after.label}`);
   if (after.pct !== '4%') functional.push(`after tick percent: ${after.pct}`);
   if (!after.stored) functional.push('progress was not written to localStorage');
 
@@ -319,7 +430,7 @@ try {
   await page.evaluate(() => document.getElementById('reset-progress').click());
   await new Promise((r) => setTimeout(r, 150));
   const reset = await page.$eval('#progress-label', (el) => el.textContent.trim());
-  if (!reset.includes('0 of 26')) functional.push(`after reset: ${reset}`);
+  if (!reset.includes('0 of 27')) functional.push(`after reset: ${reset}`);
 
   // 10. Pause toggle removes every pal; enabling brings them back.
   try { await waitForPals(page); } catch (_) { functional.push('pals did not return after reset'); }
@@ -397,6 +508,8 @@ try {
     widths: results,
     collapsed,
     collapsedFailures,
+    activationChecks,
+    windowRequests,
     functional,
     toggleChecks,
     reduced,

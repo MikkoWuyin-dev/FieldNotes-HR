@@ -4,6 +4,25 @@ All notable changes to this repository. Dates are in the user's local timezone
 (Africa/Lagos). Verification claims below were actually run; see
 `docs/SETUP.md` for how to reproduce them.
 
+## 27 October 2026 — mobile hero, playlists and scroll alignment
+
+- Reduced the hero h1 clamp by 25% (35.784px mobile / 91.728px max).
+- Added HR Essentials first in Stage 1; replaced the TA channel link with the
+  supplied direct playlist. Removed sharing parameters. Read public playlist
+  descriptions and lesson listings; playback/app handoff not tested.
+- 27 cards / 25 free; preserved the 94-hour budget using selected starter lessons.
+- Preserved all existing checkbox keys, localStorage ID and backup compatibility.
+- Switched Pals from fixed positioning to a full-document absolute layer so
+  scrolling does not depend on animation-frame correction. Engine unchanged.
+- Added browser regressions for native scroll alignment and old progress; updated
+  card expectations, historical sweep snapshot and regenerated all outputs.
+- Real-phone momentum scrolling and YouTube app handoff remain to be tested.
+- Investigated non-clickable embedded preview links: all 27 links pass actual
+  hit-testing at 13 widths; trusted mouse/touch events reach both playlists,
+  and an unsuppressed click requests the correct new-tab URL. Added these
+  regressions. Embedded Arena preview restrictions remain unverified; no
+  application navigation changes were made based on an unconfirmed cause.
+
 ## 27 October 2026 — static Vercel deployment configuration
 
 - Added root `vercel.json`: publish only `learning-library/out`, rewrite `/`

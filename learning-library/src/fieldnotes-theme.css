@@ -139,9 +139,9 @@ button{cursor:pointer}
    5px of space between the eyebrow and the h1. */
 .hero .eyebrow,.hero .hero-eyebrow{margin:10px 0 5px;color:var(--fn-ink)}
 .hero h1{
-  /* 1.4x the previous clamp(2.13rem,6.21vw,5.46rem), as requested. */
+  /* 25% smaller than the previous hero scale, for mobile wrapping. */
   max-width:18ch;margin:0 0 10px;
-  font:900 clamp(2.982rem,8.694vw,7.644rem)/.98 var(--fn-prose);
+  font:900 clamp(2.2365rem,6.5205vw,5.733rem)/.98 var(--fn-prose);
   letter-spacing:-.035em;
 }
 .hero p#subtitle{

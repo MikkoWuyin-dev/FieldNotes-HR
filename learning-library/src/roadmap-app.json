@@ -16,17 +16,30 @@
       ],
       "resources": [
         {
-          "title": "The HR Learning Lab: Talent Acquisition (video playlist)",
+          "title": "The HR Learning Lab: HR Essentials (video playlist)",
           "provider": "HR Learning Lab (YouTube)",
-          "url": "https://www.youtube.com/@HRLearningLab",
+          "url": "https://www.youtube.com/playlist?list=PLeDNHX61_qlQeRK1_i5flRpz2T0wjQXN2",
           "modality": "Free video series",
           "cost": "Free",
-          "duration": "About 2 hours for the short lessons",
+          "duration": "1 hour for starter lessons and notes (study budget)",
+          "why": "Start with what HR does, the employee life cycle and the wider HR profession before specialising in talent acquisition.",
+          "action": "Watch lessons 1-4, then sketch the employee life cycle and explain where recruitment fits. Use remaining study time for notes and review.",
+          "access_note": "Checked 2026-10-27: public HR Essentials playlist, 16 listed videos; description and initial lesson titles readable without sign-in. The fetch also exposed a YouTube error banner, so playback and mobile app handoff remain untested. Content developed by Dr. Heather Staples; videos produced using AI-supported tools. This is introductory study, not a professional qualification.",
+          "verification_date": "2026-10-27",
+          "link_label": "Open the playlist"
+        },
+        {
+          "title": "The HR Learning Lab: Talent Acquisition (video playlist)",
+          "provider": "HR Learning Lab (YouTube)",
+          "url": "https://www.youtube.com/playlist?list=PLeDNHX61_qlQWYcxZNB19TDOKbl625W2c",
+          "modality": "Free video series",
+          "cost": "Free",
+          "duration": "About 2 hours of selected lessons and notes (study budget)",
           "why": "Short, beginner-oriented lessons on job analysis, workforce planning, recruiting, selection and hiring practice. The fastest way to hear the vocabulary before reading heavier material.",
           "action": "Watch the first five lessons and write a one-page diagram of the hiring lifecycle in your own words.",
-          "access_note": "Verified 2026-10-26: public channel, playlist described in the video description. No account or payment seen. The creator states the videos are produced using AI-supported tools, so treat them as a primer and confirm anything consequential against a primary source.",
-          "verification_date": "2026-10-26",
-          "link_label": "Open the channel"
+          "access_note": "Checked 2026-10-27: public Talent Acquisition playlist, 43 listed videos, description and lesson titles readable without sign-in; playback and mobile app handoff not tested. Creator discloses AI-supported production; confirm consequential claims against primary sources.",
+          "verification_date": "2026-10-27",
+          "link_label": "Open the playlist"
         },
         {
           "title": "PRDV226: Introduction to Human Resource Management",

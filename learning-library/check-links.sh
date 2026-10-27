@@ -10,7 +10,8 @@
 set -u
 printf "status\turl\n"
 urls=(
-  "https://www.youtube.com/@HRLearningLab"
+  "https://www.youtube.com/playlist?list=PLeDNHX61_qlQeRK1_i5flRpz2T0wjQXN2"
+  "https://www.youtube.com/playlist?list=PLeDNHX61_qlQWYcxZNB19TDOKbl625W2c"
   "https://learn.saylor.org/course/view.php?id=1292"
   "https://openstax.org/books/principles-management/pages/11-introduction"
   "https://www.open.edu/openlearn/money-business/human-resources/human-resources-recruitment-and-selection/content-section-0"

@@ -1,15 +1,16 @@
 /* Decorative pals (Piixpal v0.4.0, MIT) — Fieldnotes styling.
    Injected as a third inline <style> block by tools/build_tracker.py. */
 
-/* The engine creates a 0x0 layer with an inline position:absolute. Left
-   absolute, a pal drifting past the footer lengthens the document and leaves
-   blank space. Fixed removes it from scrollable overflow entirely, and the
-   engine recomputes its origin every animation frame so pals still track their
-   targets as the page scrolls. NEVER clip or hide this layer with overflow:
-   an overflow:clip region silently makes every pal outside it invisible. */
+/* Keep the layer in document space. A fixed layer needs JS scroll correction
+   every frame, which can lag compositor-driven mobile scrolling. A full-body
+   absolute layer scrolls natively with its targets. Clip only at the complete
+   document boundary, not a zero-size layer or viewport-sized region. */
+body { position: relative; }
 div[data-piixpal] {
-  position: fixed !important;
-  overflow: visible !important;
+  position: absolute !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: clip !important;
 }
 
 /* The optional control panel sits between the caveat notice and the roadmap.
