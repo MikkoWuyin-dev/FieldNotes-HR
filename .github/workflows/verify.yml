@@ -27,21 +27,8 @@ jobs:
           cache: pip
           cache-dependency-path: requirements.lock
 
-      - name: Bootstrap pinned environment
-        run: make bootstrap
-
-      - name: Static deployment contract
-        run: python3 -m unittest discover -s tools -p 'test_*.py'
-
-      - name: Fast checks
-        run: make check
-
-      - name: Prove committed outputs reproduce from source
-        run: make check-drift
-
-      - name: Freshness report (non-blocking)
-        if: always()
-        run: .venv/bin/python tools/check.py freshness || true
+      - name: Verify core (shared local/CI entry point)
+        run: make verify-core
 
   visual:
     name: 13-viewport browser checks
@@ -60,4 +47,4 @@ jobs:
       # Chromium is bundled in the npm tarball, so no browser download is
       # needed. The harness inflates its AL2023 shared libraries explicitly.
       - name: Run headless geometry, colour and functionality checks
-        run: make check-visual
+        run: make verify-browser

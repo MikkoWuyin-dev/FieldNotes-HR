@@ -33,6 +33,7 @@ REPO = ROOT.parent                      # FieldNotes-HR/
 SKILL_SCRIPTS = REPO / ".agents" / "skills" / "resource-learning-library" / "scripts"
 
 sys.path.insert(0, str(SKILL_SCRIPTS))
+import content
 import interactive_app  # noqa: E402  (vendored generator, imported not modified)
 
 DATA_PATH = ROOT / "src" / "roadmap-app.json"
@@ -74,10 +75,7 @@ def facts(data: dict) -> list[str]:
     hours = sum(int(s.get("estimated_hours") or 0) for s in stages)
     week_numbers = [int(n) for s in stages for n in re.findall(r"\d+", str(s.get("duration", "")))]
     weeks = max(week_numbers) if week_numbers else 0
-    free = sum(
-        1 for s in stages for r in s.get("resources", [])
-        if not str(r.get("cost", "")).lower().startswith("paid")
-    )
+    free = data["verified_free_count"]
     return [
         f"{len(stages):02d} STAGES",
         f"{cards} LEARNING CARDS",
@@ -135,7 +133,7 @@ def inject_pals(html: str, src: dict) -> str:
     """Layer the optional decorative pals onto the already-themed app."""
     for pattern, replacement, label in pals_edits(src):
         # A lambda keeps the replacement literal: no backreference expansion.
-        new, count = re.subn(pattern, lambda _m, r=replacement: r, html, count=1)
+        new, count = re.subn(pattern, lambda _m, r=replacement: r, html)
         if count != 1:
             raise RuntimeError(f"pals anchor not found: {label}")
         html = new
@@ -192,28 +190,58 @@ def branding_edits(data: dict) -> list[tuple[str, str, str]]:
     ]
 
 
+def replace_once(html: str, old: str, new: str, label: str) -> str:
+    if html.count(old) != 1:
+        raise RuntimeError(f"extension anchor missing or duplicated: {label}")
+    return html.replace(old, new, 1)
+
+
+def progress_edits(data: dict) -> list[tuple[str, str, str]]:
+    ledger = json.loads((ROOT / 'src/progress-compatibility.json').read_text())
+    aliases = {old: prefix+identity for kind,prefix in [('resources','resource:'),('stages','stage:')]
+               for identity,old_keys in ledger[kind].items() for old in old_keys}
+    adapter = (ROOT / 'src/progress-adapter.js').read_text()
+    if adapter.count('__PROGRESS_ALIASES__') != 1:
+        raise RuntimeError('progress aliases slot missing or duplicated')
+    adapter = adapter.replace('__PROGRESS_ALIASES__',json.dumps(aliases,sort_keys=True))
+    identities = [{'id': stage['id'], 'resources': [r['id'] for r in stage['resources']]}
+                  for stage in data['stages']]
+    bridge = ('const RESOURCE_ITEMS = [];\nconst PROGRESS_IDENTITIES = '
+              + json.dumps(identities, separators=(',', ':'))
+              + ';\nDATA.stages.forEach((stage,si) => { stage.id=PROGRESS_IDENTITIES[si].id; '
+              'stage.resources.forEach((resource,ri) => { resource.id=PROGRESS_IDENTITIES[si].resources[ri]; }); });')
+    return [
+        ('const RESOURCE_ITEMS = [];', bridge, 'identity bridge'),
+        ('function loadState() {', adapter+'\nfunction loadLegacyState() {', 'progress loader'),
+        ('function resourceKey(stageIndex, resourceIndex) { return `s${stageIndex}-r${resourceIndex}`; }',
+         'function resourceKey(stageIndex, resourceIndex) { return "resource:" + DATA.stages[stageIndex].resources[resourceIndex].id; }', 'progress-key'),
+        ('function stageKey(stageIndex) { return `s${stageIndex}-complete`; }',
+         'function stageKey(stageIndex) { return "stage:" + DATA.stages[stageIndex].id; }', 'stage-key'),
+        ("{version:1,title:DATA.title,done:state.done,activityDates:state.activityDates,reminderTime:state.reminderTime}",
+         "{version:2,storage_id:DATA.storage_id,title:DATA.title,done:state.done,activityDates:state.activityDates,reminderTime:state.reminderTime}", 'backup export'),
+        ("const incoming=JSON.parse(await file.text()); if(!incoming || typeof incoming.done!=='object' || !Array.isArray(incoming.activityDates)) throw new Error('format');",
+         "const incoming=normalizeProgress(JSON.parse(await file.text()),true);", 'backup import'),
+    ]
+
+
+def apply_progress(html: str, data: dict) -> str:
+    for old,new,label in progress_edits(data):
+        html = replace_once(html,old,new,label)
+    return html
+
+
 def transform(html: str, data: dict, theme_css: str) -> str:
     for pattern, replacement, label in branding_edits(data):
         # A lambda keeps the replacement literal: no backreference expansion.
-        new, count = re.subn(pattern, lambda _m, r=replacement: r, html, count=1)
+        new, count = re.subn(pattern, lambda _m, r=replacement: r, html)
         if count != 1:
             raise RuntimeError(f"branding anchor not found: {label}")
         html = new
 
-    # Preserve all pre-existing positional keys, including imported backups.
-    # Stage 1's new first card must not inherit the former first card's tick.
-    original = 'function resourceKey(stageIndex, resourceIndex) { return `s${stageIndex}-r${resourceIndex}`; }'
-    replacement = ('function resourceKey(stageIndex, resourceIndex) { '
-                   'if (stageIndex === 0) { '
-                   'if (resourceIndex === 0) return "hr-essentials-v1"; '
-                   'return `s0-r${resourceIndex - 1}`; } '
-                   'return `s${stageIndex}-r${resourceIndex}`; }')
-    if html.count(original) != 1:
-        raise RuntimeError('progress-key anchor missing or duplicated')
-    html = html.replace(original, replacement)
+    html = apply_progress(html, data)
 
     style = '<style data-theme="fieldnotes">\n' + theme_css.rstrip() + "\n</style>\n"
-    if "</head>" not in html:
+    if html.count("</head>") != 1:
         raise RuntimeError("branding anchor not found: </head>")
     html = html.replace("</head>", favicon_tag() + "\n" + style + "</head>", 1)
     return html
@@ -261,7 +289,8 @@ def assert_self_contained(html: str) -> None:
 
 
 def main() -> int:
-    data = json.loads(DATA_PATH.read_text(encoding="utf-8"))
+    content.generate()
+    data = content.app_data(content.load())
     theme_css = THEME_PATH.read_text(encoding="utf-8")
     pals_src = load_pals_sources()
 

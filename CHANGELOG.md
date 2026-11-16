@@ -1,5 +1,43 @@
 # Changelog
 
+## Unreleased — Phase 2 content and progress contracts
+
+- Added one canonical catalogue plus narrative slots; generated document,
+  tracker data, manifest and repeated current totals now have drift checks.
+- Reconciled stale first-hour instructions; preserved every existing resource
+  teaching/action/access field, original dates, legal caveats and naira fees.
+- Explicit study/certificate/account evidence classifications replace the hero
+  cost-string heuristic: 24 confirmed-free cards, excluding partial Jobberman.
+- Permanent resource/stage IDs and a frozen legacy alias ledger preserve saved
+  local and imported progress. Version 2 exports carry the storage identity.
+- Branding, progress and Pals extension anchors reject missing and duplicate
+  matches. The local identity bridge restores fields stripped by the protected
+  generator; no vendor source was changed.
+- See `docs/CONTENT-MODEL.md` and `docs/PHASE-2-VERIFICATION.md`. No publication
+  or deployment; fresh-agent repository rehearsal remains Phase 3.
+
+
+## Unreleased — Phase 1 agent recovery and verification
+
+- Added root `AGENTS.md`: session entry point, source/protected boundaries,
+  approval/branch rules, recovery commands, capability/retry policy and honest
+  handoff requirements. Historical reports are not current setup instructions.
+- Added offline/read-only `make doctor` with optional loopback-only preview
+  identity probing. No automatic provider requests, installs or repairs.
+- Bootstrap now checks live pinned versions, imports and pip consistency;
+  `make repair-env` transactionally replaces only a recognized project venv,
+  restores on handled failure, and refuses unsafe paths/backups/concurrency.
+- Added full `make verify` and shared core/browser CI scopes. Required failures
+  or NOT RUN layers cannot produce a full-success result; research warnings stay
+  visible. Legacy `make ci` is explicitly only fast + drift.
+- Preview identifies tracker bytes by SHA-256 in startup output and headers.
+- Corrected current setup/count/layer/favicon instructions and narrowed doc-lint
+  wording; added current-summary assertions and tooling safety tests.
+- No delivered artifact, protected vendor source, progress behavior, provider
+  finding or hosting configuration changed. The old teaching “first hour” prose
+  remains a separately disclosed content follow-up. See the Phase 1 verification
+  note for actual test evidence and the boundary with later phases.
+
 All notable changes to this repository. Dates are in the user's local timezone
 (Africa/Lagos). Verification claims below were actually run; see
 `docs/SETUP.md` for how to reproduce them.

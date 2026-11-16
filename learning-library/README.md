@@ -17,8 +17,8 @@ You chose: free-first (paid extras listed separately), a balanced blend of video
 | `out/Recruiter-TA-Library.docx` | Editable Word version of the same document. |
 | `out/Recruiter-TA-Library.html` | Self-contained static web page. No scripts, no external assets. |
 | `out/roadmap-app.html` | Single-file interactive tracker: 8 stages, checkboxes, progress, daily streak, export/import. **Styled with the Fieldnotes design system and decorated with 10 optional pixel pals.** Open it in a browser. |
-| `src/recruiter-talent-acquisition-library.md` | The editable Markdown source. This is the file to change if you want a revision. |
-| `src/roadmap-app.json` | The structured roadmap and resource data behind the tracker. |
+| `src/recruiter-talent-acquisition-library.md` | Generated document projection; do not edit directly. |
+| `src/roadmap-app.json` | Generated tracker data projection; do not edit directly. |
 | `src/fieldnotes-theme.css` | The ported Fieldnotes design tokens and component overrides. |
 | `src/pals/` | The 10 decorative pals: `src/pals/pals.json` (placements), `src/pals/pals-controller.js`, `src/pals/pals.css`, the vendored MIT-licensed Piixpal engine and its licence. |
 | `tools/build_tracker.py` | Builds the themed tracker from the JSON while leaving the vendored skill untouched, then injects the pals. |
@@ -35,7 +35,7 @@ The skill that produced everything here is vendored at **`.agents/skills/resourc
 
 The interactive tracker was restyled on **26 October 2026** with the design system from `MikkoWuyin-dev/Field-Notes_Nature-Photography`: dark navy frame, warm cream paper, bright blue/cyan/pink/yellow accents, monospace chrome, thick borders, hard offset shadows and square corners. The source uses only system fonts and CSS-generated decoration, so the whole look ported into a self-contained file with no external assets.
 
-The theme lives in `src/fieldnotes-theme.css` and is applied by `tools/build_tracker.py` as a second inline style block; the vendored skill's generator is imported but never modified. See `DESIGN-SYSTEM.md` for the full token table and what could not be copied (a tab icon and social preview tags, which the validator forbids). The PDF, DOCX, Markdown and static HTML library are unchanged.
+The theme lives in `src/fieldnotes-theme.css` and is applied by `tools/build_tracker.py` as a second inline style block; the vendored skill's generator is imported but never modified. See `DESIGN-SYSTEM.md` for the historical port. The tracker now includes the exact hash-pinned inline reference favicon through the local validation adapter; social preview metadata was not added. The PDF, DOCX, Markdown and static HTML library are unchanged.
 
 Four rounds of refinements followed the initial port: hero/footer/eyebrow/card-foot changes, coloured tags and stage markers, a rebalanced hero type scale, and finally a larger h1 with baseline-aligned stage headers and tighter spacing. Each round is recorded in `CHANGELOG.md` and in the historical `DESIGN-SYSTEM.md`. **The current values live in `docs/DESIGN-SPEC.md`** — read that rather than the chronological log, because later rounds replace earlier ones (the 40% h1 increase was requested twice and applied once).
 
@@ -65,9 +65,7 @@ PDF, DOCX, Markdown or static HTML.
 
 ## The shape of the plan
 
-**8 stages, 27 resource cards, 22 distinct resource URLs, about 94 hours of study - roughly 20 weeks at 5 hours a week.** Stage 1 starts with HR Essentials, then the direct Talent Acquisition playlist; study budgets remain 94 hours.
-
-**25 cards were confirmed free** from provider pages. **2 cards are paid or conditional** and are labelled that way on the card. The paid section of the document discusses a further five paid options, with naira figures from CIPM and clearly marked third-party figures for LinkedIn.
+See the generated current maintenance summary below for totals. Stage 1 starts with HR Essentials, then the direct Talent Acquisition playlist. Paid and conditional access is labelled separately; Jobberman remains partially verified, not confirmed free.
 
 The stages run: orientation -> foundations and fairness -> defining the role -> sourcing -> screening -> structured interviewing -> offers and Nigerian law -> tools, metrics and getting hired. The single most valuable stage is number 6, on structured interviewing. Google's guide there was updated in March 2026 and is free.
 
@@ -114,7 +112,7 @@ Progress lives in **this browser's local storage**. The streak uses the device's
 
 ## If you want a revision
 
-The Markdown source and the JSON are the two files to edit for content; `src/fieldnotes-theme.css` is the file to edit for appearance. Run everything **from the repository root** — `docs/SETUP.md` is the canonical guide:
+Edit `src/catalog.json` for shared facts and `src/library-narrative.md` for document-only narrative; the Markdown and roadmap JSON are generated projections. See `../docs/CONTENT-MODEL.md` for identities and evidence rules; `src/fieldnotes-theme.css` is the file to edit for appearance. Run everything **from the repository root** — `docs/SETUP.md` is the canonical guide:
 
 ```bash
 make bootstrap     # .venv/ from the pinned requirements.lock
@@ -130,7 +128,7 @@ The skill is vendored at `.agents/skills/resource-learning-library/`, so it is c
 
 ## Your first hour
 
-Open the HR Learning Lab channel, watch the first three Talent Acquisition lessons, and draw the hiring lifecycle on one sheet of paper. Then open the Stage 1 Saylor course, create your free account, and tick the first item in the tracker.
+Follow the generated library document’s “Your first hour” section: it uses the current first card’s action rather than a separately maintained lesson list. Tick a card only after completing its study task.
 
 ### Mobile and playlist correction (27 October 2026)
 
@@ -140,3 +138,18 @@ native scroll alignment and legacy saved progress. Historical verification rows
 above describe the earlier 26-card build; the current build has 27 cards. The two
 new playlist URLs have not yet been included in a CI HTTP sweep; their public
 metadata was read, but playback and mobile app handoff still need device testing.
+
+## Current maintenance summary
+
+<!-- content-summary:start -->
+8 stages, 27 resource cards, 22 distinct card URLs, 94 planned hours.
+20 planned weeks; 24 cards have confirmed free-study evidence.
+Certificate, account and professional-qualification terms are separate; partial findings are not counted as verified free.
+<!-- content-summary:end -->
+
+Dated verification tables above describe their own snapshots. Current Pals use
+full-document absolute positioning, not the original fixed layer. Current
+acceptance requires zero control-centre hits and bounded overlap (not universally
+zero rectangular overlap). Start with `AGENTS.md` and `docs/SETUP.md`; run
+`make doctor`, `make bootstrap`, then `make verify`. A fast-only check or
+`make ci` is not full verification. Existing reports remain historical.

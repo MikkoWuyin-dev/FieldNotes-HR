@@ -14,7 +14,9 @@ Tokens were copied from that repository's `:root` block on 26 October 2026.
 ## 1. Non-negotiable constraints
 
 1. `out/roadmap-app.html` is **one self-contained file**: inline CSS and JS
-   only. No external `<link>`, `<img>`, `<iframe>`, external scripts, `@import`, web
+   only. The sole link-tag exception is the exact pinned inline SVG favicon
+   described below; no other link tags are allowed. No `<img>`, `<iframe>`,
+   external scripts, `@import`, web
    fonts or CSS `url(...)` references. Enforced by `make check`.
 2. The vendored skill stays byte-exact. Core appearance changes live in
    `learning-library/src/fieldnotes-theme.css`; the optional decorative pals
@@ -219,19 +221,15 @@ rendered behaviour:
 
 Stage 1 now starts with HR Essentials, followed by the direct Talent Acquisition
 playlist. Both use canonical YouTube playlist URLs without sharing parameters.
-There are 27 cards and 25 free cards. The total remains 94 hours: HR Essentials
-uses a one-hour starter budget within Stage 1's existing eight hours, not an
-additional full-course requirement. Playlist runtimes/playback are not verified.
+Current totals are generated in the root and library READMEs. HR Essentials
+uses a starter budget within the orientation stage, not an additional
+full-course requirement. Playlist runtimes/playback are not verified.
 
-The build layer preserves the old Stage 1 checkbox keys: the new card uses
-`hr-essentials-v1`; existing cards keep `s0-r0`, `s0-r1`, `s0-r2`. Storage ID
-and import/export format stay unchanged, so existing progress needs no migration.
-Browser regression checks restore a legacy saved-state fixture and verify the
-correct cards are checked. The skill and Piixpal payload remain byte-exact.
-
-The scroll regression compares document positioning against the old fixed layer
-in the same JS task, before an animation frame can compensate for scrolling.
-Physical iOS/Android momentum scrolling and YouTube app handoff remain untested.
+Resource and stage keys now use permanent IDs. The unchanged storage namespace
+and frozen compatibility ledger migrate original positional keys on load and
+on legacy backup import. Version 2 exports include the storage identity. See
+`docs/CONTENT-MODEL.md` for conflict, validation and retained-key behavior.
+The skill and Piixpal payload remain byte-exact.
 
 ## 10. Favicon validation exception
 

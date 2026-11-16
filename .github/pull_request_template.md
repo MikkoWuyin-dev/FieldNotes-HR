@@ -4,12 +4,14 @@
 
 ## Content or design change?
 
-- [ ] Content edit in `learning-library/src/` — did you update **both**
-      `recruiter-talent-acquisition-library.md` **and** `roadmap-app.json`?
+- [ ] Content edit: update `learning-library/src/catalog.json` and/or
+      `learning-library/src/library-narrative.md`, then run `make build`.
+      Review generated Markdown, roadmap JSON, manifest and current summaries;
+      do not edit generated projections as independent sources.
 - [ ] Appearance edit in `learning-library/src/fieldnotes-theme.css` — did you
       run `make build` so `out/roadmap-app.html` is regenerated, not hand-edited?
 - [ ] Pal placement edit in `learning-library/src/pals/pals.json` — did you
-      re-run `make check-visual` and confirm zero control overlap at every width?
+      re-run `make check-visual` and confirm zero control-centre hits and bounded overlap at every width?
 - [ ] Neither (tooling / docs / CI only).
 
 ## Verification
@@ -17,14 +19,13 @@
 Run locally and paste the summary line from each:
 
 ```bash
-make bootstrap
-make check
+make doctor
+make verify
 ```
 
-- [ ] `make check` passed (unit tests, validators, style audit, contract test,
-      source consistency, doc lint)
-- [ ] `make check-drift` passed — committed outputs still match their sources
-- [ ] If appearance changed: `make check-visual` passed at all 13 widths
+- [ ] Full `make verify` completed; attach each layer status (including warnings).
+- [ ] Any FAILED or NOT RUN required layer is disclosed, not called a full pass.
+- [ ] Output/source changes and protected-file boundaries reviewed.
 - [ ] `check-links.sh` / freshness concerns noted, or N/A
 
 ## Honest reporting

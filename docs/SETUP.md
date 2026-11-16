@@ -1,214 +1,177 @@
-# Setup and verification — the canonical guide
+# Setup and verification — current guide
 
-This is the single source of truth for setting up, building and verifying
-FieldNotes-HR. If another document disagrees with this one, this one wins and
-the other should be corrected. The historical port record is
-`learning-library/DESIGN-SYSTEM.md`; the current design contract is
-`docs/DESIGN-SPEC.md`; the history of changes is `CHANGELOG.md`.
-
-## Why this document exists
-
-The original work was repeatedly slowed down by an environment that vanished
-between sessions, by verification that existed only in prose, and by five
-documents describing setup differently. Every step below is now a `make`
-target, and every one of them runs in CI via `.github/workflows/verify.yml`.
+Start with `AGENTS.md` for approval, branch, evidence and protected-file rules.
+This file owns current commands. `docs/DESIGN-SPEC.md` owns current visual rules;
+`CHANGELOG.md` and the retrospective/reports record history, not current setup.
 
 ## Prerequisites
 
-| Tool | Version | Needed for |
-|---|---|---|
-| Python | 3.11 or newer | All builds and checks |
-| `make` | any | Every command below |
-| Node.js | 22.17 or newer | Only `make check-visual` |
-| Git | any | Cloning; use a full clone (see below) |
-
-No global Python packages are required and no global skill install is needed —
-the skill is vendored in `.agents/skills/resource-learning-library/`.
-
-## Quickstart
-
-```bash
-git clone https://github.com/MikkoWuyin-dev/FieldNotes-HR.git
-cd FieldNotes-HR
-make bootstrap     # creates .venv/ from requirements.lock
-make check         # all fast checks
-make check-drift   # prove the 5 shipped outputs reproduce from src/
-make check-visual  # optional: 13-viewport Chromium checks
-```
-
-`make bootstrap` is a prerequisite of `make check` and `make check-drift`, so
-those targets create the virtualenv automatically on a fresh clone. There is no
-need to fight PEP 668 with `--break-system-packages`: everything installs into
-`.venv/`, which is gitignored.
-
-If the clone is shallow (the original workspace was), recover full history with
-`git fetch --unshallow` before relying on `git log`.
-
-## What each target does
-
-| Target | What it does |
+| Tool | Supported baseline |
 |---|---|
-| `make bootstrap` | Creates `.venv/` and installs the exact tree in `requirements.lock`. |
-| `make build` | Regenerates all five outputs from the Markdown and JSON sources. |
-| `make check` | Runs `tools/check.py`: skill hashes, unit tests, both validators, style audit, builder contract, cross-source consistency, doc lint, research freshness. |
-| `make check-drift` | Rebuilds everything into a temp directory and proves the committed outputs still match. |
-| `make check-visual` | Installs the pinned npm packages in `tools/visual/` and runs the 13-width Chromium harness. |
-| `make ci` | `make check` plus `make check-drift` — exactly what CI runs. |
-| `make links` | Sweeps all cited URLs. Needs unrestricted network; also runs weekly in CI. |
-| `make pin-skill` | Re-records the vendored skill's SHA-256 inventory. Only after an intentional skill upgrade. |
-| `make clean` | Removes untracked build/runtime artefacts, keeping `.venv/`. |
+| Python + venv support | >=3.11; CI uses Python 3.11 |
+| Node + npm | Node >=22.12.0; CI uses 22.22.3 |
+| Git, Bash, make | Required for the documented workflow |
+| Platform | Linux browser harness; other OS/browser combinations are not certified |
 
-`make check` is deliberately fast and dependency-light. `make check-drift`
-renders PDF and DOCX, so it needs the full pinned tree. `make check-visual`
-needs npm but no system Chromium: the browser binary is bundled inside the
-`@sparticuz/chromium` npm tarball and inflated at runtime.
+No global Python packages or personal skill install are required. Dependencies
+are pinned in `requirements.lock` and `tools/visual/package-lock.json`.
 
-## Repository layout
+## Start a session
 
-- `learning-library/src/` — content and design sources. Both
-  `recruiter-talent-acquisition-library.md` and `roadmap-app.json` are inputs;
-  `fieldnotes-theme.css` is the appearance layer.
-- `learning-library/out/` — the five shipped deliverables. Generated, but
-  committed because they are the product.
-- `learning-library/tools/build_tracker.py` — the content build layer: it calls
-  the vendored generator and injects the theme. Keep it here; documented paths
-  point at it.
-- `tools/` — repo-wide verification: `check.py`, `skill-hashes.sha256`, and the
-  `visual/` browser harness.
-- `.agents/skills/resource-learning-library/` — the vendored skill, byte-exact
-  and **never edited in place**. Its 12 hashes are recorded in
-  `tools/skill-hashes.sha256` and verified by `make check`.
-- `docs/` — this file and `docs/DESIGN-SPEC.md`.
-
-There are two `tools/` directories for historical reasons. The one under
-`learning-library/` builds content; the root one verifies the whole repo.
-
-## Editing content
-
-1. Edit **both** `learning-library/src/recruiter-talent-acquisition-library.md`
-   and `learning-library/src/roadmap-app.json`. They are two representations of
-   the same 8 stages / 26 cards / 21 URLs; `make check` fails if they diverge.
-2. Run `make build`, then `make check`, then `make check-drift`.
-3. PDF and DOCX embed creation timestamps, so their bytes change on every
-   build. `make check-drift` compares PDF by extracted text and DOCX by archive
-   entries, which is what actually matters. Commit the regenerated binaries.
-
-## Editing appearance
-
-See `docs/DESIGN-SPEC.md`. In short: change
-`learning-library/src/fieldnotes-theme.css`, run `make build` (never hand-edit
-`out/roadmap-app.html`), then `make check-visual`. The builder's eight HTML
-anchors are checked by `make check`; if the vendored generator ever changes,
-that check fails loudly instead of silently dropping the branding.
-
-## Decorative pals
-
-Ten optional pixel creatures (Piixpal v0.4.0, MIT) are injected into the
-tracker only. Their sources live in `learning-library/src/pals/`:
-
-- `learning-library/src/pals/pals.json` — the 10 placements (single source of
-  truth). Edit this to move a pal; `PALS_COUNT` is derived from its length.
-- `learning-library/src/pals/pals-controller.js` — idle loading, pause toggle,
-  reduced-motion default and re-anchoring after a roadmap rebuild.
-- `learning-library/src/pals/pals.css` — fixed unclipped layer and control panel.
-- `learning-library/src/pals/piixpal-payload.html` — the vendored engine (9
-  inline scripts, ~83 KB). **Never edit it in place**; its SHA-256 is pinned in
-  `learning-library/src/pals/pals.json` and checked by `make check`.
-- `learning-library/src/pals/LICENSE-MIT.txt` and `THIRD-PARTY-NOTICES.md` —
-  licence text and attribution.
-
-`make check` verifies count, sprite coverage, prose-only targets and payload
-integrity. `make check-visual` verifies rendered behaviour at 13 widths plus the
-default collapsed state: no control-centre hit, bounded overlap, pause, and
-reduced motion. Pals load on `requestIdleCallback`, can be paused in the
-tracker, and are off by default under `prefers-reduced-motion: reduce`. Changing
-a target means re-running `make check-visual`; see `docs/DESIGN-SPEC.md` §7.
-
-The engine is lazy-loaded, but it still grows `learning-library/out/roadmap-app.html`
-from ~72 KB to ~165 KB. That is the cost of a faithful port with no external
-assets.
-
-## Previewing the tracker
-
-From the repository root:
-
+```sh
+git status -sb
+make doctor
+make bootstrap
+make verify
 ```
+
+Doctor may exit nonzero on a fresh session because tools are absent. Read its
+specific next steps. A dirty working tree is a warning: preserve it. If history
+is shallow, fetch full history before claiming a complete history audit; do not
+change branches to recover it.
+
+## Commands and scope
+
+| Command | Scope and effects |
+|---|---|
+| `make doctor` | Read-only offline diagnosis: Git/branch/history, Python, Node/npm, dependencies/imports, protected hashes, output presence. No repair or product tests. |
+| `make bootstrap` | Checks the current lock, installed versions, required imports and pip dependency consistency every time. Recreates missing/unhealthy venv transactionally. May need package-registry access. |
+| `make repair-env` | Explicit recreation of only the recognized `.venv`; rollback if replacement fails. Does not edit source, output or lock. |
+| `make verify` | Full: environment, repository tests, fast checks, output drift and browser. Each layer gets a status; missing required coverage exits nonzero. |
+| `make verify-core` | Core subset used by CI; explicitly not full verification. |
+| `make verify-browser` | Browser subset used by CI; explicitly not full verification. |
+| `make check` | Fast checks, including five borrowed smoke tests, validators, contracts, sources, selected docs, Pals, historical sweep and freshness. |
+| `make check-drift` | Rebuild in a temporary directory; compare five outputs without replacing delivered files. |
+| `make check-visual` | npm clean install and the 13-width Chromium harness; no source/output rebuild. |
+| `make ci` | Legacy fast + drift subset only. Use `make verify` for the complete local command. |
+| `make build` | Regenerate all five delivered files intentionally. |
+| `make preview` | Stdlib tracker rebuild + durable server, default `0.0.0.0:8000`. |
+| `make links` | Outside-link HTTP report; needs suitable egress; does not establish free access. |
+| `make pin-skill` | Change approved fingerprints only after a reviewed, intentional skill upgrade. |
+| `make clean` | Remove selected disposable caches/reports, not source or delivered files; keeps venv. |
+
+CI runs `make verify-core` and `make verify-browser` in separate jobs using the
+same runner/layer definitions as the full local command. Both jobs must succeed.
+Warnings remain visible. A missing/failed required layer makes its scope fail;
+other independent layers still run where possible. A core-only success is not
+a browser success. Verification never rebuilds delivered outputs in place.
+
+## Environment maintenance and interrupted repair
+
+Bootstrap examines the live package versions rather than trusting a stamp or
+only the existence of `.venv/bin/python`. A changed package pin, missing import
+or failed pip check triggers replacement. A healthy environment is left alone;
+a comment-only lock change does not force a pointless reinstall.
+
+Replacement renames the old recognized venv to `.venv.repair-backup`, creates
+`.venv` at its final path, installs the lock and checks it. On success the old
+copy is removed; on handled failure or interruption the old copy is restored.
+No system-pip override or automatic lock rewriting is used.
+
+For safety, maintenance refuses a symlink `.venv`, an unrecognized directory or
+an existing backup. `.venv-maintenance.lock` prevents concurrent maintenance.
+An abrupt machine termination cannot execute rollback: inspect the two venv
+paths and any running process before manually recovering. Do not blindly remove
+backups or another operation's lock. Source and generated deliverables are never
+repair targets. Installation failures remain failures; registry restrictions
+are not a reason to weaken TLS or install unpinned packages.
+
+## Sources and generated outputs
+
+<!-- content-summary:start -->
+8 stages, 27 resource cards, 22 distinct card URLs, 94 planned hours.
+20 planned weeks; 24 cards have confirmed free-study evidence.
+Certificate, account and professional-qualification terms are separate; partial findings are not counted as verified free.
+<!-- content-summary:end -->
+
+Edit shared facts in `learning-library/src/catalog.json`, and document-only
+prose in `learning-library/src/library-narrative.md`. Markdown, tracker JSON,
+manifest and marked summary blocks are generated projections. Verification
+checks complete projections, not only counts/URLs. See `docs/CONTENT-MODEL.md`
+for access classifications, permanent IDs and backup migration. Never change a
+historical sweep to imply it checked newly added URLs.
+
+Appearance belongs in `learning-library/src/fieldnotes-theme.css` and the local
+builder. Pals sources are under `learning-library/src/pals/`: the layer uses
+full-document **absolute** positioning, with ten placements and eight species.
+The MIT engine is pinned and unchanged; the local controller handles idle
+activation, pause, initial reduced-motion defaults and re-anchoring.
+
+After content/design edits, run `make build`, inspect source and outputs, then
+`make verify`. PDF/DOCX metadata may change; drift compares PDF extracted text
+and DOCX archive entries, not universal binary hashes. Read affected pages when
+layout matters. Never edit only the finished HTML.
+
+The legacy “Your first hour” teaching paragraph is still awaiting alignment with
+the HR Essentials-first card order; correcting teaching content and regenerating
+its documents is deferred to content work, not silently done by environment repair.
+
+## Preview identity and browser origins
+
+```sh
 make preview
+# optional different port: make preview PORT=8080
+# separate shell, opt-in local HTTP read:
+python3 -B tools/doctor.py --preview-port 8000
 ```
 
-This regenerates `learning-library/out/roadmap-app.html` from source and serves
-`learning-library/out/` on `0.0.0.0:8000`, with `/` mapped to the tracker. It is
-deliberately stdlib-only (`tools/serve_preview.py`), so it still works when
-`.venv/` and `node_modules/` have been wiped. Pass a different port with
-`make preview PORT=8080`.
+Preview rebuilds tracker only, so it works with stdlib Python after venv/npm
+loss. Use a managed long-running process rather than a timed shell call. It
+maps both GET and HEAD `/` and `/index.html` to the tracker, sends no-store
+headers and exposes `X-FieldNotes-Artifact-SHA256`. The server also prints the
+tracker fingerprint at startup. Doctor compares served bytes, header and local
+tracker; source drift is checked separately by verification.
 
-**Why it rebuilds every time:** `learning-library/out/` is excluded from
-workspace snapshots. After a sandbox reset, the tracked output file falls back
-to the last committed version, which may silently lack the Pals even though all
-the Pals sources are still present. The rebuild is deterministic and
-`make check-drift` proves it. The server also prints a warning if the tracker is
-missing the Pals payload. Progress checkboxes use `localStorage` on the preview
-origin, so they behave the same as opening the file locally.
+Without `--preview-port`, doctor makes no network requests and does not assert
+that a preview exists. This flag contacts sandbox loopback, not the user's
+browser. Do not put localhost backend URLs into browser-facing code.
 
-## Verification claims
+The agent snapshot excludes runtime/cache folders and `out/`; old committed
+output can return after a reset. Rebuild rather than merely restarting a server.
+localStorage is per browser origin/profile. Export/import when moving between
+local files, preview and production; these do not automatically share progress.
 
-`make check` prints one line per check and a final `RESULT:` summary — it covers
-skill hashes, unit tests, both validators, style audit, the branding/pals anchor
-contract, cross-source consistency, doc lint, the pals invariants and research
-freshness. CI runs the same command, so a green check means the same thing
-locally and on GitHub.
-A freshness warning is **not** a failure: it lists URLs whose provider pages
-were never confirmed (LinkedIn, Jobberman, Coursera and the paid extras). Run
-`.venv/bin/python tools/check.py all --strict` if you want those gaps to be
-fatal.
+## Validation, warnings and exact favicon exception
 
-`.github/workflows/link-check.yml` runs the URL sweep weekly with unrestricted
-network and uploads a TSV report as an artifact. It was first dispatched on
-27 October 2026 (run `40471064309`): 30 URLs, 27 × 200 and 3 × 403. The three
-403s were bot filtering, not broken links — a browser-like fetch re-read the
-OpenLearn course page, the NDPC GAID PDF and the Saylor FAQ, and their free
-claims still hold. LinkedIn returned 200 to curl but 403/500 to a browser, so
-it stays unverified. The result is recorded in the `link_sweep` block of
-`learning-library/src/verification-manifest.json` and checked by `make check`.
+The supplied skill stays byte-exact. Its validator rejects all link tags. Our
+local policy permits exactly one hash-pinned inline favicon: remove only that
+exact tag from a temporary validation copy, validate the rest, deliver the
+original with the icon. Use repository checks, not a blanket validator override.
+No external fonts, scripts or images are permitted.
 
-**A status code never proves a resource is free** — read the provider page and
-update `learning-library/src/verification-manifest.json` when anything changes.
-Note that this sandbox cannot dispatch that workflow (its GitHub App token
-lacks `actions: write`); trigger it from the GitHub Actions UI, or wait for the
-Monday 06:17 UTC cron. CI logs and artifacts are also unreadable from here, so
-paste the job summary or the `link-status` artifact into the conversation to
-have the manifest updated.
+Research freshness warnings identify old confirmed dates or unresolved access
+gaps, not automatic provider rereads. For a deliberately strict run use
+`.venv/bin/python tools/check.py all --strict`. Doc lint checks selected current
+summaries, known patterns, references and Make targets. It does not prove every
+sentence is current, and a green browser run does not certify all real devices.
 
-## Skill discovery (standing workflow)
+## Restricted access and retry policy
 
-`.mcp.json` registers the `skill-issue` MCP catalogue at project scope, and
-`.claude/settings.json` pre-approves it for clones. For each task, search that
-catalogue for relevant skills and say which were used. The generating sandbox
-could not reach the endpoint (allowlisted egress), so earlier work fetched the
-same skill sources from the GitHub API instead. If the server is unreachable,
-say so plainly and fall back to the vendored skill here — never claim a skill
-was used when it was not. The skill's own `INSTALL.md` describes generic agent
-locations such as `~/.claude/skills/`; for this repository the authoritative
-copy is the vendored one.
+Historically shell provider access, MCP POST and artifact redirect hosts were
+restricted. Metadata access and workflow-start authority are separate. Doctor
+is offline; it cannot grant permissions or prove these external paths work.
+After an unchanged refusal, stop retrying unless configuration, route or
+permission actually changed. Never ask for credentials or signed artifact URLs.
 
-## Troubleshooting
+The owner-assisted fallback is to start `link-check` in GitHub's Actions UI (or
+wait for Monday 06:17 UTC), then provide the actual run link, exact URL snapshot,
+status totals and non-success list. If raw output is unavailable, record that
+limit and its provenance. A configured schedule is not proof a run occurred.
+A 200 never proves free access; read relevant provider pages before changing
+claims/dates. The first run was 40471064309: 30 URLs, 27x200/3x403. Browser-like
+rereads supported the three content findings; bot filtering was the interpretation,
+not a direct inspection of provider firewalls. Do not change that old snapshot.
 
-| Symptom | Cause / fix |
-|---|---|
-| `ModuleNotFoundError: No module named 'docx'` | Dependencies were installed globally or not at all. Run `make bootstrap`; use `make check`, not bare `python3`. |
-| `branding anchor not found: …` | The vendored generator's HTML changed. Update `learning-library/tools/build_tracker.py` anchors deliberately, then `make check`. |
-| `CHANGED: …` in the skill-hashes check | A vendored file was edited. Restore it, or upgrade the skill intentionally and run `make pin-skill`. |
-| `libnspr4.so: cannot open shared object file` | The visual harness handles this itself; if you launch Chromium manually, inflate the AL2023 libs first. |
-| `make check-drift` says a binary drifted | A source changed without `make build`, or the dependency tree changed. Check `requirements.lock`. |
-| Preview shows no Pals, or the preview server vanished after a reset | `learning-library/out/` and `tools/visual/.cache/` are snapshot-excluded. Run `make preview` (rebuild + serve) rather than starting the server by hand. |
+## Skills, handoff and boundaries
 
-## Inline favicon exception
+`.mcp.json` registers the catalogue and `.claude/settings.json` holds project
+approval. Search for useful skills per task; disclose execution restrictions and
+use suitable readable sources where available. Registration/catalog access does
+not establish MCP execution. The vendored skill's generic INSTALL instructions
+are not this repository's setup policy.
 
-The tracker embeds the reference site's SVG favicon as a data URI. The vendored
-validator rejects every link element, so `tools/check.py` first enforces the
-builder's exact hash-pinned exception, removes only that tag from a temporary
-copy, and runs the original validator on the rest. The actual output keeps the
-favicon. Run `python3 -m unittest discover -s tools -p 'test_*.py'` for deployment
-and favicon tests; CI runs the same tests. Directly invoking the unmodified
-skill validator on the final tracker will flag its favicon link; use `make check`
-for the repository's complete validation policy.
+At handoff state exact commands/results, warnings and NOT RUN layers, plus dirty
+files needing preservation. Get explicit authorization before Git publication
+or deployment. Historical reports remain historical; do not rewrite them to hide
+previous limitations. No closed-tab notifications, cloud progress sync, full
+accessibility certification or complete physical-device coverage is promised.

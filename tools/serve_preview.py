@@ -15,6 +15,7 @@ there disappeared on reset along with the running process.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import functools
 import http.server
 import os
@@ -43,6 +44,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         return super().do_HEAD()
 
     def end_headers(self) -> None:
+        if self.path.split("?", 1)[0] == "/" + TRACKER:
+            digest = hashlib.sha256((OUT / TRACKER).read_bytes()).hexdigest()
+            self.send_header("X-FieldNotes-Artifact-SHA256", digest)
         # A rebuild should be visible immediately, not hidden by a cache.
         self.send_header("Cache-Control", "no-store, max-age=0")
         super().end_headers()
@@ -62,6 +66,7 @@ def main() -> None:
         parser.error(f"missing {tracker}. Run 'make build' first.")
     body = tracker.read_text(encoding="utf-8")
     print(f"[preview] serving {OUT} on {args.host}:{args.port}", flush=True)
+    print("[preview] tracker SHA-256: " + hashlib.sha256(tracker.read_bytes()).hexdigest(), flush=True)
     print(f"[preview] / -> {TRACKER} ({tracker.stat().st_size} bytes)", flush=True)
     if PALS_MARKER not in body:
         print(

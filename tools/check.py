@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """One-command verification for FieldNotes-HR.
 
-Every claim this repository makes about its own output is checked here, so a
-reviewer (or CI) can reproduce the verification instead of trusting prose in a
-README. This includes the ten MIT-licensed Piixpal creatures: their count,
+Selected output contracts are checked here so a reviewer (or CI) can
+reproduce those assertions instead of trusting prose. This is not a proof
+that every statement in the repository is current or correct. This includes the ten MIT-licensed Piixpal creatures: their count,
 sprite coverage, prose-only targets, pinned payload hash and licence notice.
 It also keeps the first CI link-sweep record internally consistent with
 `check-links.sh` and the per-URL manifest.
@@ -51,9 +51,12 @@ LINKS_SH = LIB / "check-links.sh"
 HASH_FILE = REPO / "tools" / "skill-hashes.sha256"
 MAKEFILE = REPO / "Makefile"
 
-TITLE = "From zero to first recruiter role"
-SUBTITLE = "A roadmap-ordered learning library for an absolute beginner"
-HERO_META = "Lagos, Nigeria - verified 26 October 2026 - about 94 hours over 20 weeks"
+sys.path.insert(0, str(LIB / "tools"))
+import content
+_DOCUMENT = content.load()['document']
+TITLE = _DOCUMENT['title']
+SUBTITLE = _DOCUMENT['subtitle']
+HERO_META = _DOCUMENT['hero_meta']
 BASE_NAME = "Recruiter-TA-Library"
 
 CHECKS: dict[str, object] = {}
@@ -64,6 +67,8 @@ CHECKS: dict[str, object] = {}
 # not on this list that looks like a repo path must resolve, or the docs lint
 # fails. Keep this list small and explicit.
 EXTERNAL_PATH_TOKENS = {
+    ".venv-maintenance.lock",                  # transient directory, not a source file
+    "/index.html",                            # preview route mapped to the tracker
     "word/document.xml",                      # a part inside the DOCX zip
     "index.html",                             # upstream Nature Photography repo
     "AUDIT-PLAIN.md",                         # upstream Nature Photography repo
@@ -292,6 +297,8 @@ def check_sources() -> str:
         only_md = sorted(md_urls - json_urls)
         raise AssertionError(f"URL mismatch; only in JSON: {only_json}; only in Markdown: {only_md}")
 
+    content.generate(check=True)
+
     md_stage_titles = re.findall(r"^## (Stage \d+:[^\n]*)", md, re.M)
     json_stage_titles = [s["title"] for s in stages]
     if md_stage_titles != json_stage_titles:
@@ -326,14 +333,37 @@ def check_sources() -> str:
 # --------------------------------------------------------------------------
 # 7. Documentation lint: stale claims, broken paths, phantom make targets.
 # --------------------------------------------------------------------------
+def current_doc_problems(root: Path = REPO) -> list[str]:
+    """Compare only explicit current summaries; leave dated history untouched."""
+    data = json.loads((root / "learning-library/src/roadmap-app.json").read_text())
+    stages = data["stages"]
+    cards = [r for stage in stages for r in stage["resources"]]
+    expected = (len(stages), len(cards), len({r["url"] for r in cards}),
+                sum(int(stage["estimated_hours"]) for stage in stages))
+    pattern = r"(\d+) stages, (\d+) resource cards, (\d+) distinct card URLs, (\d+) planned hours"
+    problems = []
+    for rel in ("README.md", "docs/SETUP.md", "learning-library/README.md"):
+        text = (root / rel).read_text()
+        summaries = re.findall(pattern, text)
+        if not summaries or any(tuple(map(int, row)) != expected for row in summaries):
+            problems.append(f"{rel}: current content summary missing or disagrees with JSON")
+    setup = (root / "docs/SETUP.md").read_text()
+    if "fixed unclipped layer" in setup:
+        problems.append("SETUP.md: obsolete current Pals layer description")
+    readme = (root / "learning-library/README.md").read_text()
+    if "what could not be copied (a tab icon" in readme:
+        problems.append("library README: obsolete favicon exclusion")
+    return problems
+
+
 @check("docs")
 def check_docs() -> str:
-    problems: list[str] = []
+    problems: list[str] = current_doc_problems()
     doc_paths = [
         REPO / "README.md", LIB / "README.md", LIB / "DESIGN-SYSTEM.md",
         REPO / ".agents" / "skills" / "README.md", DOCS / "SETUP.md",
         DOCS / "DESIGN-SPEC.md", REPO / "RETROSPECTIVE.md",
-        REPO / "CHANGELOG.md", REPO / "THIRD-PARTY-NOTICES.md",
+        REPO / "CHANGELOG.md", REPO / "THIRD-PARTY-NOTICES.md", REPO / "AGENTS.md", DOCS / "PHASE-1-VERIFICATION.md",
     ]
     for p in doc_paths:
         if not p.is_file():
@@ -397,7 +427,7 @@ def check_docs() -> str:
         raise AssertionError("; ".join(problems[:8]) + (
             f" … and {len(problems) - 8} more" if len(problems) > 8 else ""
         ))
-    return "no stale claims; referenced paths and make targets exist"
+    return "selected current summaries, known stale patterns, references and make targets checked; not exhaustive prose validation"
 
 
 # --------------------------------------------------------------------------

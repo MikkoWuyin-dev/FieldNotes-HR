@@ -1,5 +1,5 @@
 {
-  "_comment": "Per-URL verification record, originally transcribed from the library document (see learning-library/src/recruiter-talent-acquisition-library.md, sections \"Verification log\" and \"Paid extras\"), then updated with the first CI link sweep and provider re-reads on 2026-10-27. `status` and `verified_at` describe CONTENT verification, not HTTP status codes.",
+  "_comment": "Generated from catalog.json verification evidence and history/first-link-sweep.json. Content verification status is independent of study cost and HTTP status.",
   "research_date": "2026-10-26",
   "max_age_days": 90,
   "status_legend": {

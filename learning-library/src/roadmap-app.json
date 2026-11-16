@@ -25,8 +25,17 @@
           "why": "Start with what HR does, the employee life cycle and the wider HR profession before specialising in talent acquisition.",
           "action": "Watch lessons 1-4, then sketch the employee life cycle and explain where recruitment fits. Use remaining study time for notes and review.",
           "access_note": "Checked 2026-10-27: public HR Essentials playlist, 16 listed videos; description and initial lesson titles readable without sign-in. The fetch also exposed a YouTube error banner, so playback and mobile app handoff remain untested. Content developed by Dr. Heather Staples; videos produced using AI-supported tools. This is introductory study, not a professional qualification.",
-          "verification_date": "2026-10-27",
-          "link_label": "Open the playlist"
+          "link_label": "Open the playlist",
+          "id": "hr-essentials",
+          "access": {
+            "study": "free",
+            "certificate": "not_verified",
+            "account": "not_verified",
+            "evidence_urls": [
+              "https://www.youtube.com/playlist?list=PLeDNHX61_qlQeRK1_i5flRpz2T0wjQXN2"
+            ]
+          },
+          "verification_date": "2026-10-27"
         },
         {
           "title": "The HR Learning Lab: Talent Acquisition (video playlist)",
@@ -38,8 +47,17 @@
           "why": "Short, beginner-oriented lessons on job analysis, workforce planning, recruiting, selection and hiring practice. The fastest way to hear the vocabulary before reading heavier material.",
           "action": "Watch the first five lessons and write a one-page diagram of the hiring lifecycle in your own words.",
           "access_note": "Checked 2026-10-27: public Talent Acquisition playlist, 43 listed videos, description and lesson titles readable without sign-in; playback and mobile app handoff not tested. Creator discloses AI-supported production; confirm consequential claims against primary sources.",
-          "verification_date": "2026-10-27",
-          "link_label": "Open the playlist"
+          "link_label": "Open the playlist",
+          "id": "talent-acquisition",
+          "access": {
+            "study": "free",
+            "certificate": "not_verified",
+            "account": "not_verified",
+            "evidence_urls": [
+              "https://www.youtube.com/playlist?list=PLeDNHX61_qlQWYcxZNB19TDOKbl625W2c"
+            ]
+          },
+          "verification_date": "2026-10-27"
         },
         {
           "title": "PRDV226: Introduction to Human Resource Management",
@@ -51,8 +69,17 @@
           "why": "Units 1 and 2 cover where the right people are and how to recruit and keep quality employees. It gives the structured foundation the shorter videos skip.",
           "action": "Work through Units 1 and 2 this fortnight; come back for Units 3 and 4 in Stage 2.",
           "access_note": "Verified 2026-10-26 on the course syllabus and the Saylor FAQ: no tuition or fees, all materials free, free course completion certificate at 70 percent on the final exam. A free account is needed for assessments and the exam. Only the proctored college-credit route carries a fee; you do not need it for the free certificate.",
-          "verification_date": "2026-10-26",
-          "link_label": "Open the course"
+          "link_label": "Open the course",
+          "id": "saylor-prdv226",
+          "access": {
+            "study": "free",
+            "certificate": "free_completion",
+            "account": "required",
+            "evidence_urls": [
+              "https://learn.saylor.org/course/view.php?id=1292"
+            ]
+          },
+          "verification_date": "2026-10-26"
         },
         {
           "title": "Principles of Management, Chapter 11: Human Resource Management",
@@ -64,10 +91,25 @@
           "why": "A university-level explanation of how HR became a strategic function and what talent acquisition is for. Useful when you need the reasoning, not just the steps.",
           "action": "Read the chapter introduction and 11.1; note three ways HR creates value that you can repeat in an interview.",
           "access_note": "Verified 2026-10-26: free openly licensed textbook, readable in web view. US-oriented examples; treat the legal sections as context, not Nigerian law.",
-          "verification_date": "2026-10-26",
-          "link_label": "Read Chapter 11"
+          "link_label": "Read Chapter 11",
+          "id": "openstax-hr",
+          "access": {
+            "study": "free",
+            "certificate": "not_verified",
+            "account": "not_verified",
+            "evidence_urls": [
+              "https://openstax.org/books/principles-management/pages/11-introduction"
+            ]
+          },
+          "verification_date": "2026-10-26"
         }
-      ]
+      ],
+      "id": "orientation",
+      "short_title": "Orientation",
+      "focus": "Map the hiring lifecycle and name the recruiter's job.",
+      "level": "Absolute beginner; no prerequisites.",
+      "practice": "Draw the hiring lifecycle from workforce planning to onboarding and label who owns each step.",
+      "effort_note": " This includes a one-hour HR Essentials starter budget; use selected lessons, not both full playlists."
     },
     {
       "title": "Stage 2: Foundations - fair process, job roles and the law",
@@ -90,8 +132,17 @@
           "why": "The single best free beginner course for the actual sequence: job analysis, job description, person specification, attracting applicants, advertising, shortlisting and references. It is the spine of this stage.",
           "action": "Complete sections 4.2 to 4.5 and draft a job analysis for one real Lagos vacancy you find online.",
           "access_note": "Verified 2026-10-26 on the provider course page: free course, free statement of participation; a free account is needed to track progress, claim the statement and open all quizzes and activities. Course content was last updated in 2018 and uses UK equality-law framing - pair it with the Nigerian sources in Stage 7.",
-          "verification_date": "2026-10-26",
-          "link_label": "Open the free course"
+          "link_label": "Open the free course",
+          "id": "openlearn-recruitment",
+          "access": {
+            "study": "free",
+            "certificate": "free_participation",
+            "account": "not_verified",
+            "evidence_urls": [
+              "https://www.open.edu/openlearn/money-business/human-resources/human-resources-recruitment-and-selection/content-section-0"
+            ]
+          },
+          "verification_date": "2026-10-26"
         },
         {
           "title": "Diploma in Human Resources (HR)",
@@ -103,8 +154,17 @@
           "why": "A video-led alternative to the text-heavy OpenLearn course. It covers the key skills and responsibilities of HR, recruitment and selection, and employee separation.",
           "action": "Use it for revision: watch the recruitment and selection modules and compare the sequence with OpenLearn section 4.",
           "access_note": "Verified 2026-10-26 on Alison's help centre and certification page: all courses are free to study and complete; a paid digital or printed certificate is optional and a free Learner Record is available instead. The provider page did not show an exact certificate price, so I am not quoting one. Alison lists 15 free recruitment courses on its recruitment tag page.",
-          "verification_date": "2026-10-26",
-          "link_label": "Open the course"
+          "link_label": "Open the course",
+          "id": "alison-hr-diploma",
+          "access": {
+            "study": "free",
+            "certificate": "paid_optional",
+            "account": "required",
+            "evidence_urls": [
+              "https://alison.com/course/diploma-in-human-resources-hr"
+            ]
+          },
+          "verification_date": "2026-10-26"
         },
         {
           "title": "BUS301: Human Resource Management",
@@ -116,8 +176,17 @@
           "why": "A deeper follow-on to PRDV226 with strategic HR planning, staffing, compliance and labour relations. Use selected units rather than the whole course if you are short on time.",
           "action": "Read the staffing and recruitment/selection units only; skip performance and compensation units until you are job hunting.",
           "access_note": "Verified 2026-10-26 via the Saylor FAQ and course syllabus: no tuition or fees, free final exam and free completion certificate. The US employment-law material is not Nigerian law.",
-          "verification_date": "2026-10-26",
-          "link_label": "Open the course"
+          "link_label": "Open the course",
+          "id": "saylor-bus301",
+          "access": {
+            "study": "free",
+            "certificate": "free_completion",
+            "account": "required",
+            "evidence_urls": [
+              "https://learn.saylor.org/course/BUS301"
+            ]
+          },
+          "verification_date": "2026-10-26"
         },
         {
           "title": "Recruiting, Hiring, and Onboarding Employees (audit option)",
@@ -129,10 +198,25 @@
           "why": "The syllabus is a strong match for this roadmap: workforce planning, job analysis, legal selection, sourcing, hiring analytics and onboarding. Four modules with 14 videos in module 1 alone.",
           "action": "Only consider it after the free stages. Try to select the Full Course, No Certificate option if it is offered to you, then decide whether the certificate is worth paying for.",
           "access_note": "NOT counted as confirmed free. Verified 2026-10-26: the course page shows an 'Enroll for free' button and 'Included with Coursera Plus', but the same page's FAQ says that to access course materials you need to purchase the Certificate experience, start a Free Trial, or use a Full Course, No Certificate option where available. I could not confirm that the no-certificate option is offered for this course. Financial aid is mentioned in the FAQ. Prices vary by region and promotion; check the page before enrolling.",
-          "verification_date": "2026-10-26",
-          "link_label": "Check the enrolment options"
+          "link_label": "Check the enrolment options",
+          "id": "coursera-hiring",
+          "access": {
+            "study": "conditional",
+            "certificate": "conditional",
+            "account": "conditional",
+            "evidence_urls": [
+              "https://www.coursera.org/learn/recruiting-hiring-onboarding-employees"
+            ]
+          },
+          "verification_date": "2026-10-26"
         }
-      ]
+      ],
+      "id": "foundations",
+      "short_title": "Foundations",
+      "focus": "Run a full and fair recruitment and selection process.",
+      "level": "Beginner; Stage 1 vocabulary assumed.",
+      "practice": "Write a one-page fair-process checklist for a small Lagos employer hiring its first employee.",
+      "effort_note": ""
     },
     {
       "title": "Stage 3: Define the role - job analysis, descriptions and success criteria",
@@ -155,8 +239,17 @@
           "why": "Over 1,000 occupation profiles with tasks, skills, knowledge and work activities. It teaches you how to derive requirements from the work itself instead of copying a competitor's advert.",
           "action": "Look up one role you want to recruit for, export the task list, and highlight the five tasks a new hire must do in month one.",
           "access_note": "Verified 2026-10-26: free public database, 1,016 occupation titles listed on the site, no login seen. It is US data, so use it to learn the method of job analysis, then validate duties against Nigerian job adverts.",
-          "verification_date": "2026-10-26",
-          "link_label": "Search occupations"
+          "link_label": "Search occupations",
+          "id": "onet-job-analysis",
+          "access": {
+            "study": "free",
+            "certificate": "not_verified",
+            "account": "not_verified",
+            "evidence_urls": [
+              "https://www.onetonline.org/"
+            ]
+          },
+          "verification_date": "2026-10-26"
         },
         {
           "title": "HR templates: job descriptions, interview kits and email templates",
@@ -168,8 +261,17 @@
           "why": "More than 1,000 free job descriptions, 390-plus interview kits, 50-plus recruiting email templates, onboarding checklists and Boolean cheatsheets. Good raw material once you understand the structure.",
           "action": "Rewrite one downloaded job description so that every requirement maps to a task you identified in ONET. Delete anything you cannot defend.",
           "access_note": "Verified 2026-10-26 on the provider templates index: templates are described as free to download. The page also advertises a separate 15-day free trial of the paid Workable software; you do not need the trial to use the templates. Templates are generic and US/UK flavoured - localise pay, notice and leave wording.",
-          "verification_date": "2026-10-26",
-          "link_label": "Browse the free templates"
+          "link_label": "Browse the free templates",
+          "id": "workable-job-templates",
+          "access": {
+            "study": "free",
+            "certificate": "not_verified",
+            "account": "not_verified",
+            "evidence_urls": [
+              "https://resources.workable.com/hr-templates/"
+            ]
+          },
+          "verification_date": "2026-10-26"
         },
         {
           "title": "Structured hiring: Introduction (with free worksheets)",
@@ -181,10 +283,25 @@
           "why": "Sets out the six-step structured hiring process: role kick-off, scorecard definition, interview planning, interview kit, sourcing and interviewing, and candidate round-up. It makes you define success before you search.",
           "action": "Download the linked worksheet and build a scorecard for your practice role with no more than six attributes.",
           "access_note": "Verified 2026-10-26 on the provider support article: the article and its two downloadable PDFs (a structured interview worksheet about 4 MB and an interactive eBook about 9 MB) are available without a login. The document is product documentation but the method transfers to any hiring process.",
-          "verification_date": "2026-10-26",
-          "link_label": "Read and download"
+          "link_label": "Read and download",
+          "id": "greenhouse-scorecard",
+          "access": {
+            "study": "free",
+            "certificate": "not_verified",
+            "account": "not_verified",
+            "evidence_urls": [
+              "https://support.greenhouse.io/hc/en-us/articles/360007245452-Structured-hiring-Introduction"
+            ]
+          },
+          "verification_date": "2026-10-26"
         }
-      ]
+      ],
+      "id": "define-role",
+      "short_title": "Define the role",
+      "focus": "Write a job description and a scoring scorecard before sourcing.",
+      "level": "Beginner; Stages 1 and 2 assumed.",
+      "practice": "Produce a job description, a person specification and a six-attribute scorecard for one real vacancy.",
+      "effort_note": ""
     },
     {
       "title": "Stage 4: Find people - sourcing, Boolean search and candidate experience",
@@ -207,8 +324,17 @@
           "why": "Role-specific Boolean strings show you how brackets, quotes, AND, OR and NOT actually work when searching for people. This is the core craft skill of sourcing.",
           "action": "Take one cheatsheet, rebuild its string for a Lagos-based role, and run it in a free search engine. Save ten plausible profiles and note why each matched.",
           "access_note": "Verified 2026-10-26 on the provider page: the cheatsheets are free with no account or payment shown. Most examples target technical and sales roles; adapt the keywords for Nigerian job titles.",
-          "verification_date": "2026-10-26",
-          "link_label": "Open the cheatsheets"
+          "link_label": "Open the cheatsheets",
+          "id": "workable-boolean",
+          "access": {
+            "study": "free",
+            "certificate": "not_verified",
+            "account": "not_verified",
+            "evidence_urls": [
+              "https://resources.workable.com/boolean-search-cheatsheets/"
+            ]
+          },
+          "verification_date": "2026-10-26"
         },
         {
           "title": "Talent Sourcing Strategies (video 16)",
@@ -220,8 +346,17 @@
           "why": "A quick tour of employer branding, referrals, job boards, pipelines, CV mining and job fairs, plus the growth-mindset argument for looking past job titles.",
           "action": "After watching, pick two sourcing channels that fit a small Lagos employer and explain why you skipped the others.",
           "access_note": "Verified 2026-10-26: public video, no payment shown. Content developed by Heather Staples, PhD, SPHR, SHRM-SCP; the description states the videos are produced using AI-supported tools. Useful as an overview, not as a primary authority.",
-          "verification_date": "2026-10-26",
-          "link_label": "Watch the lesson"
+          "link_label": "Watch the lesson",
+          "id": "hrlab-sourcing-video",
+          "access": {
+            "study": "free",
+            "certificate": "not_verified",
+            "account": "not_verified",
+            "evidence_urls": [
+              "https://www.youtube.com/watch?v=yMnw_2VNOVE"
+            ]
+          },
+          "verification_date": "2026-10-26"
         },
         {
           "title": "Google re:Work guides (hiring set)",
@@ -233,8 +368,17 @@
           "why": "The index lists 23 free guides. The hiring ones cover creating a job description, reviewing resumes, shaping candidate experience, structured interviewing, interviewer training, hiring committees and onboarding. They are the closest thing to an open playbook from a major employer.",
           "action": "From the index, open Shape the candidate experience and note three changes you would make to a typical Nigerian recruitment process.",
           "access_note": "Verified 2026-10-26 on the provider guides index: 23 guides listed with step and tool counts, no login or payment shown. Individual guides were not all opened; the structured interviewing and interviewer training guides were read directly. Google's data is from its own workforce, not Nigerian employers.",
-          "verification_date": "2026-10-26",
-          "link_label": "Open the guides index"
+          "link_label": "Open the guides index",
+          "id": "google-hiring-guides",
+          "access": {
+            "study": "free",
+            "certificate": "not_verified",
+            "account": "not_verified",
+            "evidence_urls": [
+              "https://rework.withgoogle.com/intl/en/guides/"
+            ]
+          },
+          "verification_date": "2026-10-26"
         },
         {
           "title": "Jobberman free employer listing (practice channel)",
@@ -246,10 +390,25 @@
           "why": "A Nigeria-specific channel where you can see how local employers write adverts and how applicants are sorted. Useful for practising without spending money.",
           "action": "Draft and save a practice advert for your Stage 3 role. Do not publish a real vacancy without authorisation.",
           "access_note": "Partially verified on 2026-10-26: the provider page returned only a cookie banner when I retrieved it, so I could not read the full terms. The free-listing claim comes from Jobberman's own search listing, which describes free job posting, CV sorting and an ATS. Confirm current terms, eligibility and any limits before relying on it.",
-          "verification_date": "2026-10-26",
-          "link_label": "Check the free listing"
+          "link_label": "Check the free listing",
+          "id": "jobberman-practice",
+          "access": {
+            "study": "not_verified",
+            "certificate": "not_verified",
+            "account": "not_verified",
+            "evidence_urls": [
+              "https://www.jobberman.com/employer/free-listing"
+            ]
+          },
+          "verification_date": "2026-10-26"
         }
-      ]
+      ],
+      "id": "sourcing",
+      "short_title": "Find people",
+      "focus": "Build Boolean strings and a candidate experience plan.",
+      "level": "Beginner; a defined practice role from Stage 3 assumed.",
+      "practice": "Build three Boolean strings and a short outreach message for that vacancy.",
+      "effort_note": ""
     },
     {
       "title": "Stage 5: Screen and shortlist - reading CVs against criteria",
@@ -272,8 +431,17 @@
           "why": "A five-step guide to screening for qualifications, consistency and impact. It gives you an explicit standard, which is what most beginner screeners lack.",
           "action": "From the guides index, open Review resumes. Then screen ten practice CVs and write one line of evidence for each decision.",
           "access_note": "Verified 2026-10-26 on the provider guides index, where Review resumes is listed as a five-step guide. I did not open the individual guide page, so the exact steps were not read. No login or payment shown on the index.",
-          "verification_date": "2026-10-26",
-          "link_label": "Open the guides index"
+          "link_label": "Open the guides index",
+          "id": "google-cv-review",
+          "access": {
+            "study": "free",
+            "certificate": "not_verified",
+            "account": "not_verified",
+            "evidence_urls": [
+              "https://rework.withgoogle.com/intl/en/guides/"
+            ]
+          },
+          "verification_date": "2026-10-26"
         },
         {
           "title": "Greenhouse guidance library (screening and interviewing)",
@@ -285,8 +453,17 @@
           "why": "Filterable by topic, including interviewing, candidate experience, DE and I, and recruiter tips. It shows how a hiring-software company explains screening problems to recruiters.",
           "action": "Read one interviewing article and one bias-related article, then add two bias checks to your Stage 3 scorecard.",
           "access_note": "Verified 2026-10-26 on the provider guidance hub: articles, eBooks, webinars and worksheets listed as free resources. Some gated items such as the 2026 hiring benchmarks report may require a form; treat those as unverified for free access. Content is vendor marketing as well as guidance.",
-          "verification_date": "2026-10-26",
-          "link_label": "Open the guidance hub"
+          "link_label": "Open the guidance hub",
+          "id": "greenhouse-screening",
+          "access": {
+            "study": "free",
+            "certificate": "not_verified",
+            "account": "not_verified",
+            "evidence_urls": [
+              "https://www.greenhouse.com/guidance"
+            ]
+          },
+          "verification_date": "2026-10-26"
         },
         {
           "title": "OpenLearn section 4.10: Shortlisting (revisit)",
@@ -298,10 +475,25 @@
           "why": "Rather than a new course, return to the shortlisting section of the Stage 2 course now that you have a real scorecard. It connects fair selection criteria to paperwork and references.",
           "action": "Re-read 4.10 to 4.12 and compare its shortlisting method with your Stage 3 scorecard. Note one conflict and how you would resolve it.",
           "access_note": "Same free course as Stage 2; no separate card or extra cost. Verification details are in the Stage 2 card.",
-          "verification_date": "2026-10-26",
-          "link_label": "Return to the course"
+          "link_label": "Return to the course",
+          "id": "openlearn-shortlisting",
+          "access": {
+            "study": "free",
+            "certificate": "free_participation",
+            "account": "not_verified",
+            "evidence_urls": [
+              "https://www.open.edu/openlearn/money-business/human-resources/human-resources-recruitment-and-selection/content-section-0"
+            ]
+          },
+          "verification_date": "2026-10-26"
         }
-      ]
+      ],
+      "id": "screening",
+      "short_title": "Screen",
+      "focus": "Shortlist against criteria and record defensible evidence.",
+      "level": "Beginner to intermediate; a scorecard from Stage 3 assumed.",
+      "practice": "Screen ten practice CVs against your scorecard and record one line of evidence for each decision.",
+      "effort_note": ""
     },
     {
       "title": "Stage 6: Interview and decide - structured interviewing in practice",
@@ -324,8 +516,17 @@
           "why": "The most important single document in this library. Updated in March 2026, it explains the four parts of structured interviewing, how to define hiring attributes, how to draft questions and follow-ups, and how to score with a shared rubric.",
           "action": "Write eight questions for your practice role: four behavioural and four hypothetical, each mapped to a scorecard attribute. Add what a poor and an outstanding answer would sound like.",
           "access_note": "Verified 2026-10-26 by reading the provider page: marked Updated March 2026, free, no login or payment shown. Google reports these results from its own hiring data; the method is widely supported by research, but the specific numbers are not a promise for your context.",
-          "verification_date": "2026-10-26",
-          "link_label": "Read the guide"
+          "link_label": "Read the guide",
+          "id": "google-structured-interviews",
+          "access": {
+            "study": "free",
+            "certificate": "not_verified",
+            "account": "not_verified",
+            "evidence_urls": [
+              "https://rework.withgoogle.com/intl/en/guides/a-guide-to-structured-interviewing-for-better-hiring-practices"
+            ]
+          },
+          "verification_date": "2026-10-26"
         },
         {
           "title": "Effective interviewer training for better candidate experiences",
@@ -337,8 +538,17 @@
           "why": "Shows how to write useful interview feedback, avoid vague comments and personality judgements, and leave time for candidate questions. This is what makes a rubric work in a real panel.",
           "action": "After your mock interview, rewrite your feedback using the guide's rules and check whether a stranger could reconstruct the evidence.",
           "access_note": "Verified via the provider's own page content returned in search results on 2026-10-26; the guide is part of the same free re:Work set. The page itself was not opened directly, so individual steps were not fully read.",
-          "verification_date": "2026-10-26",
-          "link_label": "Read the guide"
+          "link_label": "Read the guide",
+          "id": "google-interviewer-training",
+          "access": {
+            "study": "free",
+            "certificate": "not_verified",
+            "account": "not_verified",
+            "evidence_urls": [
+              "https://rework.withgoogle.com/intl/en/guides/effective-interviewer-training-for-better-candidate-experiences"
+            ]
+          },
+          "verification_date": "2026-10-26"
         },
         {
           "title": "Reuse: Greenhouse structured hiring introduction and Workable interview kits",
@@ -350,10 +560,25 @@
           "why": "You already have these from Stage 3. The Greenhouse worksheet turns your questions into an interview plan; the Workable kits show how commercial teams package questions by stage.",
           "action": "Assemble a one-page interview kit: purpose, attributes, questions, scoring anchors and a recommendation field.",
           "access_note": "No new resource or cost. Verification details are in the Stage 3 cards.",
-          "verification_date": "2026-10-26",
-          "link_label": "Reopen the worksheets"
+          "link_label": "Reopen the worksheets",
+          "id": "interview-kit-practice",
+          "access": {
+            "study": "free",
+            "certificate": "not_verified",
+            "account": "not_verified",
+            "evidence_urls": [
+              "https://support.greenhouse.io/hc/en-us/articles/360007245452-Structured-hiring-Introduction"
+            ]
+          },
+          "verification_date": "2026-10-26"
         }
-      ]
+      ],
+      "id": "interviewing",
+      "short_title": "Interview",
+      "focus": "Ask structured questions and score against a written rubric.",
+      "level": "Intermediate; a scorecard and interview questions assumed.",
+      "practice": "Run a 30-minute mock interview with a friend, score it independently, then compare your scores.",
+      "effort_note": ""
     },
     {
       "title": "Stage 7: Offer, onboarding and the law in Nigeria",
@@ -376,8 +601,17 @@
           "why": "A recruiter handles CVs, references and background checks, which are personal data. The GAID sets out the principles, lawful bases, consent rules, information duties for data subjects, breach notification and data processing agreements.",
           "action": "Read Articles 15, 16, 17, 18, 27, 33 and 34, then draft a six-line privacy notice you could put on a job application form.",
           "access_note": "Verified 2026-10-26 by reading the official NDPC PDF (reference NDPC/NDP ACT-GAID/01/2025). I read the arrangement of articles and the opening articles, not the entire document. This is a regulator's implementation directive, not the Act itself, and it is not legal advice. Confirm the current text and any later amendments with a Nigerian lawyer.",
-          "verification_date": "2026-10-26",
-          "link_label": "Open the official PDF"
+          "link_label": "Open the official PDF",
+          "id": "ndpc-gaid",
+          "access": {
+            "study": "free",
+            "certificate": "not_verified",
+            "account": "not_verified",
+            "evidence_urls": [
+              "https://ndpc.gov.ng/wp-content/uploads/2025/07/NDP-ACT-GAID-2025-MARCH-20TH.pdf"
+            ]
+          },
+          "verification_date": "2026-10-26"
         },
         {
           "title": "Labour Act, Chapter L1 Laws of the Federation of Nigeria 2004",
@@ -389,8 +623,17 @@
           "why": "Part II is specifically about recruiting, including prohibitions on recruiting without a permit or licence, employer permits, recruiter licences and restrictions. Section 7 covers written particulars of employment terms, which matters when you prepare an offer.",
           "action": "Read sections 7, 23, 24, 25, 26 and 71. Write down three questions you would ask an employer before running a search on their behalf.",
           "access_note": "Verified 2026-10-26 by reading the free statute PDF. The Act dates from 1971 and is reproduced as Cap. L1 LFN 2004; the ILO NATLEX entry records the 1990 revised edition. It may have been amended or partly superseded, so check current law and get local legal advice before acting on it. This is an official-style reproduction, not a government gazette download.",
-          "verification_date": "2026-10-26",
-          "link_label": "Open the statute PDF"
+          "link_label": "Open the statute PDF",
+          "id": "nigeria-labour-act",
+          "access": {
+            "study": "free",
+            "certificate": "not_verified",
+            "account": "not_verified",
+            "evidence_urls": [
+              "https://lawsofnigeria.placng.org/laws/L1.pdf"
+            ]
+          },
+          "verification_date": "2026-10-26"
         },
         {
           "title": "Google re:Work: onboarding and candidate experience guides",
@@ -402,10 +645,25 @@
           "why": "Closes the loop from Stage 4. The data-driven onboarding guide and the candidate experience guide show what happens after the offer is signed, which is where a recruiter's responsibility often quietly ends.",
           "action": "From the guides index, open the onboarding guide and sketch a 30-day onboarding checklist for your practice role.",
           "access_note": "Verified 2026-10-26 on the provider guides index; those two guides are listed among the 23 free results. I did not open the individual guide pages. No login or payment shown on the index.",
-          "verification_date": "2026-10-26",
-          "link_label": "Open the guides index"
+          "link_label": "Open the guides index",
+          "id": "google-onboarding",
+          "access": {
+            "study": "free",
+            "certificate": "not_verified",
+            "account": "not_verified",
+            "evidence_urls": [
+              "https://rework.withgoogle.com/intl/en/guides/"
+            ]
+          },
+          "verification_date": "2026-10-26"
         }
-      ]
+      ],
+      "id": "nigerian-law",
+      "short_title": "Law and offers",
+      "focus": "Handle candidate data and offers under Nigerian rules.",
+      "level": "Intermediate; the full hiring process from Stages 1 to 6 assumed.",
+      "practice": "Draft a candidate privacy notice and a 30-day onboarding checklist.",
+      "effort_note": ""
     },
     {
       "title": "Stage 8: Work the process - tools, metrics and getting hired",
@@ -428,8 +686,17 @@
           "why": "A free CRM is a practical stand-in for an applicant tracking system while you practise. The Academy's course catalogue is explicitly free and online.",
           "action": "Create a free account, add your ten practice candidates, and label each with a stage so you can produce a funnel count.",
           "access_note": "Verified 2026-10-26 on the HubSpot Academy courses page: the catalogue is described as completely free and online, with a free account required; this lesson is listed at 20 minutes. The CRM is a commercial product with paid tiers; the free tier is enough for the practice task.",
-          "verification_date": "2026-10-26",
-          "link_label": "Open the lesson"
+          "link_label": "Open the lesson",
+          "id": "hubspot-contacts",
+          "access": {
+            "study": "free",
+            "certificate": "not_verified",
+            "account": "required",
+            "evidence_urls": [
+              "https://academy.hubspot.com/lessons/managing-your-contacts-with-the-hubspot-crm"
+            ]
+          },
+          "verification_date": "2026-10-26"
         },
         {
           "title": "Greenhouse guidance: recruiting metrics and benchmarks",
@@ -441,8 +708,17 @@
           "why": "Recruiters are judged on time to hire, source of hire, pass-through rates and quality of hire. Learning the vocabulary lets you discuss your practice project in an interview.",
           "action": "Calculate four funnel rates from your practice pipeline and write a short paragraph explaining the bottleneck.",
           "access_note": "Verified 2026-10-26 on the provider guidance hub: free articles and resources listed. The 2026 hiring benchmarks report is advertised on the same page and may require a form; I did not verify its access terms, so do not assume the underlying dataset is freely downloadable.",
-          "verification_date": "2026-10-26",
-          "link_label": "Open the guidance hub"
+          "link_label": "Open the guidance hub",
+          "id": "greenhouse-metrics",
+          "access": {
+            "study": "free",
+            "certificate": "not_verified",
+            "account": "not_verified",
+            "evidence_urls": [
+              "https://www.greenhouse.com/guidance"
+            ]
+          },
+          "verification_date": "2026-10-26"
         },
         {
           "title": "CIPM Nigeria: professional membership by examination",
@@ -454,10 +730,27 @@
           "why": "CIPM is the body chartered to regulate HR practice in Nigeria. Its syllabus shows the local body of knowledge, including Nigerian Labour Law, workforce planning and HR metrics, and its qualification is recognised locally.",
           "action": "Do not enrol yet. Read the syllabus and exam FAQ, then decide after you have six months of experience whether the qualification is right for your path.",
           "access_note": "Verified 2026-10-26 on the provider membership routes page and exam FAQ. Published fees: application NGN 10,000; acceptance NGN 12,000; Foundation NGN 55,440; Intermediate I NGN 57,190; Intermediate II NGN 58,200; Professional I NGN 64,050; Professional II NGN 70,050, with exemption fees from NGN 20,250 to NGN 24,300. The provider states fees are subject to review. Minimum entry is a degree or HND with five SSCE credits including English and Mathematics; undergraduates may enrol but are inducted only after graduating. Prices are in naira because the provider publishes in naira; no USD conversion is implied.",
-          "verification_date": "2026-10-26",
-          "link_label": "Check current fees"
+          "link_label": "Check current fees",
+          "id": "cipm-professional-route",
+          "access": {
+            "study": "paid",
+            "certificate": "paid_qualification",
+            "account": "not_verified",
+            "evidence_urls": [
+              "https://cipmnigeria.org/membership/membership-routes/"
+            ]
+          },
+          "verification_date": "2026-10-26"
         }
-      ]
+      ],
+      "id": "career-tools",
+      "short_title": "Get hired",
+      "focus": "Track a pipeline, report funnel numbers, build a portfolio.",
+      "level": "Beginner to intermediate; a completed practice project assumed.",
+      "practice": "Assemble a portfolio folder: job analysis, advert, scorecard, Boolean strings, screening notes, interview kit and funnel numbers. Then apply to five junior recruiter or HR assistant roles.",
+      "effort_note": ""
     }
-  ]
+  ],
+  "schema_version": 1,
+  "verified_free_count": 24
 }

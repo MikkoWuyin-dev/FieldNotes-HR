@@ -1,15 +1,15 @@
 # From zero to first recruiter role: a roadmap-ordered learning library
 
 > [!NOTE] Read this first
-> Built on 26 October 2026 for an absolute beginner in Lagos, Nigeria, who wants to enter HR through the recruiter and talent acquisition path, with about five study hours a week. Work through the stages in order. Every cost and access claim below was checked against the provider's own public page on that date. Terms change; re-check before you pay or enrol. This is a learning plan. It cannot promise a job, a professional credential or mastery.
+> Built on 26 October 2026 for an absolute beginner in Lagos, Nigeria, who wants to enter HR through the recruiter and talent acquisition path, with about five study hours a week. Work through the stages in order. Research began on that date, with selected later checks noted on the cards. Some access findings remain partial, conditional or unconfirmed; dates are not promises of current terms. Terms change; re-check before you pay or enrol. This is a learning plan. It cannot promise a job, a professional credential or mastery.
 
 ## Start here
 
-This library has 8 stages and 27 resource cards, about 94 hours of study in total. At five hours a week that is roughly 20 weeks. 25 cards were confirmed free from provider pages; 2 are paid or conditional and are labelled on the card. The free set mixes video series, official documentation and written courses, as you asked.
+This library has 8 stages and 27 resource cards, with 94 planned study hours across 20 weeks. Study budgets include practice and selected lessons, not every full course. Free study, certificates and professional qualifications are separate findings.
 
 The most useful idea in the whole plan sits in Stage 6: ask every candidate the same well-designed questions and score the answers against a rubric you wrote before you met them. Stages 1 to 5 exist so that you can do that well. Stage 7 keeps you on the right side of Nigerian law. Stage 8 turns the practice into evidence you can show an employer.
 
-You can finish this roadmap without buying anything. The paid options are gathered at the end, with real prices where a provider published them and a clear warning where a price came from a third party. None of the free certificates here is a professional HR qualification.
+Prioritise the confirmed-free study materials and skip optional paid paths. Confirm the partial listing terms before relying on that practice channel. The paid options are gathered at the end, with real prices where a provider published them and a clear warning where a price came from a third party. None of the free certificates here is a professional HR qualification.
 
 ## How this library was checked
 
@@ -25,20 +25,20 @@ Three distinctions matter throughout:
 
 Prices are quoted in the currency the provider publishes. CIPM publishes in naira. The LinkedIn figures come from third-party 2026 pricing guides and are marked as unconfirmed, because LinkedIn's own help pages failed when I tried to read them. I did not convert currencies or add taxes, bank charges or data costs.
 
-One check in this skill's normal workflow could not run in the generating sandbox. It blocks most outbound traffic: a request to pypi.org returned 200, while requests to kaggle.com and docs.python.org failed at the TLS handshake. So no HTTP status codes were obtained there. The batch sweep over all 30 cited URLs has since run in GitHub Actions (workflow run 40471064309, 27 October 2026): 27 returned 200 and 3 returned 403. Those three 403s were bot filtering, not broken links — the OpenLearn course page, the NDPC GAID PDF and the Saylor FAQ were each re-read and their free claims still hold. A 200 never proves a resource is free: LinkedIn's pages answer 200 to a plain curl but still return 403 and 500 to a browser, and remain unverified. A ready-to-run script, `check-links.sh`, sits next to these files so you can repeat the sweep; `src/verification-manifest.json` records the result. Where a specific provider page could not be read, the card says so.
+One check in this skill's normal workflow could not run in the generating sandbox. It blocks most outbound traffic: a request to pypi.org returned 200, while requests to kaggle.com and docs.python.org failed at the TLS handshake. So no HTTP status codes were obtained there. The batch sweep over the then-current 30 cited URLs has since run in GitHub Actions (workflow run 40471064309, 27 October 2026): 27 returned 200 and 3 returned 403. Those three 403s were bot filtering, not broken links — the OpenLearn course page, the NDPC GAID PDF and the Saylor FAQ were each re-read and their free claims still hold. A 200 never proves a resource is free: LinkedIn's pages answer 200 to a plain curl but still return 403 and 500 to a browser, and remain unverified. A ready-to-run script, `check-links.sh`, sits next to these files so you can repeat the sweep; `src/verification-manifest.json` records the result. Where a specific provider page could not be read, the card says so.
 
 ## Roadmap at a glance
 
-| Stage | Weeks | Hours | Focus and main outcome |
+| Stage | Weeks | Hours | Focus |
 |---|---|---|---|
-| 1. Orientation | 1-2 | 8 | Map the hiring lifecycle and name the recruiter's job. |
-| 2. Foundations | 3-5 | 14 | Run a full and fair recruitment and selection process. |
-| 3. Define the role | 6-7 | 10 | Write a job description and a scoring scorecard before sourcing. |
-| 4. Find people | 8-10 | 14 | Build Boolean strings and a candidate experience plan. |
-| 5. Screen | 11-12 | 10 | Shortlist against criteria and record defensible evidence. |
-| 6. Interview | 13-15 | 16 | Ask structured questions and score against a written rubric. |
-| 7. Law and offers | 16-17 | 10 | Handle candidate data and offers under Nigerian rules. |
-| 8. Get hired | 18-20 | 12 | Track a pipeline, report funnel numbers, build a portfolio. |
+| 1. Orientation | Weeks 1-2 | 8 | Map the hiring lifecycle and name the recruiter's job. |
+| 2. Foundations | Weeks 3-5 | 14 | Run a full and fair recruitment and selection process. |
+| 3. Define the role | Weeks 6-7 | 10 | Write a job description and a scoring scorecard before sourcing. |
+| 4. Find people | Weeks 8-10 | 14 | Build Boolean strings and a candidate experience plan. |
+| 5. Screen | Weeks 11-12 | 10 | Shortlist against criteria and record defensible evidence. |
+| 6. Interview | Weeks 13-15 | 16 | Ask structured questions and score against a written rubric. |
+| 7. Law and offers | Weeks 16-17 | 10 | Handle candidate data and offers under Nigerian rules. |
+| 8. Get hired | Weeks 18-20 | 12 | Track a pipeline, report funnel numbers, build a portfolio. |
 
 Estimates are mine, based on the provider's stated course lengths plus practice time. They are planning figures, not promises. If you can only manage three hours in a week, stretch the stage rather than skipping the practice task.
 
@@ -54,7 +54,7 @@ Learn the hiring lifecycle end to end, the vocabulary of talent acquisition, and
 
 **Effort:** about 8 hours across weeks 1-2. This includes a one-hour HR Essentials starter budget; use selected lessons, not both full playlists.
 
-**You will be able to:**
+**Outcomes:**
 
 - Describe the stages from workforce planning to onboarding
 - Name the common recruiter roles and the difference between agency and in-house recruiting
@@ -66,43 +66,75 @@ Learn the hiring lifecycle end to end, the vocabulary of talent acquisition, and
 
 ### The HR Learning Lab: HR Essentials (video playlist)
 
-- **Provider and link:** HR Learning Lab (YouTube) - [Open the playlist](https://www.youtube.com/playlist?list=PLeDNHX61_qlQeRK1_i5flRpz2T0wjQXN2)
-- **Format:** Free video series
-- **Cost and access:** Free
-- **Time:** 1 hour for starter lessons and notes (study budget)
-- **What it teaches, and why this stage:** Start with what HR does, the employee life cycle and the wider HR profession before specialising in talent acquisition.
-- **Next action:** Watch lessons 1-4, then sketch the employee life cycle and explain where recruitment fits. Use remaining study time for notes and review.
-- **Verification:** Checked 2026-10-27: public HR Essentials playlist, 16 listed videos; description and initial lesson titles readable without sign-in. The fetch also exposed a YouTube error banner, so playback and mobile app handoff remain untested. Content developed by Dr. Heather Staples; videos produced using AI-supported tools. This is introductory study, not a professional qualification.
+**Provider:** HR Learning Lab (YouTube)
+
+**Link:** https://www.youtube.com/playlist?list=PLeDNHX61_qlQeRK1_i5flRpz2T0wjQXN2
+
+**Format:** Free video series
+
+**Cost:** Free
+
+**Time:** 1 hour for starter lessons and notes (study budget)
+
+**Why:** Start with what HR does, the employee life cycle and the wider HR profession before specialising in talent acquisition.
+
+**Do this:** Watch lessons 1-4, then sketch the employee life cycle and explain where recruitment fits. Use remaining study time for notes and review.
+
+**Access and verification (2026-10-27):** Checked 2026-10-27: public HR Essentials playlist, 16 listed videos; description and initial lesson titles readable without sign-in. The fetch also exposed a YouTube error banner, so playback and mobile app handoff remain untested. Content developed by Dr. Heather Staples; videos produced using AI-supported tools. This is introductory study, not a professional qualification.
 
 ### The HR Learning Lab: Talent Acquisition (video playlist)
 
-- **Provider and link:** HR Learning Lab (YouTube) - [Open the playlist](https://www.youtube.com/playlist?list=PLeDNHX61_qlQWYcxZNB19TDOKbl625W2c)
-- **Format:** Free video series
-- **Cost and access:** Free
-- **Time:** About 2 hours of selected lessons and notes (study budget)
-- **What it teaches, and why this stage:** Short, beginner-oriented lessons on job analysis, workforce planning, recruiting, selection and hiring practice. The fastest way to hear the vocabulary before reading heavier material.
-- **Next action:** Watch the first five lessons and write a one-page diagram of the hiring lifecycle in your own words.
-- **Verification:** Checked 2026-10-27: public Talent Acquisition playlist, 43 listed videos, description and lesson titles readable without sign-in; playback and mobile app handoff not tested. Creator discloses AI-supported production; confirm consequential claims against primary sources.
+**Provider:** HR Learning Lab (YouTube)
+
+**Link:** https://www.youtube.com/playlist?list=PLeDNHX61_qlQWYcxZNB19TDOKbl625W2c
+
+**Format:** Free video series
+
+**Cost:** Free
+
+**Time:** About 2 hours of selected lessons and notes (study budget)
+
+**Why:** Short, beginner-oriented lessons on job analysis, workforce planning, recruiting, selection and hiring practice. The fastest way to hear the vocabulary before reading heavier material.
+
+**Do this:** Watch the first five lessons and write a one-page diagram of the hiring lifecycle in your own words.
+
+**Access and verification (2026-10-27):** Checked 2026-10-27: public Talent Acquisition playlist, 43 listed videos, description and lesson titles readable without sign-in; playback and mobile app handoff not tested. Creator discloses AI-supported production; confirm consequential claims against primary sources.
 
 ### PRDV226: Introduction to Human Resource Management
 
-- **Provider and link:** Saylor University - [Open the course](https://learn.saylor.org/course/view.php?id=1292)
-- **Format:** Written course with lectures and videos
-- **Cost and access:** Free, with a free completion certificate
-- **Time:** About 14 hours for the whole course
-- **What it teaches, and why this stage:** Units 1 and 2 cover where the right people are and how to recruit and keep quality employees. It gives the structured foundation the shorter videos skip.
-- **Next action:** Work through Units 1 and 2 this fortnight; come back for Units 3 and 4 in Stage 2.
-- **Verification:** Verified 2026-10-26 on the course syllabus and the Saylor FAQ: no tuition or fees, all materials free, free course completion certificate at 70 percent on the final exam. A free account is needed for assessments and the exam. Only the proctored college-credit route carries a fee; you do not need it for the free certificate.
+**Provider:** Saylor University
+
+**Link:** https://learn.saylor.org/course/view.php?id=1292
+
+**Format:** Written course with lectures and videos
+
+**Cost:** Free, with a free completion certificate
+
+**Time:** About 14 hours for the whole course
+
+**Why:** Units 1 and 2 cover where the right people are and how to recruit and keep quality employees. It gives the structured foundation the shorter videos skip.
+
+**Do this:** Work through Units 1 and 2 this fortnight; come back for Units 3 and 4 in Stage 2.
+
+**Access and verification (2026-10-26):** Verified 2026-10-26 on the course syllabus and the Saylor FAQ: no tuition or fees, all materials free, free course completion certificate at 70 percent on the final exam. A free account is needed for assessments and the exam. Only the proctored college-credit route carries a fee; you do not need it for the free certificate.
 
 ### Principles of Management, Chapter 11: Human Resource Management
 
-- **Provider and link:** OpenStax (Rice University) - [Read Chapter 11](https://openstax.org/books/principles-management/pages/11-introduction)
-- **Format:** Free peer-reviewed textbook
-- **Cost and access:** Free
-- **Time:** About 1 hour for the introduction and section 11.1
-- **What it teaches, and why this stage:** A university-level explanation of how HR became a strategic function and what talent acquisition is for. Useful when you need the reasoning, not just the steps.
-- **Next action:** Read the chapter introduction and 11.1; note three ways HR creates value that you can repeat in an interview.
-- **Verification:** Verified 2026-10-26: free openly licensed textbook, readable in web view. US-oriented examples; treat the legal sections as context, not Nigerian law.
+**Provider:** OpenStax (Rice University)
+
+**Link:** https://openstax.org/books/principles-management/pages/11-introduction
+
+**Format:** Free peer-reviewed textbook
+
+**Cost:** Free
+
+**Time:** About 1 hour for the introduction and section 11.1
+
+**Why:** A university-level explanation of how HR became a strategic function and what talent acquisition is for. Useful when you need the reasoning, not just the steps.
+
+**Do this:** Read the chapter introduction and 11.1; note three ways HR creates value that you can repeat in an interview.
+
+**Access and verification (2026-10-26):** Verified 2026-10-26: free openly licensed textbook, readable in web view. US-oriented examples; treat the legal sections as context, not Nigerian law.
 
 ## Stage 2: Foundations - fair process, job roles and the law
 
@@ -112,7 +144,7 @@ Build the ground rules: equal opportunity, job and person requirements, the recr
 
 **Effort:** about 14 hours across weeks 3-5.
 
-**You will be able to:**
+**Outcomes:**
 
 - Run a full and fair recruitment and selection process step by step
 - Separate job requirements from person specifications
@@ -124,43 +156,75 @@ Build the ground rules: equal opportunity, job and person requirements, the recr
 
 ### Human resources: recruitment and selection
 
-- **Provider and link:** The Open University (OpenLearn) - [Open the free course](https://www.open.edu/openlearn/money-business/human-resources/human-resources-recruitment-and-selection/content-section-0)
-- **Format:** Free written course with activities
-- **Cost and access:** Free, with a free statement of participation
-- **Time:** 12 hours
-- **What it teaches, and why this stage:** The single best free beginner course for the actual sequence: job analysis, job description, person specification, attracting applicants, advertising, shortlisting and references. It is the spine of this stage.
-- **Next action:** Complete sections 4.2 to 4.5 and draft a job analysis for one real Lagos vacancy you find online.
-- **Verification:** Verified 2026-10-26 on the provider course page: free course, free statement of participation; a free account is needed to track progress, claim the statement and open all quizzes and activities. Course content was last updated in 2018 and uses UK equality-law framing - pair it with the Nigerian sources in Stage 7.
+**Provider:** The Open University (OpenLearn)
+
+**Link:** https://www.open.edu/openlearn/money-business/human-resources/human-resources-recruitment-and-selection/content-section-0
+
+**Format:** Free written course with activities
+
+**Cost:** Free, with a free statement of participation
+
+**Time:** 12 hours
+
+**Why:** The single best free beginner course for the actual sequence: job analysis, job description, person specification, attracting applicants, advertising, shortlisting and references. It is the spine of this stage.
+
+**Do this:** Complete sections 4.2 to 4.5 and draft a job analysis for one real Lagos vacancy you find online.
+
+**Access and verification (2026-10-26):** Verified 2026-10-26 on the provider course page: free course, free statement of participation; a free account is needed to track progress, claim the statement and open all quizzes and activities. Course content was last updated in 2018 and uses UK equality-law framing - pair it with the Nigerian sources in Stage 7.
 
 ### Diploma in Human Resources (HR)
 
-- **Provider and link:** Alison - [Open the course](https://alison.com/course/diploma-in-human-resources-hr)
-- **Format:** Free video diploma course
-- **Cost and access:** Free to study; the optional certificate costs extra
-- **Time:** 10-15 hours
-- **What it teaches, and why this stage:** A video-led alternative to the text-heavy OpenLearn course. It covers the key skills and responsibilities of HR, recruitment and selection, and employee separation.
-- **Next action:** Use it for revision: watch the recruitment and selection modules and compare the sequence with OpenLearn section 4.
-- **Verification:** Verified 2026-10-26 on Alison's help centre and certification page: all courses are free to study and complete; a paid digital or printed certificate is optional and a free Learner Record is available instead. The provider page did not show an exact certificate price, so I am not quoting one. Alison lists 15 free recruitment courses on its recruitment tag page.
+**Provider:** Alison
+
+**Link:** https://alison.com/course/diploma-in-human-resources-hr
+
+**Format:** Free video diploma course
+
+**Cost:** Free to study; the optional certificate costs extra
+
+**Time:** 10-15 hours
+
+**Why:** A video-led alternative to the text-heavy OpenLearn course. It covers the key skills and responsibilities of HR, recruitment and selection, and employee separation.
+
+**Do this:** Use it for revision: watch the recruitment and selection modules and compare the sequence with OpenLearn section 4.
+
+**Access and verification (2026-10-26):** Verified 2026-10-26 on Alison's help centre and certification page: all courses are free to study and complete; a paid digital or printed certificate is optional and a free Learner Record is available instead. The provider page did not show an exact certificate price, so I am not quoting one. Alison lists 15 free recruitment courses on its recruitment tag page.
 
 ### BUS301: Human Resource Management
 
-- **Provider and link:** Saylor University - [Open the course](https://learn.saylor.org/course/BUS301)
-- **Format:** Written course with lectures and videos
-- **Cost and access:** Free, with a free completion certificate
-- **Time:** About 24 hours for the full course
-- **What it teaches, and why this stage:** A deeper follow-on to PRDV226 with strategic HR planning, staffing, compliance and labour relations. Use selected units rather than the whole course if you are short on time.
-- **Next action:** Read the staffing and recruitment/selection units only; skip performance and compensation units until you are job hunting.
-- **Verification:** Verified 2026-10-26 via the Saylor FAQ and course syllabus: no tuition or fees, free final exam and free completion certificate. The US employment-law material is not Nigerian law.
+**Provider:** Saylor University
+
+**Link:** https://learn.saylor.org/course/BUS301
+
+**Format:** Written course with lectures and videos
+
+**Cost:** Free, with a free completion certificate
+
+**Time:** About 24 hours for the full course
+
+**Why:** A deeper follow-on to PRDV226 with strategic HR planning, staffing, compliance and labour relations. Use selected units rather than the whole course if you are short on time.
+
+**Do this:** Read the staffing and recruitment/selection units only; skip performance and compensation units until you are job hunting.
+
+**Access and verification (2026-10-26):** Verified 2026-10-26 via the Saylor FAQ and course syllabus: no tuition or fees, free final exam and free completion certificate. The US employment-law material is not Nigerian law.
 
 ### Recruiting, Hiring, and Onboarding Employees (audit option)
 
-- **Provider and link:** University of Minnesota on Coursera - [Check the enrolment options](https://www.coursera.org/learn/recruiting-hiring-onboarding-employees)
-- **Format:** University video course
-- **Cost and access:** Paid or conditional - not counted as confirmed free
-- **Time:** About 2 weeks at 10 hours a week (about 20 hours)
-- **What it teaches, and why this stage:** The syllabus is a strong match for this roadmap: workforce planning, job analysis, legal selection, sourcing, hiring analytics and onboarding. Four modules with 14 videos in module 1 alone.
-- **Next action:** Only consider it after the free stages. Try to select the Full Course, No Certificate option if it is offered to you, then decide whether the certificate is worth paying for.
-- **Verification:** NOT counted as confirmed free. Verified 2026-10-26: the course page shows an 'Enroll for free' button and 'Included with Coursera Plus', but the same page's FAQ says that to access course materials you need to purchase the Certificate experience, start a Free Trial, or use a Full Course, No Certificate option where available. I could not confirm that the no-certificate option is offered for this course. Financial aid is mentioned in the FAQ. Prices vary by region and promotion; check the page before enrolling.
+**Provider:** University of Minnesota on Coursera
+
+**Link:** https://www.coursera.org/learn/recruiting-hiring-onboarding-employees
+
+**Format:** University video course
+
+**Cost:** Paid or conditional - not counted as confirmed free
+
+**Time:** About 2 weeks at 10 hours a week (about 20 hours)
+
+**Why:** The syllabus is a strong match for this roadmap: workforce planning, job analysis, legal selection, sourcing, hiring analytics and onboarding. Four modules with 14 videos in module 1 alone.
+
+**Do this:** Only consider it after the free stages. Try to select the Full Course, No Certificate option if it is offered to you, then decide whether the certificate is worth paying for.
+
+**Access and verification (2026-10-26):** NOT counted as confirmed free. Verified 2026-10-26: the course page shows an 'Enroll for free' button and 'Included with Coursera Plus', but the same page's FAQ says that to access course materials you need to purchase the Certificate experience, start a Free Trial, or use a Full Course, No Certificate option where available. I could not confirm that the no-certificate option is offered for this course. Financial aid is mentioned in the FAQ. Prices vary by region and promotion; check the page before enrolling.
 
 ## Stage 3: Define the role - job analysis, descriptions and success criteria
 
@@ -170,7 +234,7 @@ Before sourcing anyone, learn to work out what the job actually requires and wha
 
 **Effort:** about 10 hours across weeks 6-7.
 
-**You will be able to:**
+**Outcomes:**
 
 - Turn a vague request into a written job description and person specification
 - Define measurable hiring attributes before speaking to candidates
@@ -182,33 +246,57 @@ Before sourcing anyone, learn to work out what the job actually requires and wha
 
 ### ONET OnLine (Occupational Information Network)
 
-- **Provider and link:** US Department of Labor - [Search occupations](https://www.onetonline.org/)
-- **Format:** Free official occupational database
-- **Cost and access:** Free
-- **Time:** About 2 hours to explore one occupation properly
-- **What it teaches, and why this stage:** Over 1,000 occupation profiles with tasks, skills, knowledge and work activities. It teaches you how to derive requirements from the work itself instead of copying a competitor's advert.
-- **Next action:** Look up one role you want to recruit for, export the task list, and highlight the five tasks a new hire must do in month one.
-- **Verification:** Verified 2026-10-26: free public database, 1,016 occupation titles listed on the site, no login seen. It is US data, so use it to learn the method of job analysis, then validate duties against Nigerian job adverts.
+**Provider:** US Department of Labor
+
+**Link:** https://www.onetonline.org/
+
+**Format:** Free official occupational database
+
+**Cost:** Free
+
+**Time:** About 2 hours to explore one occupation properly
+
+**Why:** Over 1,000 occupation profiles with tasks, skills, knowledge and work activities. It teaches you how to derive requirements from the work itself instead of copying a competitor's advert.
+
+**Do this:** Look up one role you want to recruit for, export the task list, and highlight the five tasks a new hire must do in month one.
+
+**Access and verification (2026-10-26):** Verified 2026-10-26: free public database, 1,016 occupation titles listed on the site, no login seen. It is US data, so use it to learn the method of job analysis, then validate duties against Nigerian job adverts.
 
 ### HR templates: job descriptions, interview kits and email templates
 
-- **Provider and link:** Workable - [Browse the free templates](https://resources.workable.com/hr-templates/)
-- **Format:** Free official templates and guides
-- **Cost and access:** Free
-- **Time:** 1-2 hours to adapt a template
-- **What it teaches, and why this stage:** More than 1,000 free job descriptions, 390-plus interview kits, 50-plus recruiting email templates, onboarding checklists and Boolean cheatsheets. Good raw material once you understand the structure.
-- **Next action:** Rewrite one downloaded job description so that every requirement maps to a task you identified in ONET. Delete anything you cannot defend.
-- **Verification:** Verified 2026-10-26 on the provider templates index: templates are described as free to download. The page also advertises a separate 15-day free trial of the paid Workable software; you do not need the trial to use the templates. Templates are generic and US/UK flavoured - localise pay, notice and leave wording.
+**Provider:** Workable
+
+**Link:** https://resources.workable.com/hr-templates/
+
+**Format:** Free official templates and guides
+
+**Cost:** Free
+
+**Time:** 1-2 hours to adapt a template
+
+**Why:** More than 1,000 free job descriptions, 390-plus interview kits, 50-plus recruiting email templates, onboarding checklists and Boolean cheatsheets. Good raw material once you understand the structure.
+
+**Do this:** Rewrite one downloaded job description so that every requirement maps to a task you identified in ONET. Delete anything you cannot defend.
+
+**Access and verification (2026-10-26):** Verified 2026-10-26 on the provider templates index: templates are described as free to download. The page also advertises a separate 15-day free trial of the paid Workable software; you do not need the trial to use the templates. Templates are generic and US/UK flavoured - localise pay, notice and leave wording.
 
 ### Structured hiring: Introduction (with free worksheets)
 
-- **Provider and link:** Greenhouse Support - [Read and download](https://support.greenhouse.io/hc/en-us/articles/360007245452-Structured-hiring-Introduction)
-- **Format:** Free official process documentation
-- **Cost and access:** Free
-- **Time:** About 2 hours including the worksheets
-- **What it teaches, and why this stage:** Sets out the six-step structured hiring process: role kick-off, scorecard definition, interview planning, interview kit, sourcing and interviewing, and candidate round-up. It makes you define success before you search.
-- **Next action:** Download the linked worksheet and build a scorecard for your practice role with no more than six attributes.
-- **Verification:** Verified 2026-10-26 on the provider support article: the article and its two downloadable PDFs (a structured interview worksheet about 4 MB and an interactive eBook about 9 MB) are available without a login. The document is product documentation but the method transfers to any hiring process.
+**Provider:** Greenhouse Support
+
+**Link:** https://support.greenhouse.io/hc/en-us/articles/360007245452-Structured-hiring-Introduction
+
+**Format:** Free official process documentation
+
+**Cost:** Free
+
+**Time:** About 2 hours including the worksheets
+
+**Why:** Sets out the six-step structured hiring process: role kick-off, scorecard definition, interview planning, interview kit, sourcing and interviewing, and candidate round-up. It makes you define success before you search.
+
+**Do this:** Download the linked worksheet and build a scorecard for your practice role with no more than six attributes.
+
+**Access and verification (2026-10-26):** Verified 2026-10-26 on the provider support article: the article and its two downloadable PDFs (a structured interview worksheet about 4 MB and an interactive eBook about 9 MB) are available without a login. The document is product documentation but the method transfers to any hiring process.
 
 ## Stage 4: Find people - sourcing, Boolean search and candidate experience
 
@@ -218,7 +306,7 @@ Learn where candidates are, how to search for them, how to write outreach that g
 
 **Effort:** about 14 hours across weeks 8-10.
 
-**You will be able to:**
+**Outcomes:**
 
 - Build Boolean search strings for a real role
 - Compare job boards, referrals, pipelines and direct search
@@ -230,43 +318,75 @@ Learn where candidates are, how to search for them, how to write outreach that g
 
 ### Boolean search cheatsheets for sourcing
 
-- **Provider and link:** Workable - [Open the cheatsheets](https://resources.workable.com/boolean-search-cheatsheets/)
-- **Format:** Free written cheat sheets
-- **Cost and access:** Free
-- **Time:** About 2 hours to practise
-- **What it teaches, and why this stage:** Role-specific Boolean strings show you how brackets, quotes, AND, OR and NOT actually work when searching for people. This is the core craft skill of sourcing.
-- **Next action:** Take one cheatsheet, rebuild its string for a Lagos-based role, and run it in a free search engine. Save ten plausible profiles and note why each matched.
-- **Verification:** Verified 2026-10-26 on the provider page: the cheatsheets are free with no account or payment shown. Most examples target technical and sales roles; adapt the keywords for Nigerian job titles.
+**Provider:** Workable
+
+**Link:** https://resources.workable.com/boolean-search-cheatsheets/
+
+**Format:** Free written cheat sheets
+
+**Cost:** Free
+
+**Time:** About 2 hours to practise
+
+**Why:** Role-specific Boolean strings show you how brackets, quotes, AND, OR and NOT actually work when searching for people. This is the core craft skill of sourcing.
+
+**Do this:** Take one cheatsheet, rebuild its string for a Lagos-based role, and run it in a free search engine. Save ten plausible profiles and note why each matched.
+
+**Access and verification (2026-10-26):** Verified 2026-10-26 on the provider page: the cheatsheets are free with no account or payment shown. Most examples target technical and sales roles; adapt the keywords for Nigerian job titles.
 
 ### Talent Sourcing Strategies (video 16)
 
-- **Provider and link:** HR Learning Lab (YouTube) - [Watch the lesson](https://www.youtube.com/watch?v=yMnw_2VNOVE)
-- **Format:** Free video lesson
-- **Cost and access:** Free
-- **Time:** 7 minutes
-- **What it teaches, and why this stage:** A quick tour of employer branding, referrals, job boards, pipelines, CV mining and job fairs, plus the growth-mindset argument for looking past job titles.
-- **Next action:** After watching, pick two sourcing channels that fit a small Lagos employer and explain why you skipped the others.
-- **Verification:** Verified 2026-10-26: public video, no payment shown. Content developed by Heather Staples, PhD, SPHR, SHRM-SCP; the description states the videos are produced using AI-supported tools. Useful as an overview, not as a primary authority.
+**Provider:** HR Learning Lab (YouTube)
+
+**Link:** https://www.youtube.com/watch?v=yMnw_2VNOVE
+
+**Format:** Free video lesson
+
+**Cost:** Free
+
+**Time:** 7 minutes
+
+**Why:** A quick tour of employer branding, referrals, job boards, pipelines, CV mining and job fairs, plus the growth-mindset argument for looking past job titles.
+
+**Do this:** After watching, pick two sourcing channels that fit a small Lagos employer and explain why you skipped the others.
+
+**Access and verification (2026-10-26):** Verified 2026-10-26: public video, no payment shown. Content developed by Heather Staples, PhD, SPHR, SHRM-SCP; the description states the videos are produced using AI-supported tools. Useful as an overview, not as a primary authority.
 
 ### Google re:Work guides (hiring set)
 
-- **Provider and link:** Google re:Work - [Open the guides index](https://rework.withgoogle.com/intl/en/guides/)
-- **Format:** Free official practice guides
-- **Cost and access:** Free
-- **Time:** About 3 hours across the relevant guides
-- **What it teaches, and why this stage:** The index lists 23 free guides. The hiring ones cover creating a job description, reviewing resumes, shaping candidate experience, structured interviewing, interviewer training, hiring committees and onboarding. They are the closest thing to an open playbook from a major employer.
-- **Next action:** From the index, open Shape the candidate experience and note three changes you would make to a typical Nigerian recruitment process.
-- **Verification:** Verified 2026-10-26 on the provider guides index: 23 guides listed with step and tool counts, no login or payment shown. Individual guides were not all opened; the structured interviewing and interviewer training guides were read directly. Google's data is from its own workforce, not Nigerian employers.
+**Provider:** Google re:Work
+
+**Link:** https://rework.withgoogle.com/intl/en/guides/
+
+**Format:** Free official practice guides
+
+**Cost:** Free
+
+**Time:** About 3 hours across the relevant guides
+
+**Why:** The index lists 23 free guides. The hiring ones cover creating a job description, reviewing resumes, shaping candidate experience, structured interviewing, interviewer training, hiring committees and onboarding. They are the closest thing to an open playbook from a major employer.
+
+**Do this:** From the index, open Shape the candidate experience and note three changes you would make to a typical Nigerian recruitment process.
+
+**Access and verification (2026-10-26):** Verified 2026-10-26 on the provider guides index: 23 guides listed with step and tool counts, no login or payment shown. Individual guides were not all opened; the structured interviewing and interviewer training guides were read directly. Google's data is from its own workforce, not Nigerian employers.
 
 ### Jobberman free employer listing (practice channel)
 
-- **Provider and link:** Jobberman Nigeria - [Check the free listing](https://www.jobberman.com/employer/free-listing)
-- **Format:** Free job board and applicant tracking tool
-- **Cost and access:** Free listing; paid tiers exist
-- **Time:** 1-2 hours to set up a practice advert
-- **What it teaches, and why this stage:** A Nigeria-specific channel where you can see how local employers write adverts and how applicants are sorted. Useful for practising without spending money.
-- **Next action:** Draft and save a practice advert for your Stage 3 role. Do not publish a real vacancy without authorisation.
-- **Verification:** Partially verified on 2026-10-26: the provider page returned only a cookie banner when I retrieved it, so I could not read the full terms. The free-listing claim comes from Jobberman's own search listing, which describes free job posting, CV sorting and an ATS. Confirm current terms, eligibility and any limits before relying on it.
+**Provider:** Jobberman Nigeria
+
+**Link:** https://www.jobberman.com/employer/free-listing
+
+**Format:** Free job board and applicant tracking tool
+
+**Cost:** Free listing; paid tiers exist
+
+**Time:** 1-2 hours to set up a practice advert
+
+**Why:** A Nigeria-specific channel where you can see how local employers write adverts and how applicants are sorted. Useful for practising without spending money.
+
+**Do this:** Draft and save a practice advert for your Stage 3 role. Do not publish a real vacancy without authorisation.
+
+**Access and verification (2026-10-26):** Partially verified on 2026-10-26: the provider page returned only a cookie banner when I retrieved it, so I could not read the full terms. The free-listing claim comes from Jobberman's own search listing, which describes free job posting, CV sorting and an ATS. Confirm current terms, eligibility and any limits before relying on it.
 
 ## Stage 5: Screen and shortlist - reading CVs against criteria
 
@@ -276,7 +396,7 @@ Turn a pile of applications into a defensible shortlist. Practice consistent scr
 
 **Effort:** about 10 hours across weeks 11-12.
 
-**You will be able to:**
+**Outcomes:**
 
 - Screen a CV against the scorecard instead of against your impressions
 - Write a short phone-screen script with the same questions for everyone
@@ -288,33 +408,57 @@ Turn a pile of applications into a defensible shortlist. Practice consistent scr
 
 ### Google re:Work guide: Review resumes
 
-- **Provider and link:** Google re:Work - [Open the guides index](https://rework.withgoogle.com/intl/en/guides/)
-- **Format:** Free official practice guide
-- **Cost and access:** Free
-- **Time:** About 1 hour
-- **What it teaches, and why this stage:** A five-step guide to screening for qualifications, consistency and impact. It gives you an explicit standard, which is what most beginner screeners lack.
-- **Next action:** From the guides index, open Review resumes. Then screen ten practice CVs and write one line of evidence for each decision.
-- **Verification:** Verified 2026-10-26 on the provider guides index, where Review resumes is listed as a five-step guide. I did not open the individual guide page, so the exact steps were not read. No login or payment shown on the index.
+**Provider:** Google re:Work
+
+**Link:** https://rework.withgoogle.com/intl/en/guides/
+
+**Format:** Free official practice guide
+
+**Cost:** Free
+
+**Time:** About 1 hour
+
+**Why:** A five-step guide to screening for qualifications, consistency and impact. It gives you an explicit standard, which is what most beginner screeners lack.
+
+**Do this:** From the guides index, open Review resumes. Then screen ten practice CVs and write one line of evidence for each decision.
+
+**Access and verification (2026-10-26):** Verified 2026-10-26 on the provider guides index, where Review resumes is listed as a five-step guide. I did not open the individual guide page, so the exact steps were not read. No login or payment shown on the index.
 
 ### Greenhouse guidance library (screening and interviewing)
 
-- **Provider and link:** Greenhouse - [Open the guidance hub](https://www.greenhouse.com/guidance)
-- **Format:** Free official articles, eBooks and worksheets
-- **Cost and access:** Free
-- **Time:** 2-3 hours browsing and reading
-- **What it teaches, and why this stage:** Filterable by topic, including interviewing, candidate experience, DE and I, and recruiter tips. It shows how a hiring-software company explains screening problems to recruiters.
-- **Next action:** Read one interviewing article and one bias-related article, then add two bias checks to your Stage 3 scorecard.
-- **Verification:** Verified 2026-10-26 on the provider guidance hub: articles, eBooks, webinars and worksheets listed as free resources. Some gated items such as the 2026 hiring benchmarks report may require a form; treat those as unverified for free access. Content is vendor marketing as well as guidance.
+**Provider:** Greenhouse
+
+**Link:** https://www.greenhouse.com/guidance
+
+**Format:** Free official articles, eBooks and worksheets
+
+**Cost:** Free
+
+**Time:** 2-3 hours browsing and reading
+
+**Why:** Filterable by topic, including interviewing, candidate experience, DE and I, and recruiter tips. It shows how a hiring-software company explains screening problems to recruiters.
+
+**Do this:** Read one interviewing article and one bias-related article, then add two bias checks to your Stage 3 scorecard.
+
+**Access and verification (2026-10-26):** Verified 2026-10-26 on the provider guidance hub: articles, eBooks, webinars and worksheets listed as free resources. Some gated items such as the 2026 hiring benchmarks report may require a form; treat those as unverified for free access. Content is vendor marketing as well as guidance.
 
 ### OpenLearn section 4.10: Shortlisting (revisit)
 
-- **Provider and link:** The Open University (OpenLearn) - [Return to the course](https://www.open.edu/openlearn/money-business/human-resources/human-resources-recruitment-and-selection/content-section-0)
-- **Format:** Free written course section
-- **Cost and access:** Free
-- **Time:** About 1 hour
-- **What it teaches, and why this stage:** Rather than a new course, return to the shortlisting section of the Stage 2 course now that you have a real scorecard. It connects fair selection criteria to paperwork and references.
-- **Next action:** Re-read 4.10 to 4.12 and compare its shortlisting method with your Stage 3 scorecard. Note one conflict and how you would resolve it.
-- **Verification:** Same free course as Stage 2; no separate card or extra cost. Verification details are in the Stage 2 card.
+**Provider:** The Open University (OpenLearn)
+
+**Link:** https://www.open.edu/openlearn/money-business/human-resources/human-resources-recruitment-and-selection/content-section-0
+
+**Format:** Free written course section
+
+**Cost:** Free
+
+**Time:** About 1 hour
+
+**Why:** Rather than a new course, return to the shortlisting section of the Stage 2 course now that you have a real scorecard. It connects fair selection criteria to paperwork and references.
+
+**Do this:** Re-read 4.10 to 4.12 and compare its shortlisting method with your Stage 3 scorecard. Note one conflict and how you would resolve it.
+
+**Access and verification (2026-10-26):** Same free course as Stage 2; no separate card or extra cost. Verification details are in the Stage 2 card.
 
 ## Stage 6: Interview and decide - structured interviewing in practice
 
@@ -324,7 +468,7 @@ Learn the highest-value skill in this roadmap: asking the same well-designed que
 
 **Effort:** about 16 hours across weeks 13-15.
 
-**You will be able to:**
+**Outcomes:**
 
 - Write behavioural and hypothetical questions tied to defined attributes
 - Build a rubric that distinguishes poor, borderline, solid and outstanding answers
@@ -336,33 +480,57 @@ Learn the highest-value skill in this roadmap: asking the same well-designed que
 
 ### A guide to structured interviewing for better hiring practices
 
-- **Provider and link:** Google re:Work - [Read the guide](https://rework.withgoogle.com/intl/en/guides/a-guide-to-structured-interviewing-for-better-hiring-practices)
-- **Format:** Free official practice guide
-- **Cost and access:** Free
-- **Time:** About 2 hours
-- **What it teaches, and why this stage:** The most important single document in this library. Updated in March 2026, it explains the four parts of structured interviewing, how to define hiring attributes, how to draft questions and follow-ups, and how to score with a shared rubric.
-- **Next action:** Write eight questions for your practice role: four behavioural and four hypothetical, each mapped to a scorecard attribute. Add what a poor and an outstanding answer would sound like.
-- **Verification:** Verified 2026-10-26 by reading the provider page: marked Updated March 2026, free, no login or payment shown. Google reports these results from its own hiring data; the method is widely supported by research, but the specific numbers are not a promise for your context.
+**Provider:** Google re:Work
+
+**Link:** https://rework.withgoogle.com/intl/en/guides/a-guide-to-structured-interviewing-for-better-hiring-practices
+
+**Format:** Free official practice guide
+
+**Cost:** Free
+
+**Time:** About 2 hours
+
+**Why:** The most important single document in this library. Updated in March 2026, it explains the four parts of structured interviewing, how to define hiring attributes, how to draft questions and follow-ups, and how to score with a shared rubric.
+
+**Do this:** Write eight questions for your practice role: four behavioural and four hypothetical, each mapped to a scorecard attribute. Add what a poor and an outstanding answer would sound like.
+
+**Access and verification (2026-10-26):** Verified 2026-10-26 by reading the provider page: marked Updated March 2026, free, no login or payment shown. Google reports these results from its own hiring data; the method is widely supported by research, but the specific numbers are not a promise for your context.
 
 ### Effective interviewer training for better candidate experiences
 
-- **Provider and link:** Google re:Work - [Read the guide](https://rework.withgoogle.com/intl/en/guides/effective-interviewer-training-for-better-candidate-experiences)
-- **Format:** Free official practice guide
-- **Cost and access:** Free
-- **Time:** About 1 hour
-- **What it teaches, and why this stage:** Shows how to write useful interview feedback, avoid vague comments and personality judgements, and leave time for candidate questions. This is what makes a rubric work in a real panel.
-- **Next action:** After your mock interview, rewrite your feedback using the guide's rules and check whether a stranger could reconstruct the evidence.
-- **Verification:** Verified via the provider's own page content returned in search results on 2026-10-26; the guide is part of the same free re:Work set. The page itself was not opened directly, so individual steps were not fully read.
+**Provider:** Google re:Work
+
+**Link:** https://rework.withgoogle.com/intl/en/guides/effective-interviewer-training-for-better-candidate-experiences
+
+**Format:** Free official practice guide
+
+**Cost:** Free
+
+**Time:** About 1 hour
+
+**Why:** Shows how to write useful interview feedback, avoid vague comments and personality judgements, and leave time for candidate questions. This is what makes a rubric work in a real panel.
+
+**Do this:** After your mock interview, rewrite your feedback using the guide's rules and check whether a stranger could reconstruct the evidence.
+
+**Access and verification (2026-10-26):** Verified via the provider's own page content returned in search results on 2026-10-26; the guide is part of the same free re:Work set. The page itself was not opened directly, so individual steps were not fully read.
 
 ### Reuse: Greenhouse structured hiring introduction and Workable interview kits
 
-- **Provider and link:** Greenhouse and Workable - [Reopen the worksheets](https://support.greenhouse.io/hc/en-us/articles/360007245452-Structured-hiring-Introduction)
-- **Format:** Free official templates and process docs
-- **Cost and access:** Free
-- **Time:** About 2 hours
-- **What it teaches, and why this stage:** You already have these from Stage 3. The Greenhouse worksheet turns your questions into an interview plan; the Workable kits show how commercial teams package questions by stage.
-- **Next action:** Assemble a one-page interview kit: purpose, attributes, questions, scoring anchors and a recommendation field.
-- **Verification:** No new resource or cost. Verification details are in the Stage 3 cards.
+**Provider:** Greenhouse and Workable
+
+**Link:** https://support.greenhouse.io/hc/en-us/articles/360007245452-Structured-hiring-Introduction
+
+**Format:** Free official templates and process docs
+
+**Cost:** Free
+
+**Time:** About 2 hours
+
+**Why:** You already have these from Stage 3. The Greenhouse worksheet turns your questions into an interview plan; the Workable kits show how commercial teams package questions by stage.
+
+**Do this:** Assemble a one-page interview kit: purpose, attributes, questions, scoring anchors and a recommendation field.
+
+**Access and verification (2026-10-26):** No new resource or cost. Verification details are in the Stage 3 cards.
 
 ## Stage 7: Offer, onboarding and the law in Nigeria
 
@@ -372,7 +540,7 @@ Close the loop: references, offers, onboarding, and the two legal areas that a L
 
 **Effort:** about 10 hours across weeks 16-17.
 
-**You will be able to:**
+**Outcomes:**
 
 - Explain the lawful bases for processing candidate data under Nigerian law
 - Draft a short candidate privacy notice
@@ -384,33 +552,57 @@ Close the loop: references, offers, onboarding, and the two legal areas that a L
 
 ### Nigeria Data Protection Act 2023: General Application and Implementation Directive (GAID) 2025
 
-- **Provider and link:** Nigeria Data Protection Commission (NDPC) - [Open the official PDF](https://ndpc.gov.ng/wp-content/uploads/2025/07/NDP-ACT-GAID-2025-MARCH-20TH.pdf)
-- **Format:** Free primary legal guidance (official PDF)
-- **Cost and access:** Free
-- **Time:** About 3 hours for the relevant articles
-- **What it teaches, and why this stage:** A recruiter handles CVs, references and background checks, which are personal data. The GAID sets out the principles, lawful bases, consent rules, information duties for data subjects, breach notification and data processing agreements.
-- **Next action:** Read Articles 15, 16, 17, 18, 27, 33 and 34, then draft a six-line privacy notice you could put on a job application form.
-- **Verification:** Verified 2026-10-26 by reading the official NDPC PDF (reference NDPC/NDP ACT-GAID/01/2025). I read the arrangement of articles and the opening articles, not the entire document. This is a regulator's implementation directive, not the Act itself, and it is not legal advice. Confirm the current text and any later amendments with a Nigerian lawyer.
+**Provider:** Nigeria Data Protection Commission (NDPC)
+
+**Link:** https://ndpc.gov.ng/wp-content/uploads/2025/07/NDP-ACT-GAID-2025-MARCH-20TH.pdf
+
+**Format:** Free primary legal guidance (official PDF)
+
+**Cost:** Free
+
+**Time:** About 3 hours for the relevant articles
+
+**Why:** A recruiter handles CVs, references and background checks, which are personal data. The GAID sets out the principles, lawful bases, consent rules, information duties for data subjects, breach notification and data processing agreements.
+
+**Do this:** Read Articles 15, 16, 17, 18, 27, 33 and 34, then draft a six-line privacy notice you could put on a job application form.
+
+**Access and verification (2026-10-26):** Verified 2026-10-26 by reading the official NDPC PDF (reference NDPC/NDP ACT-GAID/01/2025). I read the arrangement of articles and the opening articles, not the entire document. This is a regulator's implementation directive, not the Act itself, and it is not legal advice. Confirm the current text and any later amendments with a Nigerian lawyer.
 
 ### Labour Act, Chapter L1 Laws of the Federation of Nigeria 2004
 
-- **Provider and link:** PLAC Laws of Nigeria (statute copy); ILO NATLEX listing - [Open the statute PDF](https://lawsofnigeria.placng.org/laws/L1.pdf)
-- **Format:** Free primary legislation (official-style PDF)
-- **Cost and access:** Free
-- **Time:** About 2 hours for Parts I and II
-- **What it teaches, and why this stage:** Part II is specifically about recruiting, including prohibitions on recruiting without a permit or licence, employer permits, recruiter licences and restrictions. Section 7 covers written particulars of employment terms, which matters when you prepare an offer.
-- **Next action:** Read sections 7, 23, 24, 25, 26 and 71. Write down three questions you would ask an employer before running a search on their behalf.
-- **Verification:** Verified 2026-10-26 by reading the free statute PDF. The Act dates from 1971 and is reproduced as Cap. L1 LFN 2004; the ILO NATLEX entry records the 1990 revised edition. It may have been amended or partly superseded, so check current law and get local legal advice before acting on it. This is an official-style reproduction, not a government gazette download.
+**Provider:** PLAC Laws of Nigeria (statute copy); ILO NATLEX listing
+
+**Link:** https://lawsofnigeria.placng.org/laws/L1.pdf
+
+**Format:** Free primary legislation (official-style PDF)
+
+**Cost:** Free
+
+**Time:** About 2 hours for Parts I and II
+
+**Why:** Part II is specifically about recruiting, including prohibitions on recruiting without a permit or licence, employer permits, recruiter licences and restrictions. Section 7 covers written particulars of employment terms, which matters when you prepare an offer.
+
+**Do this:** Read sections 7, 23, 24, 25, 26 and 71. Write down three questions you would ask an employer before running a search on their behalf.
+
+**Access and verification (2026-10-26):** Verified 2026-10-26 by reading the free statute PDF. The Act dates from 1971 and is reproduced as Cap. L1 LFN 2004; the ILO NATLEX entry records the 1990 revised edition. It may have been amended or partly superseded, so check current law and get local legal advice before acting on it. This is an official-style reproduction, not a government gazette download.
 
 ### Google re:Work: onboarding and candidate experience guides
 
-- **Provider and link:** Google re:Work - [Open the guides index](https://rework.withgoogle.com/intl/en/guides/)
-- **Format:** Free official practice guides
-- **Cost and access:** Free
-- **Time:** About 2 hours
-- **What it teaches, and why this stage:** Closes the loop from Stage 4. The data-driven onboarding guide and the candidate experience guide show what happens after the offer is signed, which is where a recruiter's responsibility often quietly ends.
-- **Next action:** From the guides index, open the onboarding guide and sketch a 30-day onboarding checklist for your practice role.
-- **Verification:** Verified 2026-10-26 on the provider guides index; those two guides are listed among the 23 free results. I did not open the individual guide pages. No login or payment shown on the index.
+**Provider:** Google re:Work
+
+**Link:** https://rework.withgoogle.com/intl/en/guides/
+
+**Format:** Free official practice guides
+
+**Cost:** Free
+
+**Time:** About 2 hours
+
+**Why:** Closes the loop from Stage 4. The data-driven onboarding guide and the candidate experience guide show what happens after the offer is signed, which is where a recruiter's responsibility often quietly ends.
+
+**Do this:** From the guides index, open the onboarding guide and sketch a 30-day onboarding checklist for your practice role.
+
+**Access and verification (2026-10-26):** Verified 2026-10-26 on the provider guides index; those two guides are listed among the 23 free results. I did not open the individual guide pages. No login or payment shown on the index.
 
 ## Stage 8: Work the process - tools, metrics and getting hired
 
@@ -420,7 +612,7 @@ Pull the pieces into a portfolio, learn the numbers recruiters are judged on, an
 
 **Effort:** about 12 hours across weeks 18-20.
 
-**You will be able to:**
+**Outcomes:**
 
 - Track a practice pipeline in a free tool and report simple funnel numbers
 - Present one finished hiring project as a portfolio piece
@@ -432,35 +624,57 @@ Pull the pieces into a portfolio, learn the numbers recruiters are judged on, an
 
 ### Managing Your Contacts With the HubSpot CRM
 
-- **Provider and link:** HubSpot Academy - [Open the lesson](https://academy.hubspot.com/lessons/managing-your-contacts-with-the-hubspot-crm)
-- **Format:** Free short video lesson
-- **Cost and access:** Free
-- **Time:** 20 minutes
-- **What it teaches, and why this stage:** A free CRM is a practical stand-in for an applicant tracking system while you practise. The Academy's course catalogue is explicitly free and online.
-- **Next action:** Create a free account, add your ten practice candidates, and label each with a stage so you can produce a funnel count.
-- **Verification:** Verified 2026-10-26 on the HubSpot Academy courses page: the catalogue is described as completely free and online, with a free account required; this lesson is listed at 20 minutes. The CRM is a commercial product with paid tiers; the free tier is enough for the practice task.
+**Provider:** HubSpot Academy
+
+**Link:** https://academy.hubspot.com/lessons/managing-your-contacts-with-the-hubspot-crm
+
+**Format:** Free short video lesson
+
+**Cost:** Free
+
+**Time:** 20 minutes
+
+**Why:** A free CRM is a practical stand-in for an applicant tracking system while you practise. The Academy's course catalogue is explicitly free and online.
+
+**Do this:** Create a free account, add your ten practice candidates, and label each with a stage so you can produce a funnel count.
+
+**Access and verification (2026-10-26):** Verified 2026-10-26 on the HubSpot Academy courses page: the catalogue is described as completely free and online, with a free account required; this lesson is listed at 20 minutes. The CRM is a commercial product with paid tiers; the free tier is enough for the practice task.
 
 ### Greenhouse guidance: recruiting metrics and benchmarks
 
-- **Provider and link:** Greenhouse - [Open the guidance hub](https://www.greenhouse.com/guidance)
-- **Format:** Free official articles and reports
-- **Cost and access:** Free
-- **Time:** 2-3 hours
-- **What it teaches, and why this stage:** Recruiters are judged on time to hire, source of hire, pass-through rates and quality of hire. Learning the vocabulary lets you discuss your practice project in an interview.
-- **Next action:** Calculate four funnel rates from your practice pipeline and write a short paragraph explaining the bottleneck.
-- **Verification:** Verified 2026-10-26 on the provider guidance hub: free articles and resources listed. The 2026 hiring benchmarks report is advertised on the same page and may require a form; I did not verify its access terms, so do not assume the underlying dataset is freely downloadable.
+**Provider:** Greenhouse
+
+**Link:** https://www.greenhouse.com/guidance
+
+**Format:** Free official articles and reports
+
+**Cost:** Free
+
+**Time:** 2-3 hours
+
+**Why:** Recruiters are judged on time to hire, source of hire, pass-through rates and quality of hire. Learning the vocabulary lets you discuss your practice project in an interview.
+
+**Do this:** Calculate four funnel rates from your practice pipeline and write a short paragraph explaining the bottleneck.
+
+**Access and verification (2026-10-26):** Verified 2026-10-26 on the provider guidance hub: free articles and resources listed. The 2026 hiring benchmarks report is advertised on the same page and may require a form; I did not verify its access terms, so do not assume the underlying dataset is freely downloadable.
 
 ### CIPM Nigeria: professional membership by examination
 
-- **Provider and link:** Chartered Institute of Personnel Management of Nigeria - [Check current fees](https://cipmnigeria.org/membership/membership-routes/)
-- **Format:** Paid professional qualification
-- **Cost and access:** Paid - NGN fees shown on the provider site
-- **Time:** Five exam stages, four exam diets a year
-- **What it teaches, and why this stage:** CIPM is the body chartered to regulate HR practice in Nigeria. Its syllabus shows the local body of knowledge, including Nigerian Labour Law, workforce planning and HR metrics, and its qualification is recognised locally.
-- **Next action:** Do not enrol yet. Read the syllabus and exam FAQ, then decide after you have six months of experience whether the qualification is right for your path.
-- **Verification:** Verified 2026-10-26 on the provider membership routes page and exam FAQ. Published fees: application NGN 10,000; acceptance NGN 12,000; Foundation NGN 55,440; Intermediate I NGN 57,190; Intermediate II NGN 58,200; Professional I NGN 64,050; Professional II NGN 70,050, with exemption fees from NGN 20,250 to NGN 24,300. The provider states fees are subject to review. Minimum entry is a degree or HND with five SSCE credits including English and Mathematics; undergraduates may enrol but are inducted only after graduating. Prices are in naira because the provider publishes in naira; no USD conversion is implied.
+**Provider:** Chartered Institute of Personnel Management of Nigeria
 
----
+**Link:** https://cipmnigeria.org/membership/membership-routes/
+
+**Format:** Paid professional qualification
+
+**Cost:** Paid - NGN fees shown on the provider site
+
+**Time:** Five exam stages, four exam diets a year
+
+**Why:** CIPM is the body chartered to regulate HR practice in Nigeria. Its syllabus shows the local body of knowledge, including Nigerian Labour Law, workforce planning and HR metrics, and its qualification is recognised locally.
+
+**Do this:** Do not enrol yet. Read the syllabus and exam FAQ, then decide after you have six months of experience whether the qualification is right for your path.
+
+**Access and verification (2026-10-26):** Verified 2026-10-26 on the provider membership routes page and exam FAQ. Published fees: application NGN 10,000; acceptance NGN 12,000; Foundation NGN 55,440; Intermediate I NGN 57,190; Intermediate II NGN 58,200; Professional I NGN 64,050; Professional II NGN 70,050, with exemption fees from NGN 20,250 to NGN 24,300. The provider states fees are subject to review. Minimum entry is a degree or HND with five SSCE credits including English and Mathematics; undergraduates may enrol but are inducted only after graduating. Prices are in naira because the provider publishes in naira; no USD conversion is implied.
 
 ## Paid extras, kept separate
 
@@ -468,7 +682,7 @@ These are real options, listed so you can decide later with your eyes open. Two 
 
 **University of Minnesota, Recruiting, Hiring, and Onboarding Employees (Coursera).** The Stage 2 card explains the access ambiguity in full: the page shows an "Enroll for free" button while the same page's FAQ says full access needs a paid Certificate experience, a free trial, or a "Full Course, No Certificate" option where available. Coursera Plus was advertised on the page in US dollars, but the exact price depends on region and promotion. Financial aid is mentioned in the FAQ. The course asks for about ten hours a week, which is twice your budget, so treat it as an optional deepening rather than a core stage.
 
-**CIPM Nigeria membership by examination.** The Stage 8 card carries the full naira fee table. In short: application NGN 10,000, acceptance NGN 12,000, then five exam stages ranging from NGN 55,440 to NGN 70,050, plus exemption fees where applicable. The provider says fees are subject to review. Minimum entry is a degree or HND plus five SSCE credits including English and Mathematics. This is the local professional route and the only item here that leads to a chartered designation. It is worth considering after you have some experience, not before.
+**CIPM Nigeria membership by examination.** The generated Stage 8 card carries the provider-published naira fee table and entry requirements, with the original verification date and subject-to-review warning. This is a paid professional route to consider after gaining experience, not a free course certificate.
 
 **LinkedIn Learning, bundled with LinkedIn Premium Career.** Third-party 2026 pricing guides put individual access around USD 39.99 a month or USD 239.88 a year, with a one-month trial that requires a card. LinkedIn's own help page returned HTTP 500 when I tried to read it on 26 October 2026, so those figures are not provider-confirmed. Recruiter and talent sourcing learning paths live here. Some public libraries, universities and employers provide free access; check locally before paying.
 
@@ -527,4 +741,4 @@ The single-file app stores your progress in this browser's local storage and cou
 
 ## Your first hour
 
-Open the HR Learning Lab channel, watch the first three Talent Acquisition lessons, and draw the hiring lifecycle on one sheet of paper. Then open the Stage 1 Saylor course, create your free account, and tick the first item in the tracker. That is about an hour, it starts the streak, and it makes Stage 2 much easier to read.
+Watch lessons 1-4, then sketch the employee life cycle and explain where recruitment fits. Use remaining study time for notes and review. Then read the Stage 1 outcomes and schedule your next study session.
