@@ -13,33 +13,25 @@ LIB := learning-library
 SRC := $(LIB)/src
 OUT := $(LIB)/out
 
-TITLE := From zero to first recruiter role
-SUBTITLE := A roadmap-ordered learning library for an absolute beginner
-HERO_META := Lagos, Nigeria - verified 26 October 2026 - about 94 hours over 20 weeks
-NAME := Recruiter-TA-Library
-
-.PHONY: help bootstrap build preview check check-drift check-visual links pin-skill clean ci
+.PHONY: help bootstrap build preview check check-drift check-visual links pin-skill clean ci doctor repair-env verify verify-core verify-browser
 
 help: ## Show available targets
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) \
 		| awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-16s\033[0m %s\n", $$1, $$2}'
 
 # --- environment -----------------------------------------------------------
-$(PY):
-	python3 -m venv $(VENV)
-	$(PIP) install --quiet --upgrade pip
-	$(PIP) install --quiet -r requirements.lock
+bootstrap: ## Check/restore .venv: pinned versions, imports, dependency consistency
+	python3 -B tools/environment.py ensure
 
-bootstrap: $(PY) ## Create .venv and install the pinned dependency tree
-	@$(PY) --version
+repair-env: ## Transactionally recreate only .venv; restore old environment on failure
+	python3 -B tools/environment.py repair
+
+doctor: ## Read-only offline diagnosis (optional DOCTOR_ARGS="--preview-port 8000")
+	python3 -B tools/doctor.py $(DOCTOR_ARGS)
 
 # --- build -----------------------------------------------------------------
-build: $(PY) ## Regenerate all 5 outputs from src/ (PDF/DOCX embed a new timestamp)
-	$(PY) $(SKILL)/scripts/docx_render.py $(SRC)/recruiter-talent-acquisition-library.md \
-		-o $(OUT) --name $(NAME) \
-		--title "$(TITLE)" --subtitle "$(SUBTITLE)" --hero-meta "$(HERO_META)" \
-		--format pdf docx md html
-	$(PY) $(LIB)/tools/build_tracker.py
+build: bootstrap ## Regenerate all 5 outputs from src/ (PDF/DOCX embed a new timestamp)
+	$(PY) learning-library/tools/build_library.py
 	@echo "Built. Run 'make check' and 'make check-drift' before committing."
 
 # --- local preview ---------------------------------------------------------
@@ -52,22 +44,31 @@ preview: ## Rebuild the tracker and serve it on 0.0.0.0:8000 for live preview
 	python3 tools/serve_preview.py --port $(or $(PORT),8000)
 
 # --- verification ----------------------------------------------------------
-check: $(PY) ## Run every fast check (unit, validators, contract, sources, docs)
+check: bootstrap ## Run every fast check (unit, validators, contract, sources, docs)
 	$(PY) tools/check.py all
 
-check-drift: $(PY) ## Prove all 5 committed outputs still reproduce from src/
+check-drift: bootstrap ## Prove all 5 committed outputs still reproduce from src/
 	$(PY) tools/check.py drift
 
 check-visual: ## Run the 13-viewport browser checks (needs npm; installs locally)
 	cd tools/visual && npm ci --silent
 	node tools/visual/visual_check.mjs
 
-ci: check check-drift ## Everything CI runs (no browser required)
+verify: ## Full verification; every required layer reported; incomplete runs fail
+	python3 -B tools/verify.py
+
+verify-core: ## CI/local core subset only (not a full-verification claim)
+	python3 -B tools/verify.py --scope core
+
+verify-browser: ## CI/local browser subset only (not a full-verification claim)
+	python3 -B tools/verify.py --scope browser
+
+ci: check check-drift ## Legacy fast + drift subset only; use make verify for full coverage
 
 links: ## Sweep all cited URLs (needs general outbound network; best in CI)
 	@bash $(LIB)/check-links.sh | tee link-status.tsv
 
-pin-skill: ## Re-record the vendored skill's SHA-256 inventory (intentional upgrades only)
+pin-skill: bootstrap ## Re-record the vendored skill's SHA-256 inventory (intentional upgrades only)
 	$(PY) tools/check.py pin-hashes
 
 clean: ## Remove untracked build/runtime artefacts (keeps .venv)

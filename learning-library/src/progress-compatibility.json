@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "storage_id": "rll-recruiter-ta-2026-10-26",
+  "resources": {
+    "hr-essentials": [
+      "hr-essentials-v1"
+    ],
+    "talent-acquisition": [
+      "s0-r0"
+    ],
+    "saylor-prdv226": [
+      "s0-r1"
+    ],
+    "openstax-hr": [
+      "s0-r2"
+    ],
+    "openlearn-recruitment": [
+      "s1-r0"
+    ],
+    "alison-hr-diploma": [
+      "s1-r1"
+    ],
+    "saylor-bus301": [
+      "s1-r2"
+    ],
+    "coursera-hiring": [
+      "s1-r3"
+    ],
+    "onet-job-analysis": [
+      "s2-r0"
+    ],
+    "workable-job-templates": [
+      "s2-r1"
+    ],
+    "greenhouse-scorecard": [
+      "s2-r2"
+    ],
+    "workable-boolean": [
+      "s3-r0"
+    ],
+    "hrlab-sourcing-video": [
+      "s3-r1"
+    ],
+    "google-hiring-guides": [
+      "s3-r2"
+    ],
+    "jobberman-practice": [
+      "s3-r3"
+    ],
+    "google-cv-review": [
+      "s4-r0"
+    ],
+    "greenhouse-screening": [
+      "s4-r1"
+    ],
+    "openlearn-shortlisting": [
+      "s4-r2"
+    ],
+    "google-structured-interviews": [
+      "s5-r0"
+    ],
+    "google-interviewer-training": [
+      "s5-r1"
+    ],
+    "interview-kit-practice": [
+      "s5-r2"
+    ],
+    "ndpc-gaid": [
+      "s6-r0"
+    ],
+    "nigeria-labour-act": [
+      "s6-r1"
+    ],
+    "google-onboarding": [
+      "s6-r2"
+    ],
+    "hubspot-contacts": [
+      "s7-r0"
+    ],
+    "greenhouse-metrics": [
+      "s7-r1"
+    ],
+    "cipm-professional-route": [
+      "s7-r2"
+    ]
+  },
+  "stages": {
+    "orientation": [
+      "s0-complete"
+    ],
+    "foundations": [
+      "s1-complete"
+    ],
+    "define-role": [
+      "s2-complete"
+    ],
+    "sourcing": [
+      "s3-complete"
+    ],
+    "screening": [
+      "s4-complete"
+    ],
+    "interviewing": [
+      "s5-complete"
+    ],
+    "nigerian-law": [
+      "s6-complete"
+    ],
+    "career-tools": [
+      "s7-complete"
+    ]
+  }
+}

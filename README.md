@@ -9,13 +9,16 @@ it. Written for an absolute beginner in Lagos, Nigeria, with a free-first bias.
 ```bash
 git clone https://github.com/MikkoWuyin-dev/FieldNotes-HR.git
 cd FieldNotes-HR
-make bootstrap     # .venv/ from the pinned requirements.lock
-make check         # every fast check
-make check-drift   # prove the shipped outputs reproduce from source
+make doctor        # offline diagnosis; missing prerequisites are reported, not repaired
+make bootstrap     # validate/recover the pinned project venv
+make verify        # full checks, including repository tests, drift and browser
 ```
 
-`docs/SETUP.md` is the canonical setup and verification guide. CI runs the same
-commands plus `make check-visual` on every push and pull request.
+Read `AGENTS.md` before agent work. `docs/SETUP.md` owns current recovery and
+verification instructions. CI uses the same `verify-core` and `verify-browser`
+layers as the full local command. `make check` and legacy `make ci` are subsets,
+not full-verification claims. `make repair-env` explicitly recreates only the
+recognized project venv with rollback on failure.
 
 ## Deployment
 
@@ -47,9 +50,13 @@ for import settings, progress migration and the production smoke-test checklist.
 
 ## Deliverable at a glance
 
-8 stages, 26 resource cards, 21 distinct URLs, about 94 hours of study (roughly
-20 weeks at 5 h/week). 24 cards were confirmed free from provider pages; 2 are
-paid or conditional. The tracker stores progress in browser localStorage and
-makes no network requests. Research caveats — including pages that could not be
-read — are recorded in `learning-library/src/verification-manifest.json` and
-surfaced by `make check`.
+<!-- content-summary:start -->
+8 stages, 27 resource cards, 22 distinct card URLs, 94 planned hours.
+20 planned weeks; 24 cards have confirmed free-study evidence.
+Certificate, account and professional-qualification terms are separate; partial findings are not counted as verified free.
+<!-- content-summary:end -->
+The manifest covers the current URL evidence; the first
+executed HTTP sweep checked its frozen historical URL snapshot. Research caveats and dates
+are in `learning-library/src/verification-manifest.json`. The tracker stores
+progress per browser origin, has no backend, and makes no autonomous external
+resource requests; user-clicked provider links still require internet access.

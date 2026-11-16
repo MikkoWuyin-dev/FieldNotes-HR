@@ -417,9 +417,9 @@ try {
   await page.setViewport({ width: 1440, height: 900, deviceScaleFactor: 1 });
   await page.evaluate(() => localStorage.clear());
   await page.reload({ waitUntil: 'load' });
-  // Old localStorage/backups retain positional keys for the existing cards.
+  // Immutable IDs identify cards; legacy saved positional keys are migrated.
   const oldKeys = await page.evaluate(() => [0,1,2,3].map(i => resourceKey(0,i)));
-  if (JSON.stringify(oldKeys) !== JSON.stringify(['hr-essentials-v1','s0-r0','s0-r1','s0-r2'])) {
+  if (JSON.stringify(oldKeys) !== JSON.stringify(['resource:hr-essentials','resource:talent-acquisition','resource:saylor-prdv226','resource:openstax-hr'])) {
     runtimeErrors.push('existing Stage 1 keys shifted: '+JSON.stringify(oldKeys));
   }
   await page.evaluate(() => localStorage.setItem(STORAGE_KEY, JSON.stringify({done:{'s0-r0':true,'s0-r2':true},activityDates:[]})));
@@ -428,6 +428,21 @@ try {
   if (JSON.stringify(restored) !== JSON.stringify([false,true,false,true])) {
     runtimeErrors.push('old progress restored to wrong cards: '+JSON.stringify(restored));
   }
+  // Exercise the actual file-import handler, not only the pure normalizer.
+  const importBackup = async value => {
+    await page.evaluate(async value => {
+      const input=document.getElementById('import-progress');
+      const dt=new DataTransfer(); dt.items.add(new File([JSON.stringify(value)],'progress.json',{type:'application/json'}));
+      input.files=dt.files; input.dispatchEvent(new Event('change',{bubbles:true}));
+    },value);
+    await page.waitForFunction(() => document.getElementById('import-progress').value==='');
+  };
+  await importBackup({version:1,done:{'s0-r1':true},activityDates:['2026-10-26'],reminderTime:'08:30'});
+  const imported=await page.$$eval('.stage[data-stage="0"] .completion input', inputs=>inputs.map(i=>i.checked));
+  if(JSON.stringify(imported)!==JSON.stringify([false,false,true,false])) runtimeErrors.push('legacy backup migration failed');
+  const savedBeforeInvalid=await page.evaluate(()=>localStorage.getItem(STORAGE_KEY));
+  await importBackup({version:999,done:{},activityDates:[]});
+  if(await page.evaluate(()=>localStorage.getItem(STORAGE_KEY))!==savedBeforeInvalid) runtimeErrors.push('invalid import changed saved progress');
   await page.evaluate(() => localStorage.clear());
   await page.reload({waitUntil:'load'});
   const before = await page.$eval('#progress-label', (el) => el.textContent.trim());
@@ -444,6 +459,18 @@ try {
   if (!after.label.includes('1 of 27')) functional.push(`after tick: ${after.label}`);
   if (after.pct !== '4%') functional.push(`after tick percent: ${after.pct}`);
   if (!after.stored) functional.push('progress was not written to localStorage');
+
+  // Capture the actual export Blob and round-trip it through the file handler.
+  const exportedBackup = await page.evaluate(async () => {
+    const original=URL.createObjectURL; let exported;
+    URL.createObjectURL = blob => { exported=blob; return original.call(URL,blob); };
+    try { document.getElementById('export-progress').click(); }
+    finally { URL.createObjectURL=original; }
+    return JSON.parse(await exported.text());
+  });
+  if(exportedBackup.version!==2 || !exportedBackup.storage_id || !exportedBackup.done['resource:hr-essentials']) functional.push('version 2 export missing identity/progress');
+  await importBackup(exportedBackup);
+  if(!(await page.$eval('.resource .completion input', input=>input.checked))) functional.push('version 2 backup round-trip lost completion');
 
   // Buttons should not throw. Dispatch in-page to avoid download/permission UI.
   await page.evaluate(() => {
