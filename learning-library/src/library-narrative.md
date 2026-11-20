@@ -9,7 +9,7 @@
 
 The most useful idea in the whole plan sits in Stage 6: ask every candidate the same well-designed questions and score the answers against a rubric you wrote before you met them. Stages 1 to 5 exist so that you can do that well. Stage 7 keeps you on the right side of Nigerian law. Stage 8 turns the practice into evidence you can show an employer.
 
-Prioritise the confirmed-free study materials and skip optional paid paths. Confirm the partial listing terms before relying on that practice channel. The paid options are gathered at the end, with real prices where a provider published them and a clear warning where a price came from a third party. None of the free certificates here is a professional HR qualification.
+Prioritise confirmed-free study for the required path. Access notes distinguish account, form, trial and certificate conditions; the conditional Coursera option in Stage 2 remains optional and is not counted as free. Stages 3–8 retain no paid resource cards. None of the free statements or certificates here is a professional HR qualification.
 
 ## How this library was checked
 
@@ -21,11 +21,11 @@ Three distinctions matter throughout:
 
 - **Free to study** means the lessons, readings and assessments are available without payment. It says nothing about a certificate.
 - **Free certificate** means the provider issues a completion document at no cost. Saylor does this. OpenLearn issues a free statement of participation instead. Alison charges for its branded certificate but gives a free Learner Record.
-- **Professional qualification** is a different category again. In Nigeria the chartered body is CIPM, and its route is paid. A free course certificate is evidence of study, not a licence to practise.
+- **Professional qualification** is a different category again. CIPM’s exam route is paid and is not included as a Stage 3–8 learning card. A free course certificate is evidence of study, not a licence to practise.
 
-Prices are quoted in the currency the provider publishes. CIPM publishes in naira. The LinkedIn figures come from third-party 2026 pricing guides and are marked as unconfirmed, because LinkedIn's own help pages failed when I tried to read them. I did not convert currencies or add taxes, bank charges or data costs.
+Prices are quoted in the currency the provider publishes. No currency conversion or total-cost estimate is implied. The LinkedIn figures come from third-party 2026 pricing guides and are marked as unconfirmed, because LinkedIn's own help pages failed when I tried to read them. I did not add taxes, bank charges or data costs.
 
-One check in this skill's normal workflow could not run in the generating sandbox. It blocks most outbound traffic: a request to pypi.org returned 200, while requests to kaggle.com and docs.python.org failed at the TLS handshake. So no HTTP status codes were obtained there. The batch sweep over the then-current 30 cited URLs has since run in GitHub Actions (workflow run 40471064309, 27 October 2026): 27 returned 200 and 3 returned 403. Those three 403s were bot filtering, not broken links — the OpenLearn course page, the NDPC GAID PDF and the Saylor FAQ were each re-read and their free claims still hold. A 200 never proves a resource is free: LinkedIn's pages answer 200 to a plain curl but still return 403 and 500 to a browser, and remain unverified. A ready-to-run script, `check-links.sh`, sits next to these files so you can repeat the sweep; `src/verification-manifest.json` records the result. Where a specific provider page could not be read, the card says so.
+The generating sandbox's normal HTTP sweep was blocked by its egress allowlist. The archived batch sweep records 30 URLs (workflow run 40471064309, dated 27 October 2026): 27 returned 200 and 3 returned 403. Those historical 403s were recorded as bot filtering for OpenLearn, the NDPC GAID PDF and the Saylor FAQ; the frozen sweep record is unchanged. A 200 never proves a resource is free. New direct URLs checked for this Stage 3–8 audit are not part of that historical sweep, and no new all-URL HTTP sweep was run. Current access findings and evidence limits are recorded in the catalogue and the Stage 3–8 audit report.
 
 ## Roadmap at a glance
 
@@ -55,11 +55,11 @@ Estimates are mine, based on the provider's stated course lengths plus practice 
 
 ## Paid extras, kept separate
 
-These are real options, listed so you can decide later with your eyes open. Two of them appear as labelled cards inside the roadmap; the rest are here only.
+These paid or conditional routes are separated from the free required path. Coursera remains an optional, conditional Stage 2 card; no paid Stage 3–8 option is retained.
 
 **University of Minnesota, Recruiting, Hiring, and Onboarding Employees (Coursera).** The Stage 2 card explains the access ambiguity in full: the page shows an "Enroll for free" button while the same page's FAQ says full access needs a paid Certificate experience, a free trial, or a "Full Course, No Certificate" option where available. Coursera Plus was advertised on the page in US dollars, but the exact price depends on region and promotion. Financial aid is mentioned in the FAQ. The course asks for about ten hours a week, which is twice your budget, so treat it as an optional deepening rather than a core stage.
 
-**CIPM Nigeria membership by examination.** The generated Stage 8 card carries the provider-published naira fee table and entry requirements, with the original verification date and subject-to-review warning. This is a paid professional route to consider after gaining experience, not a free course certificate.
+**CIPM Nigeria membership by examination — excluded.** The provider publishes fees for its exam stages, so this paid professional qualification was removed from Stage 8 under the free-first rule. It is not a study resource in this roadmap.
 
 **LinkedIn Learning, bundled with LinkedIn Premium Career.** Third-party 2026 pricing guides put individual access around USD 39.99 a month or USD 239.88 a year, with a one-month trial that requires a card. LinkedIn's own help page returned HTTP 500 when I tried to read it on 26 October 2026, so those figures are not provider-confirmed. Recruiter and talent sourcing learning paths live here. Some public libraries, universities and employers provide free access; check locally before paying.
 
@@ -75,7 +75,9 @@ These are real options, listed so you can decide later with your eyes open. Two 
 - **SHRM, CIPD and HRCI member toolkits.** Their public articles are useful, but the templates and exam preparation sit behind membership or a paid assessment. Excluded from the free list; no judgement on their quality.
 - **The long directories of "best recruiter YouTube channels".** Only HR Learning Lab was verified directly. I did not add the other channels, because a list of unverified links would pad the library without teaching anything.
 - **Free marketing and sales certifications.** HubSpot Academy is genuinely free, but a full marketing certification would pull you away from the recruiter path. Only its short CRM lesson appears, in Stage 8, where a candidate tracker is actually needed.
-- **Anything behind a login I could not open.** Where a page showed only a cookie banner, I kept the resource and marked its verification as partial rather than dropping it silently.
+- **Unverified core access.** A provider index or “free” headline was not enough when the assigned learning material or practice route could not be verified. Jobberman’s free Basic listing requires Customer Experience confirmation, and a draft-only practice flow could not be confirmed; it is not retained.
+- **Google re:Work Review resumes.** The index lists the guide, but the English direct page returned 404; it is not counted as a usable free study resource.
+- **Greenhouse Stage 5 guidance hub.** Some relevant linked pages show contact-form gates; free access to the assigned screening/bias material was not established, so that card is not retained.
 
 There are also two gaps worth naming. Free, current, Nigeria-specific recruiter training is scarce; the local legal material here is primary legislation and regulator guidance, which is harder to read than a course but more reliable. And several core guides come from US employers or US government data. They teach a method that transfers, but their examples, job titles and legal assumptions do not. Stage 7 exists to correct that.
 
@@ -85,29 +87,30 @@ Primary provider pages read on 26 October 2026:
 
 | Provider | Page read | Access finding |
 |---|---|---|
-| The Open University | OpenLearn course page | Free course; free statement of participation with a free account. |
+| The Open University | OpenLearn course page and section 4.10 | Text is free to read without sign-in; a free account is needed for enrolment/progress and the optional free Statement of Participation. |
+| Jobberman Nigeria | Free-listing page and official search result | Free Basic offer is advertised, but requires Customer Experience confirmation; eligibility and draft-only practice access were not verified, so it was excluded. |
 | Saylor University | PRDV226 syllabus and general FAQ | No tuition; free materials; free completion certificate at 70 percent. |
 | Alison | Help centre FAQ and certification page | All courses free to study; branded certificate optional and paid; free Learner Record. |
 | Alison | Recruitment tag page | 15 free recruitment courses listed, including the HR diploma. |
 | Coursera | Course page and its FAQ | "Enroll for free" button, but FAQ ties full access to purchase, trial or a no-certificate option. Not counted as free. |
-| Google re:Work | Guides index and structured interviewing guide | 23 free guides; no login shown; interviewing guide updated March 2026. |
-| Workable | HR templates index and Boolean cheatsheets | Templates free to download; separate software trial is not required. |
-| Greenhouse | Guidance hub and structured hiring support article | Free articles, eBooks and worksheets; two PDF downloads available. |
+| Google re:Work | Guides index; structured-interviewing, interviewer-training, candidate-experience and onboarding guides | Four retained English guides were read directly; no account, form, payment or trial shown. The English Review resumes page returned 404, so it was excluded. |
+| Workable | Recruiter job-description sample and HR Director Boolean-search article | Public samples are readable without an account or content form. Workable’s 15-day software trial is separate and not needed to study them. |
+| Greenhouse | Structured-hiring support article and direct Fall 2026 report PDF | The article/worksheets and direct PDF are free; some other guidance pages use contact-form gates. The benchmarks are U.S.-only. |
 | OpenStax | Principles of Management chapter 11 | Free openly licensed textbook in web view. |
 | ONET OnLine | Site home | Free public occupational database; 1,016 occupation titles listed. |
-| HubSpot Academy | Courses catalogue | Catalogue described as completely free and online with a free account. |
+| HubSpot Academy and CRM page | Contacts lesson (four videos/20 minutes) and free CRM tier | A free Academy account is required; the CRM free tier does not expire and needs no credit card. |
 | NDPC | NDP Act GAID 2025 official PDF | Free regulator directive; articles on principles, lawful bases, consent and breach duties. |
 | PLAC Laws of Nigeria | Labour Act Cap L1 PDF | Free statute copy; Part II covers recruiting permits and recruiter licences. |
 | CIPM Nigeria | Membership routes page and exam FAQ | Paid; naira fee table published; exams four times a year online. |
-| HR Learning Lab | YouTube channel video and description | Public free playlist; AI-assisted production disclosed by the creator. |
+| HR Learning Lab | Talent Sourcing Strategies #16, Screening Candidates #24 and HR Metrics #43 | Public YouTube listings/transcripts; no payment shown. AI-supported production is disclosed; playback was not tested. |
 
 Checks I could not run, stated plainly:
 
 - **HTTP status-code sweeps in the generating sandbox.** Blocked by the egress allowlist, so no status codes came from there. The sweep has since run in GitHub Actions (27 October 2026): 30 URLs, 27 with 200 and 3 with 403. `check-links.sh` in this folder repeats it. A status code never proves a resource is free — the provider page still has to be read. Page retrieval succeeded for every URL I opened except two, noted next.
 - **LinkedIn help pages.** Both returned HTTP 500 on 26 October 2026. The CI sweep recorded 200 for them, but that is a login wall: a browser-like recheck on 27 October 2026 returned 403 for the learning index and 500 for the Recruiter help article. Neither has been read. Their prices in this document come from third-party 2026 pricing guides and are labelled unconfirmed.
-- **The Jobberman free-listing page.** Returned only a cookie banner. Its free-listing claim comes from the provider's own search listing, so that card is marked partially verified.
+- **The Jobberman free-listing page.** Direct retrieval returned only a cookie prompt; an official search result described a free Basic listing with Customer Experience confirmation. Eligibility, form fields and a draft-only practice flow were not verified, so the card was excluded rather than counted as free.
 - **Creating accounts and completing enrolment.** Not done. I cannot describe what any provider shows after sign-in.
-- **Every individual Google re:Work guide.** I read the guides index in full and two guides directly. The rest are cited by name from the index.
+- **Other Google re:Work guides.** I read the four guides used in Stages 4, 6 and 7 directly. The English Review resumes URL returned 404; the index and a Japanese-language page did not verify English access. Other index entries were not used as evidence.
 - **Full text of both legal PDFs.** I read the arrangements of articles and the opening provisions. Neither document was read cover to cover, and neither is legal advice.
 
 Provider terms change. A free course can move behind a subscription and a price can rise between one exam diet and the next. Re-check any paid item and any free-certificate claim before you commit time or money.

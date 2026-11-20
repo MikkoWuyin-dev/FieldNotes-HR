@@ -32,13 +32,14 @@ const TARGET = join(REPO, 'learning-library', 'out', 'roadmap-app.html');
 const REPORT_DIR = join(HERE, '.cache');
 const WIDTHS = [320, 360, 390, 430, 600, 620, 700, 900, 1024, 1200, 1320, 1440, 1920];
 const PAL_COUNT = 10;
+const TOTAL_PAL_COUNT = 11;
 const MAX_CONTROL_OVERLAP = 1100; // px², per the reference project's rule
 const EXPECTED = {
   hero: 'rgb(55, 104, 255)',
   eyebrowInk: 'rgb(17, 20, 43)',
   eyebrowFill: 'rgb(255, 225, 104)',
   footer: 'Made with love and fried plantain, by Moyinoluwa',
-  cards: 27,
+  cards: 21,
   stages: 8,
 };
 
@@ -66,12 +67,90 @@ function waitForPals(page, timeout = 15000) {
     const layer = document.querySelector('div[data-piixpal]');
     const actors = layer && layer.shadowRoot
       ? layer.shadowRoot.querySelectorAll('.a').length : 0;
-    return els === count && actors >= count;
+    const spider = document.getElementById('fieldnotes-spider');
+    return els === count && actors >= count && !!spider && !spider.hidden;
   }, { timeout }, PAL_COUNT);
+}
+
+function auditThemeContrast(page) {
+  return page.evaluate(async () => {
+    const stages=[...document.querySelectorAll('details.stage')];
+    const openStates=stages.map(stage=>stage.open);
+    stages.forEach(stage=>{stage.open=true;});
+    await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>setTimeout(resolve,500))));
+    const parseColor = (value) => {
+      const match = String(value).match(/rgba?\(([^)]+)\)/i);
+      if (!match) return null;
+      const parts = match[1].trim().split(/[\s,\/]+/).filter(Boolean).map(Number);
+      return {r:parts[0],g:parts[1],b:parts[2],a:parts.length>3?parts[3]:1};
+    };
+    const luminance = (color) => {
+      const channel = (value) => {
+        const c = value / 255;
+        return c <= .04045 ? c / 12.92 : ((c + .055) / 1.055) ** 2.4;
+      };
+      return .2126*channel(color.r) + .7152*channel(color.g) + .0722*channel(color.b);
+    };
+    const contrast = (a,b) => {
+      const light = Math.max(luminance(a),luminance(b));
+      const dark = Math.min(luminance(a),luminance(b));
+      return (light+.05)/(dark+.05);
+    };
+    const nearestOpaqueBackground = (element) => {
+      for(let node=element;node && node.nodeType===1;node=node.parentElement) {
+        const color=parseColor(getComputedStyle(node).backgroundColor);
+        if(color && color.a>=.99) return color;
+      }
+      return null;
+    };
+    const isYellow = (color) => color && color.r>=190 && color.g>=140 &&
+      color.r>=color.g && color.r-color.g<=55 && color.g-color.b>=30;
+    const label = (element) => element.id ? '#'+element.id :
+      '.'+String(element.className||element.tagName).toString().trim().replace(/\s+/g,'.');
+    const yellowText = [...document.querySelectorAll('body *')]
+      .filter(element=>element.textContent.trim() || element.getAttribute('aria-label'))
+      .map(element=>{
+        const bg=nearestOpaqueBackground(element);
+        const fg=parseColor(getComputedStyle(element).color);
+        return {element:label(element),background:bg,foreground:fg,
+                ratio:bg&&fg?contrast(fg,bg):0};
+      })
+      .filter(item=>isYellow(item.background));
+    const shadowElements=[...document.querySelectorAll(
+      '.hero,.panel,.toolbar,.notice,.stage,.resource,.pals-controls,#theme-toggle,#back-to-top'
+    )];
+    const shadows=shadowElements.map(element=>{
+      const value=getComputedStyle(element).boxShadow;
+      const match=value.match(/rgba?\([^)]+\)/i);
+      const color=match?parseColor(match[0]):null;
+      const surface=nearestOpaqueBackground(element.parentElement);
+      return {element:label(element),shadow:color,raw:value,
+              elementShadowToken:getComputedStyle(element).getPropertyValue('--fn-shadow').trim(),
+              hovered:element.matches(':hover'),surface,
+              ratio:color&&surface?contrast(color,surface):0};
+    }).filter(item=>item.shadow);
+    const result={
+      theme:document.documentElement.dataset.theme,
+      shadowToken:getComputedStyle(document.documentElement).getPropertyValue('--fn-shadow').trim(),
+      yellowText,
+      yellowFailures:yellowText.filter(item=>item.ratio<4.5),
+      shadows,
+      shadowFailures:shadows.filter(item=>item.ratio<3),
+      minYellowRatio:yellowText.length?Math.min(...yellowText.map(item=>item.ratio)):0,
+      minShadowRatio:shadows.length?Math.min(...shadows.map(item=>item.ratio)):0,
+    };
+    stages.forEach((stage,index)=>{stage.open=openStates[index];});
+    return result;
+  });
 }
 
 let browser;
 const runtimeErrors = [];
+const themeFailures = [];
+const contrastFailures = [];
+const contrastAudits = [];
+const scrollFailures = [];
+const spiderFailures = [];
 try {
   browser = await puppeteer.launch({
     args: [...chromium.args, '--no-sandbox'],
@@ -150,6 +229,223 @@ try {
   console.log('Native scroll coupling:', JSON.stringify(scrollRegression));
   await page.reload({waitUntil:'load'});
   await waitForPals(page);
+  const spiderScroll=await page.evaluate(()=>{
+    const spider=document.getElementById('fieldnotes-spider');
+    const before=spider.getBoundingClientRect();
+    const start=scrollY;
+    const target=Math.min(600,document.documentElement.scrollHeight-innerHeight);
+    window.scrollTo({top:target,behavior:'instant'});
+    const after=spider.getBoundingClientRect();
+    const data={visible:!spider.hidden,position:getComputedStyle(spider).position,
+      pointerEvents:getComputedStyle(spider).pointerEvents,top:before.top,
+      scrolledTop:after.top,rightGap:innerWidth-after.right,scrollY};
+    window.scrollTo({top:start,behavior:'instant'});
+    return data;
+  });
+  if(!spiderScroll.visible || spiderScroll.position!=='fixed' || spiderScroll.pointerEvents!=='none' ||
+     Math.abs(spiderScroll.top)>1 || Math.abs(spiderScroll.top-spiderScroll.scrolledTop)>1 ||
+     spiderScroll.rightGap<0 || spiderScroll.rightGap>10 || spiderScroll.scrollY<100) {
+    spiderFailures.push('dangling spider is not visible at the fixed viewport top-right while scrolling: '+JSON.stringify(spiderScroll));
+  }
+
+  // The theme follows system changes until a visitor saves an override.
+  await page.emulateMediaFeatures([{name:'prefers-color-scheme',value:'dark'}]);
+  await page.reload({waitUntil:'load'});
+  await waitForPals(page);
+  const systemDark=await page.evaluate(()=>{
+    const button=document.getElementById('theme-toggle');
+    return {
+      theme:document.documentElement.dataset.theme,
+      source:document.documentElement.dataset.themeSource,
+      pressed:button.getAttribute('aria-pressed'),
+      icon:button.getAttribute('data-theme-icon'),
+      ariaLabel:button.getAttribute('aria-label'),
+      sunVisible:getComputedStyle(button.querySelector('.theme-icon-sun')).display!=='none',
+      moonVisible:getComputedStyle(button.querySelector('.theme-icon-moon')).display!=='none',
+      scheme:getComputedStyle(document.documentElement).colorScheme,
+      surface:getComputedStyle(document.querySelector('.app')).backgroundColor,
+      text:getComputedStyle(document.body).color,
+      meta:document.querySelector('meta[name="theme-color"]').content,
+    };
+  });
+  if(systemDark.theme!=='dark' || systemDark.source!=='system' || systemDark.pressed!=='true' ||
+     systemDark.icon!=='moon' || systemDark.ariaLabel!=='Toggle color theme' ||
+     systemDark.sunVisible || !systemDark.moonVisible || systemDark.scheme!=='dark' ||
+     systemDark.surface!=='rgb(20, 24, 39)' || systemDark.text!=='rgb(244, 243, 238)' || systemDark.meta!=='#0B0D16') {
+    themeFailures.push('dark system default or moon icon failed: '+JSON.stringify(systemDark));
+  }
+  const darkCheckin=await page.evaluate(()=>{
+    const button=document.getElementById('daily-checkin');
+    const wasDisabled=button.disabled,wasText=button.textContent;
+    button.disabled=true;button.textContent='Checked in today';
+    const style=getComputedStyle(button);
+    const measured={text:button.textContent,color:style.color,background:style.backgroundColor};
+    button.disabled=wasDisabled;button.textContent=wasText;
+    return measured;
+  });
+  if(darkCheckin.text!=='Checked in today' || darkCheckin.color!=='rgb(244, 243, 238)' || darkCheckin.background!=='rgb(20, 24, 39)') {
+    themeFailures.push('checked-in button does not use light ink on the dark surface: '+JSON.stringify(darkCheckin));
+  }
+  const themePlacement=await page.evaluate(()=>{
+    const button=document.getElementById('theme-toggle');
+    const row=document.querySelector('.hero-eyebrow-row');
+    const hero=document.querySelector('.hero');
+    const eyebrow=row?.querySelector('.eyebrow');
+    const rect=button.getBoundingClientRect();
+    const rowRect=row?.getBoundingClientRect();
+    const heroRect=hero?.getBoundingClientRect();
+    const label=eyebrow?.getBoundingClientRect();
+    const hit=getComputedStyle(button,'::before');
+    return {sameRow:!!row&&row.contains(button)&&button.parentElement===row,
+      eyebrow:eyebrow?.textContent.trim(),position:getComputedStyle(button).position,
+      topDelta:label?Math.abs(rect.top-label.top):Infinity,
+      topInset:label&&heroRect?label.top-heroRect.top:Infinity,
+      rowRightGap:rowRect?Math.abs(rowRect.right-rect.right):Infinity,
+      height:rect.height,eyebrowHeight:label?.height??0,width:rect.width,
+      horizontalGap:label?rect.left-label.right:0,
+      hitWidth:parseFloat(hit.width),hitHeight:parseFloat(hit.height),
+      borderRadius:getComputedStyle(button).borderRadius,
+      ariaLabel:button.getAttribute('aria-label'),hidden:button.hidden};
+  });
+  if(!themePlacement.sameRow || themePlacement.eyebrow!=='FIELDNOTES / HR' ||
+     themePlacement.position==='absolute' || themePlacement.topDelta>1 ||
+     themePlacement.topInset<18 || themePlacement.topInset>30 || themePlacement.rowRightGap>1 ||
+     Math.abs(themePlacement.height-themePlacement.eyebrowHeight)>1 ||
+     Math.abs(themePlacement.width-themePlacement.height)>1 || themePlacement.horizontalGap<6 ||
+     themePlacement.hitWidth<44 || themePlacement.hitHeight<44 ||
+     themePlacement.borderRadius!=='50%' || themePlacement.ariaLabel!=='Toggle color theme' || themePlacement.hidden) {
+    themeFailures.push('theme toggle is not far-right in a compact, aligned eyebrow row with no excess hero top space: '+JSON.stringify(themePlacement));
+  }
+  const darkAudit=await auditThemeContrast(page);
+  contrastAudits.push({theme:'dark',...darkAudit});
+  if(!darkAudit.yellowText.length) contrastFailures.push('dark theme yellow backgrounds were not detected');
+  if(!darkAudit.shadows.length) contrastFailures.push('dark theme box shadows were not detected');
+  if(darkAudit.yellowFailures.length) contrastFailures.push('dark theme yellow text <4.5:1: '+JSON.stringify(darkAudit.yellowFailures));
+  if(darkAudit.shadowFailures.length) contrastFailures.push('dark theme box shadow <3:1: '+JSON.stringify(darkAudit.shadowFailures));
+  await page.emulateMediaFeatures([{name:'prefers-color-scheme',value:'light'}]);
+  await page.waitForFunction(()=>document.documentElement.dataset.theme==='light' && document.documentElement.dataset.themeSource==='system');
+  const systemLight=await page.evaluate(()=>{
+    const button=document.getElementById('theme-toggle');
+    return {
+      theme:document.documentElement.dataset.theme,
+      source:document.documentElement.dataset.themeSource,
+      pressed:button.getAttribute('aria-pressed'),
+      icon:button.getAttribute('data-theme-icon'),
+      sunVisible:getComputedStyle(button.querySelector('.theme-icon-sun')).display!=='none',
+      moonVisible:getComputedStyle(button.querySelector('.theme-icon-moon')).display!=='none',
+      scheme:getComputedStyle(document.documentElement).colorScheme,
+      surface:getComputedStyle(document.querySelector('.app')).backgroundColor,
+      text:getComputedStyle(document.body).color,
+      meta:document.querySelector('meta[name="theme-color"]').content,
+    };
+  });
+  if(systemLight.theme!=='light' || systemLight.source!=='system' || systemLight.pressed!=='false' ||
+     systemLight.icon!=='sun' || !systemLight.sunVisible || systemLight.moonVisible ||
+     systemLight.scheme!=='light' || systemLight.surface!=='rgb(255, 248, 231)' ||
+     systemLight.text!=='rgb(17, 20, 43)' || systemLight.meta!=='#11142B') {
+    themeFailures.push('light system default or sun icon failed: '+JSON.stringify(systemLight));
+  }
+  const lightAudit=await auditThemeContrast(page);
+  contrastAudits.push({theme:'light',...lightAudit});
+  if(!lightAudit.yellowText.length) contrastFailures.push('light theme yellow backgrounds were not detected');
+  if(!lightAudit.shadows.length) contrastFailures.push('light theme box shadows were not detected');
+  if(lightAudit.yellowFailures.length) contrastFailures.push('light theme yellow text <4.5:1: '+JSON.stringify(lightAudit.yellowFailures));
+  if(lightAudit.shadowFailures.length) contrastFailures.push('light theme box shadow <3:1: '+JSON.stringify(lightAudit.shadowFailures));
+  await page.$eval('#theme-toggle',button=>button.click());
+  const override=await page.evaluate(()=>({
+    theme:document.documentElement.dataset.theme,
+    source:document.documentElement.dataset.themeSource,
+    pressed:document.getElementById('theme-toggle').getAttribute('aria-pressed'),
+    icon:document.getElementById('theme-toggle').getAttribute('data-theme-icon'),
+    saved:localStorage.getItem('fieldnotes-hr-theme-v1'),
+  }));
+  if(override.theme!=='dark' || override.source!=='user' || override.pressed!=='true' || override.icon!=='moon' || override.saved!=='dark') {
+    themeFailures.push('theme toggle did not save its dark override: '+JSON.stringify(override));
+  }
+  await page.emulateMediaFeatures([{name:'prefers-color-scheme',value:'dark'}]);
+  await page.emulateMediaFeatures([{name:'prefers-color-scheme',value:'light'}]);
+  if(await page.$eval('#theme-toggle',button=>button.getAttribute('aria-pressed'))!=='true') {
+    themeFailures.push('saved theme changed with the system setting');
+  }
+  await page.reload({waitUntil:'load'});
+  await waitForPals(page);
+  const persistedTheme=await page.evaluate(()=>({
+    theme:document.documentElement.dataset.theme,
+    source:document.documentElement.dataset.themeSource,
+    icon:document.getElementById('theme-toggle').getAttribute('data-theme-icon'),
+    saved:localStorage.getItem('fieldnotes-hr-theme-v1'),
+  }));
+  if(persistedTheme.theme!=='dark' || persistedTheme.source!=='user' || persistedTheme.icon!=='moon' || persistedTheme.saved!=='dark') {
+    themeFailures.push('saved dark theme did not survive reload: '+JSON.stringify(persistedTheme));
+  }
+  await page.$eval('#theme-toggle',button=>button.click());
+  const lightOverride=await page.evaluate(()=>({
+    theme:document.documentElement.dataset.theme,
+    source:document.documentElement.dataset.themeSource,
+    pressed:document.getElementById('theme-toggle').getAttribute('aria-pressed'),
+    icon:document.getElementById('theme-toggle').getAttribute('data-theme-icon'),
+    saved:localStorage.getItem('fieldnotes-hr-theme-v1'),
+  }));
+  if(lightOverride.theme!=='light' || lightOverride.source!=='user' || lightOverride.pressed!=='false' || lightOverride.icon!=='sun' || lightOverride.saved!=='light') {
+    themeFailures.push('theme toggle did not save its light override: '+JSON.stringify(lightOverride));
+  }
+  await page.emulateMediaFeatures([{name:'prefers-color-scheme',value:'dark'}]);
+  const lightStays=await page.evaluate(()=>({
+    theme:document.documentElement.dataset.theme,
+    source:document.documentElement.dataset.themeSource,
+    pressed:document.getElementById('theme-toggle').getAttribute('aria-pressed'),
+    icon:document.getElementById('theme-toggle').getAttribute('data-theme-icon'),
+  }));
+  if(lightStays.theme!=='light' || lightStays.source!=='user' || lightStays.pressed!=='false' || lightStays.icon!=='sun') {
+    themeFailures.push('saved light override changed with the dark system setting: '+JSON.stringify(lightStays));
+  }
+  await page.reload({waitUntil:'load'});
+  await waitForPals(page);
+  const persistedLight=await page.evaluate(()=>({
+    theme:document.documentElement.dataset.theme,
+    source:document.documentElement.dataset.themeSource,
+    icon:document.getElementById('theme-toggle').getAttribute('data-theme-icon'),
+    saved:localStorage.getItem('fieldnotes-hr-theme-v1'),
+  }));
+  if(persistedLight.theme!=='light' || persistedLight.source!=='user' || persistedLight.icon!=='sun' || persistedLight.saved!=='light') {
+    themeFailures.push('saved light theme did not survive reload: '+JSON.stringify(persistedLight));
+  }
+  await page.evaluate(()=>localStorage.removeItem('fieldnotes-hr-theme-v1'));
+  await page.emulateMediaFeatures([{name:'prefers-color-scheme',value:'light'}]);
+  await page.reload({waitUntil:'load'});
+  await waitForPals(page);
+  if(await page.$eval('#theme-toggle',button=>button.getAttribute('aria-pressed'))!=='false' || await page.evaluate(()=>document.documentElement.dataset.themeSource)!=='system') {
+    themeFailures.push('clearing the theme override did not restore the system default');
+  }
+
+  const scrollButtonAtTop=await page.$eval('#back-to-top',button=>({hidden:button.hidden,
+    label:button.getAttribute('aria-label'),hasIcon:!!button.querySelector('svg')}));
+  if(!scrollButtonAtTop.hidden || scrollButtonAtTop.label!=='Back to top' || !scrollButtonAtTop.hasIcon) {
+    scrollFailures.push('back-to-top control should start hidden at the top with an accessible arrow');
+  }
+  await page.evaluate(()=>window.scrollTo({top:600,behavior:'instant'}));
+  await page.waitForFunction(()=>!document.getElementById('back-to-top').hidden);
+  const scrollButtonPinned=await page.$eval('#back-to-top',button=>{
+    const rect=button.getBoundingClientRect();
+    return {position:getComputedStyle(button).position,width:rect.width,height:rect.height,
+      rightGap:innerWidth-rect.right,bottomGap:innerHeight-rect.bottom};
+  });
+  if(scrollButtonPinned.position!=='fixed' || scrollButtonPinned.width<44 || scrollButtonPinned.height<44 || scrollButtonPinned.rightGap<8 || scrollButtonPinned.rightGap>32 || scrollButtonPinned.bottomGap<8 || scrollButtonPinned.bottomGap>32) {
+    scrollFailures.push('back-to-top control is not fixed at the bottom-right: '+JSON.stringify(scrollButtonPinned));
+  }
+  await new Promise(resolve=>setTimeout(resolve,3150));
+  if(!(await page.$eval('#back-to-top',button=>button.hidden))) {
+    scrollFailures.push('back-to-top control did not hide after three seconds of idle time');
+  }
+  await page.evaluate(()=>window.scrollTo({top:500,behavior:'instant'}));
+  await page.waitForFunction(()=>!document.getElementById('back-to-top').hidden);
+  await page.click('#back-to-top');
+  try {
+    await page.waitForFunction(()=>scrollY<=1,{timeout:5000});
+    await page.waitForFunction(()=>document.getElementById('back-to-top').hidden,{timeout:2000});
+  } catch (_) {
+    scrollFailures.push('back-to-top click did not return to the top and hide the control');
+  }
 
   // 8b. The default view has the stage bodies collapsed. That is what a
   // visitor sees first, and it is where the pals control panel sits directly
@@ -167,7 +463,7 @@ try {
       let worstControl = '';
       const openStages = document.querySelectorAll('details.stage[open]').length;
       for (const control of document.querySelectorAll(
-        '.toolbar button, .file-button, input, summary, .resource a, .completion, .pals-controls button'
+        '#theme-toggle, #back-to-top, .toolbar button, .daily-checkin-controls button, .file-button, input, summary, .resource a, .completion, .pals-controls button'
       )) {
         const r = control.getBoundingClientRect();
         if (!r.width || !r.height) continue;
@@ -197,8 +493,9 @@ try {
     await page.setViewport({ width, height: 900, deviceScaleFactor: 1 });
     const measured = await page.evaluate(async (expected, palCount, maxOverlap) => {
       document.querySelectorAll('details.stage').forEach((d) => { d.open = true; });
-      // Let the engine reposition after the viewport and accordion changes.
-      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+      // Let ResizeObserver and the Pals animation frame settle after the
+      // viewport and accordion changes before measuring their new positions.
+      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(r,120))));
       const failures = [];
       const rect = (el) => el.getBoundingClientRect();
       const overlaps = (a, b) => !(
@@ -245,8 +542,52 @@ try {
       if (links.length !== expected.cards) failures.push(`${links.length} resource links, expected ${expected.cards}`);
       const noArrow = links.filter((a) => getComputedStyle(a, '::after').content === 'none').length;
       if (noArrow) failures.push(`${noArrow} links missing the ↗ pseudo-element`);
-      const stages = document.querySelectorAll('details.stage').length;
-      if (stages !== expected.stages) failures.push(`${stages} stages, expected ${expected.stages}`);
+      const stageNodes = [...document.querySelectorAll('details.stage')];
+      if (stageNodes.length !== expected.stages) failures.push(`${stageNodes.length} stages, expected ${expected.stages}`);
+      if (document.querySelector('#enable-notifications, #reminder-time, label[for="reminder-time"]')) {
+        failures.push('reminder controls remain in the tracker');
+      }
+      const toolbar=document.querySelector('.toolbar');
+      if (toolbar && /\breminders?\b|\bnotifications?\b/i.test(toolbar.textContent)) {
+        failures.push('reminder copy remains in the tracker controls');
+      }
+      let stageHeaderDelta=0;
+      for (const stage of stageNodes) {
+        const summary=stage.querySelector('summary');
+        const number=summary?.querySelector('.stage-num');
+        const title=summary?.querySelector('.stage-heading');
+        const meter=summary?.querySelector('.stage-meter');
+        const toggle=summary?.querySelector('.stage-toggle-indicator');
+        const subtitle=summary?.querySelector('.stage-subheading');
+        if(!summary||!number||!title||!meter||!toggle) {
+          failures.push('stage summary is missing a number, title, percentage or disclosure sign');
+          continue;
+        }
+        const nr=rect(number),tr=rect(title),mr=rect(meter),ir=rect(toggle);
+        const numberTitleTopDelta=Math.abs(nr.top-tr.top);
+        const meterIndicatorCenterDelta=Math.abs((mr.top+mr.bottom)/2-(ir.top+ir.bottom)/2);
+        stageHeaderDelta=Math.max(stageHeaderDelta,numberTitleTopDelta,meterIndicatorCenterDelta);
+        const duplicateIndicator=getComputedStyle(summary,'::after');
+        if(duplicateIndicator.display!=='none' && duplicateIndicator.content!=='none') {
+          failures.push('duplicate default plus/minus remains below the stage number');
+        }
+        const toggleFont=parseFloat(getComputedStyle(toggle,'::before').fontSize);
+        const meterFont=parseFloat(getComputedStyle(meter).fontSize);
+        if(toggleFont<meterFont*1.5) failures.push('stage plus/minus is too small relative to its percentage counter');
+        if(getComputedStyle(summary).display!=='grid' ||
+           [number,title,meter,toggle].some(el=>getComputedStyle(el).gridRowStart!=='1')) {
+          failures.push('stage number, title, percentage and disclosure sign are not in the same grid row');
+        }
+        if(numberTitleTopDelta>1.1 || meterIndicatorCenterDelta>1.1) {
+          failures.push('stage number/title tops or percentage/disclosure centers are vertically misaligned');
+        }
+        if(nr.right>tr.left+1 || tr.right>mr.left+1 || mr.right>ir.left+1) {
+          failures.push('stage summary columns overlap or are out of order');
+        }
+        if(subtitle && (Math.abs(rect(subtitle).left-tr.left)>1 || rect(subtitle).top<tr.bottom-1)) {
+          failures.push('stage duration does not sit below the title in its own aligned column');
+        }
+      }
 
       // 5. Link bottom-left, Done bottom-right, same row, no 2D overlap.
       let worstBottomDelta = 0;
@@ -277,11 +618,27 @@ try {
         failures.push('the two progress cards overlap');
       }
 
-      // 7. Tap targets and heading outline.
+      // 7. Tap targets and heading outline. The compact theme icon's visible
+      // circle matches the eyebrow; its transparent pseudo-element keeps a 44px hit area.
       const small = [...document.querySelectorAll(
-        '.toolbar button, .pals-controls button, .stage summary'
-      )].filter((el) => rect(el).height < 44).length;
+        '#back-to-top, .toolbar button, .daily-checkin-controls button:not([hidden]), .pals-controls button, .stage summary, .milestone-label'
+      )].filter((el) => !el.hidden && rect(el).height < 44).length;
       if (small) failures.push(`${small} controls are under 44px tall`);
+      const themeButton=document.getElementById('theme-toggle');
+      const themeHit=getComputedStyle(themeButton,'::before');
+      if(parseFloat(themeHit.width)<44 || parseFloat(themeHit.height)<44 || themeHit.pointerEvents==='none') {
+        failures.push('compact theme toggle has no 44px pointer target');
+      }
+      const eyebrowRow=document.querySelector('.hero-eyebrow-row');
+      const themeEyebrow=eyebrowRow?.querySelector('.eyebrow');
+      if(!eyebrowRow || !themeEyebrow) failures.push('missing hero eyebrow row');
+      else {
+        const rowRect=rect(eyebrowRow),buttonRect=rect(themeButton),eyebrowRect=rect(themeEyebrow);
+        const topInset=eyebrowRect.top-hr.top;
+        if(Math.abs(rowRect.right-buttonRect.right)>1) failures.push('theme toggle is not aligned to the far right of the eyebrow row');
+        if(Math.abs(buttonRect.top-eyebrowRect.top)>1) failures.push('theme toggle and eyebrow are not top-aligned');
+        if(topInset<18 || topInset>30) failures.push(`excess space above eyebrow: ${topInset.toFixed(1)}px from hero edge`);
+      }
       const outline = ['h1', 'h2', 'h3'].map((s) => document.querySelectorAll(s).length);
       if (outline[0] !== 1 || outline[2] !== expected.cards) {
         failures.push(`heading outline h1/h2/h3 = ${outline.join('/')}`);
@@ -302,7 +659,7 @@ try {
       let worstOverlap = 0;
       let worstControl = '';
       const controls = [...document.querySelectorAll(
-        '.toolbar button, .file-button, input, summary, .resource a, .completion, .pals-controls button'
+        '#theme-toggle, #back-to-top, .toolbar button, .daily-checkin-controls button, .file-button, input, summary, .resource a, .completion, .pals-controls button'
       )];
       for (const control of controls) {
         const r = rect(control);
@@ -329,20 +686,35 @@ try {
       }
       const controlsVisible = !document.getElementById('pals-controls')?.hidden;
       if (!controlsVisible) failures.push('pals control panel is hidden');
+      const spider=document.getElementById('fieldnotes-spider');
+      if(!spider) failures.push('dangling spider markup is missing');
+      else {
+        const spiderStyle=getComputedStyle(spider),spiderRect=rect(spider);
+        const spiderRightGap=innerWidth-spiderRect.right;
+        if(spider.hidden || spiderStyle.position!=='fixed' || spiderStyle.pointerEvents!=='none' ||
+           Math.abs(spiderRect.top)>1 || spiderRightGap<0 || spiderRightGap>10) {
+          failures.push('dangling spider is not visible, fixed and pointer-transparent at the viewport top-right');
+        }
+      }
 
       // Hit-test actual links, not only sprite rectangles. Shadow-root :host
       // rules can make the *empty overlay* intercept clicks even with no
       // creature overlapping a link. Scroll every link into the viewport.
       let blockedLinks = 0;
+      const blockedTargets = [];
       const originalY = scrollY;
       for (const link of links) {
         link.scrollIntoView({block:'center', behavior:'instant'});
+        await new Promise((resolve) => requestAnimationFrame(resolve));
         const r = rect(link);
         const hit = document.elementFromPoint(r.left+r.width/2, r.top+r.height/2);
-        if (!(hit === link || link.contains(hit))) blockedLinks++;
+        if (!(hit === link || link.contains(hit))) {
+          blockedLinks++;
+          blockedTargets.push({href:link.href,target:hit?.outerHTML.slice(0,180)});
+        }
       }
       window.scrollTo({top:originalY, behavior:'instant'});
-      if (blockedLinks) failures.push(`${blockedLinks} resource links intercepted by another element`);
+      if (blockedLinks) failures.push(`${blockedLinks} resource links intercepted: ${JSON.stringify(blockedTargets)}`);
 
       return {
         failures: [...new Set(failures)],
@@ -350,6 +722,7 @@ try {
         h1FontPx: h1 ? px(parseFloat(getComputedStyle(h1).fontSize)) : 0,
         tagFills: fills.size,
         worstBottomDelta: px(worstBottomDelta),
+        stageHeaderDelta:px(stageHeaderDelta),
         blockedLinks,
         palEls,
         actors: canvases.length,
@@ -417,16 +790,17 @@ try {
   await page.setViewport({ width: 1440, height: 900, deviceScaleFactor: 1 });
   await page.evaluate(() => localStorage.clear());
   await page.reload({ waitUntil: 'load' });
-  // Immutable IDs identify cards; legacy saved positional keys are migrated.
-  const oldKeys = await page.evaluate(() => [0,1,2,3].map(i => resourceKey(0,i)));
-  if (JSON.stringify(oldKeys) !== JSON.stringify(['resource:hr-essentials','resource:talent-acquisition','resource:saylor-prdv226','resource:openstax-hr'])) {
+  // Stable resource identities do not depend on card order.
+  const oldKeys = await page.evaluate(() => [0,1].map(i => resourceKey(0,i)));
+  if (JSON.stringify(oldKeys) !== JSON.stringify(['resource:hr-essentials','resource:talent-acquisition'])) {
     runtimeErrors.push('existing Stage 1 keys shifted: '+JSON.stringify(oldKeys));
   }
-  await page.evaluate(() => localStorage.setItem(STORAGE_KEY, JSON.stringify({done:{'s0-r0':true,'s0-r2':true},activityDates:[]})));
+  // Legacy Done credit and activity dates load without becoming new milestones/check-ins.
+  await page.evaluate(() => localStorage.setItem(STORAGE_KEY, JSON.stringify({version:2,storage_id:DATA.storage_id,done:{'s0-r0':true},activityDates:[]})));
   await page.reload({waitUntil:'load'});
-  const restored = await page.$$eval('.stage[data-stage="0"] .completion input', inputs => inputs.map(i=>i.checked));
-  if (JSON.stringify(restored) !== JSON.stringify([false,true,false,true])) {
-    runtimeErrors.push('old progress restored to wrong cards: '+JSON.stringify(restored));
+  const restored = await page.$$eval('.stage[data-stage="0"] .completion', els => els.map(el=>el.textContent.trim()));
+  if (JSON.stringify(restored) !== JSON.stringify(['0/1','Done before update'])) {
+    runtimeErrors.push('old progress did not restore as previous card credit: '+JSON.stringify(restored));
   }
   // Exercise the actual file-import handler, not only the pure normalizer.
   const importBackup = async value => {
@@ -437,30 +811,95 @@ try {
     },value);
     await page.waitForFunction(() => document.getElementById('import-progress').value==='');
   };
-  await importBackup({version:1,done:{'s0-r1':true},activityDates:['2026-10-26'],reminderTime:'08:30'});
-  const imported=await page.$$eval('.stage[data-stage="0"] .completion input', inputs=>inputs.map(i=>i.checked));
-  if(JSON.stringify(imported)!==JSON.stringify([false,false,true,false])) runtimeErrors.push('legacy backup migration failed');
+  const today = await page.evaluate(() => localDateKey());
+  await importBackup({version:1,done:{'s0-r0':true},activityDates:[today],reminderTime:'08:30'});
+  const imported=await page.evaluate(() => ({
+    cards:[...document.querySelectorAll('.stage[data-stage="0"] .completion')].map(el=>el.textContent.trim()),
+    status:document.getElementById('today-status').textContent,
+    checked:document.getElementById('daily-checkin').disabled,
+    undoHidden:document.getElementById('undo-checkin').hidden,
+    saved:JSON.parse(localStorage.getItem(STORAGE_KEY)),
+  }));
+  if(JSON.stringify(imported.cards)!==JSON.stringify(['0/1','Done before update'])) runtimeErrors.push('legacy backup card migration failed: '+JSON.stringify(imported.cards));
+  if(imported.saved.manualCheckinDates.length!==0 || !imported.saved.legacyActivityDates.includes(today)) runtimeErrors.push('legacy activity was not kept separate from manual check-ins');
+  if(imported.status!=='Checked in today' || !imported.checked || !imported.undoHidden) runtimeErrors.push('legacy activity should show as logged, not as a new manual check-in');
   const savedBeforeInvalid=await page.evaluate(()=>localStorage.getItem(STORAGE_KEY));
   await importBackup({version:999,done:{},activityDates:[]});
   if(await page.evaluate(()=>localStorage.getItem(STORAGE_KEY))!==savedBeforeInvalid) runtimeErrors.push('invalid import changed saved progress');
+
   await page.evaluate(() => localStorage.clear());
   await page.reload({waitUntil:'load'});
   const before = await page.$eval('#progress-label', (el) => el.textContent.trim());
+  const functional = [];
+  const copySurface = await page.evaluate(() => {
+    const first=document.querySelector('[data-resource-id="hr-essentials"]');
+    const access=[...document.querySelectorAll('.resource-access')];
+    return {
+      cards:document.querySelectorAll('.resource').length,
+      taskBoxes:document.querySelectorAll('input[data-milestone-id]').length,
+      summaries:document.querySelectorAll('.access-summary').length,
+      summaryLists:[...document.querySelectorAll('.access-summary')].every(list=>list.tagName==='UL' && list.children.length>1 && getComputedStyle(list).listStyleType==='square'),
+      evidenceLists:document.querySelectorAll('.access-note-list').length,
+      evidenceBullets:[...document.querySelectorAll('.access-note-list')].every(list=>list.tagName==='UL' && list.children.length>1 && getComputedStyle(list).listStyleType==='square'),
+      accessCopyPreserved:DATA.stages.every(stage=>stage.resources.every(resource=>{
+        const card=document.querySelector(`[data-resource-id="${resource.id}"]`);
+        const summary=[...card.querySelectorAll('.access-summary > li')].map(item=>item.textContent.trim());
+        summary[0]=summary[0].replace(/^Access:\s*/,'');
+        const evidence=[...card.querySelectorAll('.access-note-list > li')].map(item=>item.textContent.trim());
+        const normalise=value=>value.toLowerCase().replace(/\s+/g,' ').trim();
+        return normalise(summary.join(' '))===normalise(resource.access_summary) && normalise(evidence.join(' '))===normalise(resource.access_note);
+      })),
+      accessClosed:access.every(item=>!item.open),
+      firstSummary:first?.querySelector('.access-summary')?.textContent.trim()||'',
+      firstTask:first?.querySelector('.milestone-label')?.textContent.trim()||'',
+    };
+  });
+  if(copySurface.cards!==21 || copySurface.taskBoxes!==21 || copySurface.summaries!==21 || copySurface.evidenceLists!==21 || !copySurface.summaryLists || !copySurface.evidenceBullets || !copySurface.accessCopyPreserved || !copySurface.accessClosed) {
+    functional.push('concise copy, square-bullet access details, or collapsed evidence missing: '+JSON.stringify(copySurface));
+  }
+  if(!copySurface.firstSummary.includes('Public playlist') || !copySurface.firstTask.startsWith('Watch lessons 1–4')) {
+    functional.push('plain-language resource copy did not reach the tracker: '+JSON.stringify(copySurface));
+  }
+  const accessDetails=await page.$('.resource-access');
+  await accessDetails.$eval('summary',el=>el.click());
+  const accessExpanded=await accessDetails.evaluate(el=>el.open && el.textContent.includes('Checked 2026-10-27'));
+  if(!accessExpanded) functional.push('full access evidence did not open');
+  await accessDetails.$eval('summary',el=>el.click());
   await page.evaluate(() => {
-    document.querySelector('.resource .completion input[type="checkbox"]').click();
+    const details=document.querySelector('.stage .milestones');
+    details.open=true;
+    details.querySelector('input[data-milestone-id]').click();
   });
   const after = await page.evaluate(() => ({
     label: document.getElementById('progress-label').textContent.trim(),
     pct: document.getElementById('overall-percent').textContent.trim(),
-    stored: Object.keys(localStorage).length > 0,
+    today: document.getElementById('today-status').textContent,
+    stored: JSON.parse(localStorage.getItem(STORAGE_KEY)),
   }));
-  const functional = [];
-  if (!before.includes('0 of 27')) functional.push(`initial label unexpected: ${before}`);
-  if (!after.label.includes('1 of 27')) functional.push(`after tick: ${after.label}`);
-  if (after.pct !== '4%') functional.push(`after tick percent: ${after.pct}`);
-  if (!after.stored) functional.push('progress was not written to localStorage');
+  if (!before.includes('0 of 21')) functional.push(`initial label unexpected: ${before}`);
+  if (!after.label.includes('1 of 21')) functional.push(`after task: ${after.label}`);
+  if (after.pct !== '4%') functional.push(`after task percent: ${after.pct}`);
+  if (!after.stored || after.stored.version!==3 || !after.stored.milestones) functional.push('version 3 task progress was not written to localStorage');
+  if (after.stored.activityDates.length || after.stored.manualCheckinDates.length) functional.push('task completion incorrectly created a daily check-in');
+  if (after.today !== 'Not checked in yet') functional.push('task completion changed today’s check-in status');
 
-  // Capture the actual export Blob and round-trip it through the file handler.
+  // Explicit attendance is independent and can be undone for the same day.
+  await page.click('#daily-checkin');
+  const checkedIn=await page.evaluate(() => ({
+    status:document.getElementById('today-status').textContent,
+    disabled:document.getElementById('daily-checkin').disabled,
+    manual:JSON.parse(localStorage.getItem(STORAGE_KEY)).manualCheckinDates,
+  }));
+  if(checkedIn.status!=='Checked in today' || !checkedIn.disabled || !checkedIn.manual.includes(today)) functional.push('manual daily check-in did not save explicitly');
+  await page.click('#undo-checkin');
+  const undone=await page.evaluate(() => ({
+    status:document.getElementById('today-status').textContent,
+    manual:JSON.parse(localStorage.getItem(STORAGE_KEY)).manualCheckinDates,
+  }));
+  if(undone.status!=='Not checked in yet' || undone.manual.length) functional.push('manual check-in could not be undone');
+  await page.click('#daily-checkin');
+
+  // Capture the real export Blob, then round-trip it through the file handler.
   const exportedBackup = await page.evaluate(async () => {
     const original=URL.createObjectURL; let exported;
     URL.createObjectURL = blob => { exported=blob; return original.call(URL,blob); };
@@ -468,20 +907,25 @@ try {
     finally { URL.createObjectURL=original; }
     return JSON.parse(await exported.text());
   });
-  if(exportedBackup.version!==2 || !exportedBackup.storage_id || !exportedBackup.done['resource:hr-essentials']) functional.push('version 2 export missing identity/progress');
+  if(exportedBackup.version!==3 || !exportedBackup.storage_id || !exportedBackup.milestones || !exportedBackup.manualCheckinDates.includes(today)) functional.push('version 3 backup missing roadmap, task or check-in progress');
   await importBackup(exportedBackup);
-  if(!(await page.$eval('.resource .completion input', input=>input.checked))) functional.push('version 2 backup round-trip lost completion');
+  const roundTrip=await page.evaluate(() => ({
+    status:document.getElementById('today-status').textContent,
+    card:document.querySelector('.stage .completion').textContent.trim(),
+    checked:document.getElementById('daily-checkin').disabled,
+  }));
+  if(roundTrip.status!=='Checked in today' || roundTrip.card!=='1/1' || !roundTrip.checked) functional.push('version 3 backup round-trip lost task/check-in progress');
 
-  // Buttons should not throw. Dispatch in-page to avoid download/permission UI.
-  await page.evaluate(() => {
-    document.getElementById('export-progress').click();
-    document.getElementById('enable-notifications').click();
-  });
-  await new Promise((r) => setTimeout(r, 250));
+  // Reminder controls are retired; backup/import/reset paths remain available.
   await page.evaluate(() => document.getElementById('reset-progress').click());
   await new Promise((r) => setTimeout(r, 150));
-  const reset = await page.$eval('#progress-label', (el) => el.textContent.trim());
-  if (!reset.includes('0 of 27')) functional.push(`after reset: ${reset}`);
+  const reset = await page.evaluate(() => ({
+    label:document.getElementById('progress-label').textContent.trim(),
+    manual:JSON.parse(localStorage.getItem(STORAGE_KEY)).manualCheckinDates,
+    checkin:document.getElementById('today-status').textContent,
+  }));
+  if (!reset.label.includes('0 of 21')) functional.push(`after reset: ${reset.label}`);
+  if (reset.manual.length || reset.checkin!=='Not checked in yet') functional.push('reset did not clear current attendance');
 
   // 10. Pause toggle removes every pal; enabling brings them back.
   try { await waitForPals(page); } catch (_) { functional.push('pals did not return after reset'); }
@@ -490,16 +934,22 @@ try {
   await new Promise((r) => setTimeout(r, 200));
   const paused = await page.evaluate(() => ({
     count: document.querySelectorAll('piix-pal[data-fieldnotes-pal]').length,
+    spiderHidden: document.getElementById('fieldnotes-spider').hidden,
     pressed: document.getElementById('pals-toggle').getAttribute('aria-pressed'),
     status: document.getElementById('pals-status').textContent,
   }));
-  if (paused.count !== 0) toggleChecks.push(`pause left ${paused.count} pals`);
+  if (paused.count !== 0) toggleChecks.push(`pause left ${paused.count} Piixpal creatures`);
+  if (!paused.spiderHidden) toggleChecks.push('pausing tiny pals left the dangling spider visible');
   if (paused.pressed !== 'false') toggleChecks.push('aria-pressed not false when paused');
   if (!/paused/i.test(paused.status)) toggleChecks.push('status line does not say paused');
   await page.click('#pals-toggle');
   try { await waitForPals(page); } catch (_) { toggleChecks.push('pals did not return after enable'); }
-  const resumed = await page.$eval('#pals-toggle', (el) => el.getAttribute('aria-pressed'));
-  if (resumed !== 'true') toggleChecks.push('aria-pressed not true when enabled');
+  const resumed = await page.evaluate(() => ({
+    pressed:document.getElementById('pals-toggle').getAttribute('aria-pressed'),
+    spiderHidden:document.getElementById('fieldnotes-spider').hidden,
+  }));
+  if (resumed.pressed !== 'true') toggleChecks.push('aria-pressed not true when enabled');
+  if (resumed.spiderHidden) toggleChecks.push('enabling tiny pals did not restore the dangling spider');
 
   // 11. Reduced motion: no pal elements at all.
   await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
@@ -507,11 +957,24 @@ try {
   await new Promise((r) => setTimeout(r, 700));
   const reduced = await page.evaluate(() => ({
     count: document.querySelectorAll('piix-pal[data-fieldnotes-pal]').length,
+    spiderHidden:document.getElementById('fieldnotes-spider').hidden,
     status: document.getElementById('pals-status').textContent,
     pressed: document.getElementById('pals-toggle').getAttribute('aria-pressed'),
   }));
-  if (reduced.count !== 0) toggleChecks.push(`${reduced.count} pals under reduced motion`);
+  if (reduced.count !== 0 || !reduced.spiderHidden) toggleChecks.push(`${reduced.count} Piixpal creatures or spider under reduced motion`);
   if (!/reduced-motion/i.test(reduced.status)) toggleChecks.push('reduced-motion status text missing');
+  await page.evaluate(()=>window.scrollTo({top:600,behavior:'instant'}));
+  await page.waitForFunction(()=>!document.getElementById('back-to-top').hidden);
+  const reducedScrollBehavior=await page.evaluate(()=>{
+    const original=window.scrollTo;
+    let behavior=null;
+    window.scrollTo=function(options){behavior=options&&options.behavior;return original.call(window,options);};
+    document.getElementById('back-to-top').click();
+    window.scrollTo=original;
+    return behavior;
+  });
+  if(reducedScrollBehavior!=='auto') scrollFailures.push('back-to-top did not disable smooth scrolling for reduced motion');
+  await page.waitForFunction(()=>scrollY<=1,{timeout:2000});
   await page.emulateMediaFeatures([]);
 
   // ---- report ------------------------------------------------------------
@@ -529,6 +992,9 @@ try {
     for (const f of r.failures) console.log(`         - ${f}`);
   }
   console.log('-'.repeat(94));
+  const maxStageHeaderDelta=Math.max(0,...results.map(result=>result.stageHeaderDelta));
+  const stageHeaderAlignment=maxStageHeaderDelta<=1.1;
+  console.log(`stage header alignment: ${stageHeaderAlignment?'PASS':'FAIL'} (${stageHeaderAlignment?'all stages':'misaligned'} at 13 widths; max number/title top or percentage/icon center delta ${maxStageHeaderDelta.toFixed(1)}px)`);
   const collapsedFailures = [];
   for (const c of collapsed) {
     const ok = c.centreHits === 0 && c.worstOverlap <= MAX_CONTROL_OVERLAP;
@@ -543,12 +1009,24 @@ try {
   console.log('-'.repeat(94));
   if (!palsMounted) console.log('initial pals mount: TIMED OUT');
   console.log(`functional: ${functional.length ? 'FAIL' : 'PASS'}` +
-              (functional.length ? ` — ${functional.join('; ')}` : ` (${before} → ${after.label} / ${after.pct} → ${reset})`));
+              (functional.length ? ` — ${functional.join('; ')}` : ` (${before} → ${after.label} / ${after.pct} → reset: ${reset.label}, ${reset.checkin})`));
   console.log(`pause + reduced motion: ${toggleChecks.length ? 'FAIL' : 'PASS'}` +
-              (toggleChecks.length ? ` — ${toggleChecks.join('; ')}` : ` (0 paused, ${reduced.count} under reduced motion, ${palsMounted ? 10 : '?'} on)`));
+              (toggleChecks.length ? ` — ${toggleChecks.join('; ')}` : ` (10 Piixpal + spider pause together; ${reduced.count} under reduced motion; ${palsMounted ? TOTAL_PAL_COUNT : '?'} on)`));
+  console.log(`dangling spider: ${spiderFailures.length ? 'FAIL' : 'PASS'}` +
+              (spiderFailures.length ? ` — ${spiderFailures.join('; ')}` : ' (fixed top-right; remains visible while scrolling)'));
+  console.log(`theme preference: ${themeFailures.length ? 'FAIL' : 'PASS'}` +
+              (themeFailures.length ? ` — ${themeFailures.join('; ')}` : ' (system light/dark, sun/moon icon, saved override, dark check-in ink, eyebrow-row sizing/alignment)'));
+  const minYellowRatio=contrastAudits.length?Math.min(...contrastAudits.map(a=>a.minYellowRatio)):0;
+  const minShadowRatio=contrastAudits.length?Math.min(...contrastAudits.map(a=>a.minShadowRatio)):0;
+  console.log(`targeted contrast audit: ${contrastFailures.length ? 'FAIL' : 'PASS'}` +
+              (contrastFailures.length ? ` — ${contrastFailures.join('; ')}` :
+                ` (yellow text min ${minYellowRatio.toFixed(2)}:1; shadow min ${minShadowRatio.toFixed(2)}:1; light + dark)`));
+  console.log(`back-to-top: ${scrollFailures.length ? 'FAIL' : 'PASS'}` +
+              (scrollFailures.length ? ` — ${scrollFailures.join('; ')}` : ' (fixed bottom-right; hides at top and after 3s idle)'));
   console.log(`runtime errors: ${runtimeErrors.length ? runtimeErrors.join('; ') : 'none'}`);
   const failures = results.filter((r) => r.failures.length).length + functional.length +
-                   toggleChecks.length + runtimeErrors.length + collapsedFailures.length +
+                   toggleChecks.length + themeFailures.length + contrastFailures.length +
+                   scrollFailures.length + spiderFailures.length + runtimeErrors.length + collapsedFailures.length +
                    (palsMounted ? 0 : 1);
   console.log(`RESULT: ${WIDTHS.length - results.filter((r) => r.failures.length).length}/${WIDTHS.length} widths passed, ${failures} failure(s)`);
 
@@ -563,7 +1041,25 @@ try {
     windowRequests,
     functional,
     toggleChecks,
+    themeFailures,
+    themePlacement,
+    darkCheckin,
+    contrastAudits,
+    contrastFailures,
+    scrollButtonAtTop,
+    scrollButtonPinned,
+    scrollFailures,
+    spiderScroll,
+    spiderFailures,
+    systemDark,
+    systemLight,
+    override,
+    persistedTheme,
+    lightOverride,
+    lightStays,
+    persistedLight,
     reduced,
+    reducedScrollBehavior,
     runtimeErrors,
   }, null, 2) + '\n');
   console.log(`Report: ${join(REPORT_DIR, 'last-run.json')}`);

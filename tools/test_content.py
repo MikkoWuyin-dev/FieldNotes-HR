@@ -38,11 +38,34 @@ class ContentTests(unittest.TestCase):
         d=content.load(); r=d['stages'][0]['resources'][0]; r['title']='Unique title example'; r['why']='Unique explanation example'
         d['stages'][0]['estimated_hours']+=1
         app=content.app_data(d); md=content.markdown(d)
-        for field in ('title','why'):
-            self.assertEqual(app['stages'][0]['resources'][0][field],r[field])
-            self.assertIn(r[field],md)
+        self.assertEqual(app['stages'][0]['resources'][0]['title'],r['title'])
+        self.assertIn(r['title'],md)
+        self.assertIn(r['why'],md)
+        self.assertEqual(app['stages'][0]['resources'][0]['why'],content.load_app_copy(d)['resources'][r['id']]['why'])
         self.assertIn('95 planned study hours',md)
         self.assertIn('95 HOURS', ' '.join(bt.facts(app)))
+
+    def test_app_copy_stays_app_only_and_covers_active_items(self):
+        d=content.load(); original=copy.deepcopy(d); app=content.app_data(d)
+        app_copy=content.load_app_copy(d)
+        self.assertEqual(d,original)
+        self.assertEqual(app['subtitle'],app_copy['subtitle'])
+        for stage,projected in zip(d['stages'],app['stages']):
+            display=app_copy['stages'][stage['id']]
+            self.assertEqual(projected['description'],display['description'])
+            for resource,app_resource in zip(stage['resources'],projected['resources']):
+                display=app_copy['resources'][resource['id']]
+                self.assertEqual(app_resource['why'],display['why'])
+                self.assertEqual(app_resource['action'],display['action'])
+                self.assertEqual(app_resource['milestones'][0]['label'],display['action'])
+                self.assertEqual(app_resource['access_summary'],display['access_summary'])
+                self.assertEqual(app_resource['access_note'],resource['access_note'])
+        # Detailed catalogue wording remains in the library document.
+        self.assertIn(d['stages'][0]['resources'][0]['why'],content.markdown(d))
+        self.assertIn(d['stages'][0]['resources'][0]['access_note'],content.markdown(d))
+        broken=copy.deepcopy(d); broken['stages'][0]['resources'][0]['id']='new-resource'
+        with self.assertRaisesRegex(ValueError,'app-copy resources'):
+            content.load_app_copy(broken)
 
     def test_contracts_missing_and_duplicate(self):
         d=content.app_data(content.load())
@@ -87,7 +110,7 @@ assert.equal(migrated.reminderTime,'19:00');
 assert.deepEqual(normalizeProgress(JSON.parse(JSON.stringify(migrated)),true),migrated);
 assert.equal(normalizeProgress({...legacy,done:{'s0-r0':true,'resource:talent-acquisition':false}},true).done['resource:talent-acquisition'],false);
 for(const done of [null,[],{'s0-r0':'true'},{'s0-r0':1}]) assert.throws(()=>normalizeProgress({...legacy,done},true));
-for(const version of [0,3,'1']) assert.throws(()=>normalizeProgress({...legacy,version},true));
+for(const version of [0,4,'1']) assert.throws(()=>normalizeProgress({...legacy,version},true));
 assert.throws(()=>normalizeProgress({...legacy,storage_id:'another-roadmap'},true));
 const before=DATA.stages.flatMap((s,si)=>s.resources.map((r,ri)=>[r.id,resourceKey(si,ri)]));
 DATA.stages.reverse(); DATA.stages.forEach(s=>s.resources.reverse());

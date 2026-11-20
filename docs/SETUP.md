@@ -79,8 +79,8 @@ are not a reason to weaken TLS or install unpinned packages.
 ## Sources and generated outputs
 
 <!-- content-summary:start -->
-8 stages, 27 resource cards, 22 distinct card URLs, 94 planned hours.
-20 planned weeks; 24 cards have confirmed free-study evidence.
+8 stages, 21 resource cards, 21 distinct card URLs, 94 planned hours.
+20 planned weeks; 20 cards have confirmed free-study evidence.
 Certificate, account and professional-qualification terms are separate; partial findings are not counted as verified free.
 <!-- content-summary:end -->
 
@@ -92,7 +92,14 @@ for access classifications, permanent IDs and backup migration. Never change a
 historical sweep to imply it checked newly added URLs.
 
 Appearance belongs in `learning-library/src/fieldnotes-theme.css` and the local
-builder. Pals sources are under `learning-library/src/pals/`: the layer uses
+builder; theme behavior lives in `learning-library/src/theme-toggle.js`, and
+the fixed back-to-top control is sourced from
+`learning-library/src/scroll-to-top.js`. The light/dark control sits at the
+hero's top right, follows the system setting until changed and stores its
+separate browser-local preference without changing progress or backups. The
+back-to-top button appears after scrolling, hides at the top or after three
+seconds without scrolling, and respects reduced-motion preferences. Pals
+sources are under `learning-library/src/pals/`: the layer uses
 full-document **absolute** positioning, with ten placements and eight species.
 The MIT engine is pinned and unchanged; the local controller handles idle
 activation, pause, initial reduced-motion defaults and re-anchoring.

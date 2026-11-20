@@ -61,14 +61,65 @@ def totals(data):
                 weeks=max(int(n) for s in stages for n in re.findall(r'\d+',s['duration'])),
                 free=sum(r['access']['study']=='free' and evidence.get(r['url'])=='confirmed' for r in cards))
 
+def load_app_copy(data):
+    """Load short tracker copy without changing research or document wording."""
+    copy_data = json.loads((SRC / 'app-copy.json').read_text())
+    if copy_data.get('version') != 1:
+        raise ValueError('unsupported app-copy version')
+    stage_ids = {s['id'] for s in data['stages']}
+    resource_ids = {r['id'] for s in data['stages'] for r in s['resources']}
+    if set(copy_data.get('stages', {})) != stage_ids:
+        raise ValueError('app-copy stages must match active catalogue')
+    if set(copy_data.get('resources', {})) != resource_ids:
+        raise ValueError('app-copy resources must match active catalogue')
+    for identity, stage in copy_data['stages'].items():
+        for field in ('title', 'description'):
+            if not isinstance(stage.get(field), str) or not stage[field].strip():
+                raise ValueError(f'app-copy stage {identity} missing {field}')
+        outcomes = stage.get('outcomes')
+        if not isinstance(outcomes, list) or not outcomes or any(not isinstance(x, str) or not x.strip() for x in outcomes):
+            raise ValueError(f'app-copy stage {identity} has invalid outcomes')
+    for identity, resource in copy_data['resources'].items():
+        for field in ('why', 'action', 'access_summary'):
+            if not isinstance(resource.get(field), str) or not resource[field].strip():
+                raise ValueError(f'app-copy resource {identity} missing {field}')
+        for field in ('cost', 'duration'):
+            if field in resource and (not isinstance(resource[field], str) or not resource[field].strip()):
+                raise ValueError(f'app-copy resource {identity} has invalid {field}')
+    if not isinstance(copy_data.get('subtitle'), str) or not copy_data['subtitle'].strip():
+        raise ValueError('app-copy subtitle is required')
+    return copy_data
+
+
 def app_data(data):
     app = copy.deepcopy(data)
     app.pop('verification'); app.pop('document')
+    app_copy = load_app_copy(data)
+    app['subtitle'] = app_copy['subtitle']
     for i,s in enumerate(app['stages'],1):
-        s['title'] = f'Stage {i}: {s["title"]}'
+        stage_copy = app_copy['stages'][s['id']]
+        s['title'] = f'Stage {i}: {stage_copy["title"]}'
+        s['description'] = stage_copy['description']
+        s['outcomes'] = stage_copy['outcomes']
         for r in s['resources']:
+            resource_copy = app_copy['resources'][r['id']]
+            for field in ('why', 'action', 'access_summary', 'cost', 'duration'):
+                if field in resource_copy:
+                    r[field] = resource_copy[field]
             r['verification_date'] = r.pop('checked_at')
-    app['subtitle'] = re.sub(r'An \d+-stage',f'An {len(app["stages"])}-stage',app['subtitle'])
+            # The compact app action becomes one stable, required progress leaf.
+            # The full catalogue wording remains unchanged for the library document.
+            r['optional'] = False
+            r['milestone_note'] = ''
+            r['milestones'] = [{
+                'id': f'first-iteration:{r["id"]}:action',
+                'label': r['action'],
+                'kind': 'task',
+                'required': True,
+                'url': None,
+            }]
+            r['learning_notes'] = []
+            r['references'] = []
     app['verified_free_count'] = totals(data)['free']
     return app
 

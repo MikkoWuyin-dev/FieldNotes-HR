@@ -38,7 +38,7 @@
       "url": "https://www.open.edu/openlearn/money-business/human-resources/human-resources-recruitment-and-selection/content-section-0",
       "status": "confirmed",
       "verified_at": "2026-10-27",
-      "note": "OpenLearn course page: free course, free statement of participation. CI sweep 2026-10-27 got 403 (bot filtering); page re-read the same day and the claim still holds."
+      "note": "Official OpenLearn page identifies this as a free course and offers a free Statement of Participation; course text opens without sign-in, while a free account is needed for progress tracking, all activities/quizzes and the statement. The CI sweep returned 403 (bot filtering) on 2026-10-27; the page was re-read the same day."
     },
     {
       "url": "https://alison.com/course/diploma-in-human-resources-hr",
@@ -50,97 +50,103 @@
       "url": "https://learn.saylor.org/course/BUS301",
       "status": "confirmed",
       "verified_at": "2026-10-26",
-      "note": "Saylor BUS301 course page read."
+      "note": "Rechecked 2026-10-26: BUS301 page lists a Free Certificate; Saylor FAQ confirms no tuition or fees and free completion certificates."
     },
     {
       "url": "https://www.coursera.org/learn/recruiting-hiring-onboarding-employees",
       "status": "ambiguous",
       "verified_at": "2026-10-26",
-      "note": "Page read, but FAQ ties full access to purchase/trial/no-certificate option. NOT counted as free."
+      "note": "Rechecked 2026-10-26: course page says “Enroll for free”; FAQ says full course material access requires paid Certificate access, a free trial or Full Course, No Certificate where available. Exact full-course no-certificate availability for this course was not confirmed; not counted as free."
+    },
+    {
+      "url": "https://learner.coursera.help/hc/en-us/articles/209818613-Enrollment-options",
+      "status": "confirmed",
+      "verified_at": "2026-10-26",
+      "note": "Official Coursera Help Center enrollment-options page checked 2026-10-26: Preview is limited to the first module with no certificate; Full Course, No Certificate is available only for selected courses."
     },
     {
       "url": "https://www.onetonline.org/",
       "status": "confirmed",
       "verified_at": "2026-10-26",
-      "note": "Free public occupational database."
+      "note": "Checked 2026-10-26: official public O*NET occupation search/profile opened without account or payment; U.S. database with 1,016 occupation titles."
     },
     {
       "url": "https://resources.workable.com/hr-templates/",
       "status": "confirmed",
       "verified_at": "2026-10-26",
-      "note": "Templates free to download; no software trial required."
+      "note": "Checked 2026-10-26: index explicitly labels job-description samples free to download; other listed kits were not all individually verified. A separate 15-day Workable software trial is not needed to read public examples."
     },
     {
       "url": "https://support.greenhouse.io/hc/en-us/articles/360007245452-Structured-hiring-Introduction",
       "status": "confirmed",
       "verified_at": "2026-10-26",
-      "note": "Free structured-hiring article and worksheets."
+      "note": "Checked 2026-10-26: public structured-hiring article lists six steps and direct PDF worksheet/eBook downloads; no account or content form shown, and no software trial is needed."
     },
     {
       "url": "https://resources.workable.com/boolean-search-cheatsheets/",
       "status": "confirmed",
       "verified_at": "2026-10-26",
-      "note": "Free cheatsheets confirmed."
+      "note": "Checked 2026-10-26: public index and a representative HR Boolean article are readable without account or form; Workable advertises a separate software trial, not needed for the cheat sheet."
     },
     {
       "url": "https://www.youtube.com/watch?v=yMnw_2VNOVE",
       "status": "confirmed",
       "verified_at": "2026-10-26",
-      "note": "Public free video checked directly."
+      "note": "Checked 2026-10-26: public 6:34 video page and transcript accessible without payment or sign-in; playback not tested; creator discloses AI-supported production."
     },
     {
       "url": "https://rework.withgoogle.com/intl/en/guides/",
       "status": "confirmed",
       "verified_at": "2026-10-26",
-      "note": "Guides index plus two guides read; other guides cited by name from the index."
+      "note": "Checked 2026-10-26: guides index lists the hiring guides. Four retained English guides were also opened directly; the English Review resumes route returned 404 and is not retained."
     },
     {
       "url": "https://www.jobberman.com/employer/free-listing",
       "status": "partial",
-      "verified_at": null,
-      "note": "Returned only a cookie banner. Free-listing claim from provider search listing; card marked partially verified."
+      "verified_at": "2026-10-26",
+      "note": "Checked 2026-10-26: direct page returned only a cookie prompt. Official search listing describes a free Basic listing and says to wait for Customer Experience confirmation; eligibility, account/form fields and a draft-only practice flow remain unverified. Not retained."
     },
     {
       "url": "https://www.greenhouse.com/guidance",
-      "status": "confirmed",
+      "status": "ambiguous",
       "verified_at": "2026-10-26",
-      "note": "Free guidance hub read."
+      "note": "Checked 2026-10-26: broad hub labels resources free, but selected Greenhouse guidance pages display contact-form gates and free access to the Stage 5 assignment was not established. Not counted as free and not retained."
     },
     {
       "url": "https://rework.withgoogle.com/intl/en/guides/a-guide-to-structured-interviewing-for-better-hiring-practices",
       "status": "confirmed",
       "verified_at": "2026-10-26",
-      "note": "Guides index plus two guides read; other guides cited by name from the index."
+      "note": "Checked 2026-10-26 by reading the full English guide: public text, no account/form/payment/trial requirement shown; updated March 2026."
     },
     {
       "url": "https://rework.withgoogle.com/intl/en/guides/effective-interviewer-training-for-better-candidate-experiences",
       "status": "confirmed",
       "verified_at": "2026-10-26",
-      "note": "Guides index plus two guides read; other guides cited by name from the index."
+      "note": "Checked 2026-10-26 by reading the full English guide: public text, no account/form/payment/trial requirement shown; updated March 2026."
     },
     {
       "url": "https://ndpc.gov.ng/wp-content/uploads/2025/07/NDP-ACT-GAID-2025-MARCH-20TH.pdf",
       "status": "confirmed",
-      "verified_at": "2026-10-27",
-      "note": "Regulator PDF; arrangements of articles and opening provisions read, not cover to cover. CI sweep 2026-10-27 got 403 (bot filtering); PDF re-read the same day and is intact."
+      "verified_at": "2026-10-26",
+      "note": "Checked 2026-10-26: public official NDPC PDF opened without account, form, trial or payment. Arrangement of articles and opening provisions reviewed; not read cover to cover."
     },
     {
       "url": "https://lawsofnigeria.placng.org/laws/L1.pdf",
       "status": "confirmed",
       "verified_at": "2026-10-26",
-      "note": "Statute copy; arrangements and opening provisions read, not cover to cover. Not legal advice."
+      "note": "Checked 2026-10-26: public PLAC Labour Act PDF opened without account, form, trial or payment; not a government-gazette copy or legal advice."
     },
     {
       "url": "https://academy.hubspot.com/lessons/managing-your-contacts-with-the-hubspot-crm",
       "status": "confirmed",
       "verified_at": "2026-10-26",
-      "note": "Academy catalogue described as free with a free account."
+      "note": "Checked 2026-10-26: lesson is explicitly free, four videos/20 minutes; free Academy account required. No trial is needed for the lesson."
     },
     {
       "url": "https://cipmnigeria.org/membership/membership-routes/",
       "status": "confirmed",
       "verified_at": "2026-10-26",
-      "note": "Paid route; naira fee table published. Prices subject to review."
+      "note": "Checked 2026-10-26: paid professional route with provider-published NGN fees; resource removed from Stage 8 under free-first rule."
     },
     {
       "url": "https://www.linkedin.com/learning/",
@@ -182,7 +188,7 @@
       "url": "https://support.saylor.org/hc/en-us/articles/23586212781844-FAQ-General",
       "status": "confirmed",
       "verified_at": "2026-10-27",
-      "note": "Saylor general FAQ: no tuition or fees, completion certificates free. CI sweep 2026-10-27 got 403 (bot filtering); FAQ re-read the same day and the claim still holds."
+      "note": "Official Saylor FAQ confirms no tuition or course fees and free course-completion certificates; a free account is needed to enroll. The CI sweep returned 403 (bot filtering) on 2026-10-27; the FAQ was re-read the same day."
     },
     {
       "url": "https://learn.saylor.org/mod/page/view.php?id=94644",
@@ -195,6 +201,66 @@
       "status": "not_confirmed",
       "verified_at": null,
       "note": "Lead page only; no access claim verified."
+    },
+    {
+      "url": "https://resources.workable.com/recruiter-job-description",
+      "status": "confirmed",
+      "verified_at": "2026-10-26",
+      "note": "Checked 2026-10-26: public Recruiter job-description sample is readable without an account or payment. A separate 15-day trial is advertised for posting jobs, not for reading the sample."
+    },
+    {
+      "url": "https://resources.workable.com/hire-hr-directors-boolean-search-strings",
+      "status": "confirmed",
+      "verified_at": "2026-10-26",
+      "note": "Checked 2026-10-26: public HR Boolean-search example and PDF link are readable without account, form or payment; separate Workable software trial is unnecessary."
+    },
+    {
+      "url": "https://rework.withgoogle.com/intl/en/guides/how-to-create-a-positive-experience-for-candidates",
+      "status": "confirmed",
+      "verified_at": "2026-10-26",
+      "note": "Checked 2026-10-26 by reading the full English Google re:Work guide, updated March 2026; no account, form, payment or trial shown."
+    },
+    {
+      "url": "https://www.open.edu/openlearn/money-business/human-resources/human-resources-recruitment-and-selection/content-section-4.10/",
+      "status": "confirmed",
+      "verified_at": "2026-10-26",
+      "note": "Checked 2026-10-26: direct OpenLearn section 4.10 and activity text are readable without sign-in; free account is optional for reading and required for enrolment/progress and the free Statement of Participation."
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=zariLo_tX00",
+      "status": "confirmed",
+      "verified_at": "2026-10-26",
+      "note": "Checked 2026-10-26: public 8:14 YouTube listing and transcript; no payment or account shown; playback not tested; AI-supported production disclosed."
+    },
+    {
+      "url": "https://rework.withgoogle.com/intl/en/guides/a-data-driven-approach-to-optimizing-employee-onboarding",
+      "status": "confirmed",
+      "verified_at": "2026-10-26",
+      "note": "Checked 2026-10-26 by reading the full English Google re:Work onboarding guide; no account, form, payment or trial shown."
+    },
+    {
+      "url": "https://www.hubspot.com/products/crm",
+      "status": "confirmed",
+      "verified_at": "2026-10-26",
+      "note": "Checked 2026-10-26: HubSpot states the CRM free tier does not expire and requires no credit card; paid tiers are separate."
+    },
+    {
+      "url": "https://www.greenhouse.com/recruiting-benchmarks",
+      "status": "confirmed",
+      "verified_at": "2026-10-26",
+      "note": "Checked 2026-10-26: Greenhouse report page advertises free access and links the direct PDF; report is U.S.-specific."
+    },
+    {
+      "url": "https://cdn.prod.website-files.com/6668a687e71e2722fccb8357/6af3aa54e0a5c01ffec1552e_The-Hire-Standard-Fall-2026_US.pdf",
+      "status": "confirmed",
+      "verified_at": "2026-10-26",
+      "note": "Checked 2026-10-26: direct Fall 2026 U.S. Hire Standard PDF retrieved and read without submitting a form; no account or payment required."
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=LPzWMrLvMGY",
+      "status": "confirmed",
+      "verified_at": "2026-10-26",
+      "note": "Checked 2026-10-26: public 4:19 YouTube listing and transcript; no payment or account shown; playback not tested; AI-supported production disclosed."
     }
   ],
   "link_sweep": {
