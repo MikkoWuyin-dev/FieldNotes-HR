@@ -197,7 +197,7 @@ def branding_edits(data: dict) -> list[tuple[str, str, str]]:
          + theme_toggle + '</div>', "hero eyebrow and theme toggle"),
 
         (r'<footer class="app-footer">A self-contained roadmap tracker\. Your progress is stored locally in this browser\.</footer>',
-         '<footer class="app-footer">Made with love and fried plantain, by Moyinoluwa</footer>',
+         '<footer class="app-footer">Made with love and fried plantain, by Moyinoluwa.</footer>',
          "footer credit"),
 
         (r'<div class="toolbar" aria-label="Reminder and progress controls">',
