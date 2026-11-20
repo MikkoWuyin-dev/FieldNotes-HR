@@ -292,15 +292,18 @@ try {
     const hero=document.querySelector('.hero');
     const eyebrow=row?.querySelector('.eyebrow');
     const rect=button.getBoundingClientRect();
-    const rowRect=row?.getBoundingClientRect();
     const heroRect=hero?.getBoundingClientRect();
+    const heroStyle=hero&&getComputedStyle(hero);
     const label=eyebrow?.getBoundingClientRect();
+    const heroContentRight=heroRect&&heroStyle
+      ? heroRect.right-parseFloat(heroStyle.borderRightWidth)-parseFloat(heroStyle.paddingRight)
+      : Infinity;
     const hit=getComputedStyle(button,'::before');
     return {sameRow:!!row&&row.contains(button)&&button.parentElement===row,
       eyebrow:eyebrow?.textContent.trim(),position:getComputedStyle(button).position,
       topDelta:label?Math.abs(rect.top-label.top):Infinity,
       topInset:label&&heroRect?label.top-heroRect.top:Infinity,
-      rowRightGap:rowRect?Math.abs(rowRect.right-rect.right):Infinity,
+      heroRightGap:heroContentRight-rect.right,
       height:rect.height,eyebrowHeight:label?.height??0,width:rect.width,
       horizontalGap:label?rect.left-label.right:0,
       hitWidth:parseFloat(hit.width),hitHeight:parseFloat(hit.height),
@@ -308,13 +311,13 @@ try {
       ariaLabel:button.getAttribute('aria-label'),hidden:button.hidden};
   });
   if(!themePlacement.sameRow || themePlacement.eyebrow!=='FIELDNOTES / HR' ||
-     themePlacement.position==='absolute' || themePlacement.topDelta>1 ||
-     themePlacement.topInset<18 || themePlacement.topInset>30 || themePlacement.rowRightGap>1 ||
+     themePlacement.topDelta>1 ||
+     themePlacement.topInset<18 || themePlacement.topInset>30 || Math.abs(themePlacement.heroRightGap)>1 ||
      Math.abs(themePlacement.height-themePlacement.eyebrowHeight)>1 ||
      Math.abs(themePlacement.width-themePlacement.height)>1 || themePlacement.horizontalGap<6 ||
      themePlacement.hitWidth<44 || themePlacement.hitHeight<44 ||
      themePlacement.borderRadius!=='50%' || themePlacement.ariaLabel!=='Toggle color theme' || themePlacement.hidden) {
-    themeFailures.push('theme toggle is not far-right in a compact, aligned eyebrow row with no excess hero top space: '+JSON.stringify(themePlacement));
+    themeFailures.push('theme toggle is not far-right in a compact, hero-edge-aligned eyebrow row with no excess hero top space: '+JSON.stringify(themePlacement));
   }
   const darkAudit=await auditThemeContrast(page);
   contrastAudits.push({theme:'dark',...darkAudit});
@@ -633,9 +636,10 @@ try {
       const themeEyebrow=eyebrowRow?.querySelector('.eyebrow');
       if(!eyebrowRow || !themeEyebrow) failures.push('missing hero eyebrow row');
       else {
-        const rowRect=rect(eyebrowRow),buttonRect=rect(themeButton),eyebrowRect=rect(themeEyebrow);
+        const buttonRect=rect(themeButton),eyebrowRect=rect(themeEyebrow),heroStyle=getComputedStyle(hero);
+        const heroContentRight=hr.right-parseFloat(heroStyle.borderRightWidth)-parseFloat(heroStyle.paddingRight);
         const topInset=eyebrowRect.top-hr.top;
-        if(Math.abs(rowRect.right-buttonRect.right)>1) failures.push('theme toggle is not aligned to the far right of the eyebrow row');
+        if(Math.abs(heroContentRight-buttonRect.right)>1) failures.push('theme toggle is not aligned to the hero content far-right edge');
         if(Math.abs(buttonRect.top-eyebrowRect.top)>1) failures.push('theme toggle and eyebrow are not top-aligned');
         if(topInset<18 || topInset>30) failures.push(`excess space above eyebrow: ${topInset.toFixed(1)}px from hero edge`);
       }
