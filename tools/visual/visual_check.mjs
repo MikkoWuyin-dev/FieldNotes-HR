@@ -838,7 +838,11 @@ try {
   const copySurface = await page.evaluate(() => {
     const first=document.querySelector('[data-resource-id="hr-essentials"]');
     const access=[...document.querySelectorAll('.resource-access')];
+    const stageDescriptions=[...document.querySelectorAll('.stage .stage-description')].map(item=>item.textContent.trim());
     return {
+      stageOutcomeLists:document.querySelectorAll('.stage .outcomes').length,
+      stageIntrosPreserved:stageDescriptions.length===DATA.stages.length &&
+        stageDescriptions.every((description,index)=>description===DATA.stages[index].description),
       cards:document.querySelectorAll('.resource').length,
       taskBoxes:document.querySelectorAll('input[data-milestone-id]').length,
       summaries:document.querySelectorAll('.access-summary').length,
@@ -860,6 +864,12 @@ try {
   });
   if(copySurface.cards!==21 || copySurface.taskBoxes!==21 || copySurface.summaries!==21 || copySurface.evidenceLists!==21 || !copySurface.summaryLists || !copySurface.evidenceBullets || !copySurface.accessCopyPreserved || !copySurface.accessClosed) {
     functional.push('concise copy, square-bullet access details, or collapsed evidence missing: '+JSON.stringify(copySurface));
+  }
+  if(copySurface.stageOutcomeLists!==0) {
+    functional.push(`${copySurface.stageOutcomeLists} redundant stage outcome list(s) remain in the tracker`);
+  }
+  if(!copySurface.stageIntrosPreserved) {
+    functional.push('stage intro copy is missing or changed while removing outcomes');
   }
   if(!copySurface.firstSummary.includes('Public playlist') || !copySurface.firstTask.startsWith('Watch lessons 1–4')) {
     functional.push('plain-language resource copy did not reach the tracker: '+JSON.stringify(copySurface));

@@ -83,6 +83,9 @@ function accessList(className,text,label) {
 }
 function buildRoadmap() {
   buildLegacyRoadmap();
+  // Keep the high-level outcomes in source and generated library documents, but
+  // omit their repeated bullets from the concise tracker accordions.
+  document.querySelectorAll('.stage-body > .outcomes').forEach(list=>list.remove());
   DATA.stages.forEach((stage,si)=>stage.resources.forEach((resource,ri)=>{
     const stageNode=document.querySelectorAll('.stage')[si];
     const card=stageNode && stageNode.querySelectorAll('.resource')[ri];

@@ -3,6 +3,8 @@
 ## Unreleased — restore the first-iteration tracker and align headers
 
 - Restored the active source to the first-iteration 8-stage, 21-card roadmap.
+- Removed redundant outcome/lesson-objective lists from tracker accordions;
+  full outcomes remain in the generated library document.
 - Aligned the circular sun/moon theme toggle with the eyebrow at the hero's
   far-right content edge on desktop and mobile; it matches the eyebrow's height
   and retains a transparent 44px pointer target.

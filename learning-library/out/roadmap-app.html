@@ -458,20 +458,6 @@ button{cursor:pointer}
 .stage-body{padding:clamp(11px,3.15vw,16px);background:var(--fn-paper)}
 /* Top margin now equals the bottom margin (was 0 / 14px). */
 .stage-description{max-width:78ch;margin:14px 0 14px;color:var(--fn-ink);font:.94rem/1.55 var(--fn-prose)}
-.outcomes{display:grid;grid-template-columns:1fr;gap:10px;margin:0 0 18px;padding:0;list-style:none}
-.outcomes li{
-  /* Symmetric 8px top/bottom padding; the marker is a centred filled square. */
-  position:relative;padding:8px 10px 8px 30px;
-  border:2px solid var(--fn-line);background:var(--fn-control-bg);color:var(--fn-ink);
-  font:.84rem/1.4 var(--fn-prose);
-}
-.outcomes li::before{
-  /* Centre the square on the FIRST text line (8px top padding + half the
-     1.4 line-height), so multi-line items keep a conventional bullet. */
-  content:"";position:absolute;top:calc(8px + .7em);left:11px;
-  width:9px;height:9px;transform:translateY(-50%);
-  border:0;border-radius:0;background:var(--fn-ink);
-}
 .stage-empty{
   padding:12px;border:2px dashed var(--fn-line);border-radius:0;
   background:var(--fn-cream);color:var(--fn-muted);font:.88rem/1.5 var(--fn-prose);
@@ -574,10 +560,6 @@ button{cursor:pointer}
 /* ---------- 10. Responsive (source: mobile-first, 480/620/700/900/1000) ---------- */
 @media(min-width:620px){
   .resource-list{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .outcomes{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-@media(min-width:1000px){
-  .outcomes{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 @media(max-width:720px){
   /* Tighter chips -> progress cards gap where the hero stacks vertically.
@@ -1043,6 +1025,9 @@ function accessList(className,text,label) {
 }
 function buildRoadmap() {
   buildLegacyRoadmap();
+  // Keep the high-level outcomes in source and generated library documents, but
+  // omit their repeated bullets from the concise tracker accordions.
+  document.querySelectorAll('.stage-body > .outcomes').forEach(list=>list.remove());
   DATA.stages.forEach((stage,si)=>stage.resources.forEach((resource,ri)=>{
     const stageNode=document.querySelectorAll('.stage')[si];
     const card=stageNode && stageNode.querySelectorAll('.resource')[ri];
