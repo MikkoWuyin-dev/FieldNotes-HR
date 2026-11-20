@@ -71,9 +71,10 @@ progress and is not part of progress backups.
 - **Hero** fills the top of the sheet with no coloured bar above it. 4px cyan
   border, bottom-only `0 10px 0 var(--fn-shadow)` offset shadow, zero border
   radius. The small side gutter is cancelled so it runs cyan-edge to cyan-edge;
-  this is **not** a full `100vw` breakout. The eyebrow row spans the hero's text
-  column and pushes the circular sun/moon toggle to the row's far-right edge.
-  The row is top-aligned 20–28px below the hero's outside edge, with no leftover
+  this is **not** a full `100vw` breakout. The circular sun/moon toggle is
+  anchored to the hero's far-right content edge and top-aligned with the eyebrow
+  on desktop; on mobile it remains aligned with the full-width eyebrow row. The
+  row is top-aligned 20–28px below the hero's outside edge, with no leftover
   top lane from the toggle's former position. The visible circle matches the
   eyebrow's computed height (~26px); a transparent 44×44 pointer target keeps
   it practical to tap. Its yellow surface keeps dark ink in both modes, and its
@@ -147,8 +148,8 @@ non-visual invariants.
 - With no saved theme choice, light/dark follows `prefers-color-scheme` and
   responds to system changes. A manual choice updates `aria-pressed`, persists
   after reload, and remains separate from progress reset and backup data.
-- The eyebrow row spans the hero text column and the circular theme toggle's
-  right edge matches the row's right edge within 1px at every tested width.
+- The eyebrow row stays with the hero text column; the circular theme toggle's
+  right edge matches the hero's content edge within 1px at every tested width.
   The eyebrow begins 20–28px below the hero's outside top edge, eliminating the
   old reserved lane. The toggle remains in the same row; its visible width and
   height match the eyebrow within 1px, its top edge aligns within 1px, and a

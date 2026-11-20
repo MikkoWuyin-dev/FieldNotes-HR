@@ -257,8 +257,10 @@ button{cursor:pointer}
   -webkit-mask-image:linear-gradient(to top left,#000 26%,transparent 74%);
   mask-image:linear-gradient(to top left,#000 26%,transparent 74%);
 }
-.hero>div{position:relative;z-index:1}
-.hero>div:first-child{flex:1 1 0;min-width:0}
+/* Hero children are flex items; their stacking order keeps them above the
+   decoration without trapping the absolutely positioned theme control. */
+.hero>div{z-index:1}
+.hero>div:first-child{flex:1 1 0;min-width:0;z-index:2}
 .eyebrow,.hero-eyebrow{
   display:inline-block;padding:5px 8px;
   background:var(--fn-yellow);color:var(--fn-accent-ink);
@@ -266,10 +268,11 @@ button{cursor:pointer}
   letter-spacing:.06em;text-transform:uppercase;
 }
 /* The generator's `.hero p` rule outranks a plain `.eyebrow` rule. Keep the
-   eyebrow ink explicit, and give its paired theme control the same 26px row. */
+   eyebrow ink explicit; its paired theme control stays top-aligned at the
+   hero's far-right content edge on desktop and mobile. */
 .hero .eyebrow,.hero .hero-eyebrow{margin:0;color:var(--fn-accent-ink)}
 .hero-eyebrow-row{
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  display:flex;align-items:center;justify-content:flex-start;gap:12px;
   width:100%;max-width:100%;margin:0 0 5px;
 }
 .hero-eyebrow-row .eyebrow{flex:0 1 auto;min-width:0}
@@ -309,7 +312,8 @@ button{cursor:pointer}
 .hero-stat strong{display:block;font:900 1.86rem/1 var(--fn-prose);letter-spacing:-.05em;color:#fff}
 .hero-stat span{display:block;color:#fff;font:700 .864rem/1.4 var(--fn-mono);text-transform:uppercase}
 .hero #theme-toggle{
-  position:relative;z-index:2;flex:0 0 auto;display:grid;place-items:center;
+  position:absolute;top:clamp(16px,2vw,24px);right:clamp(14px,5.4vw,70px);
+  z-index:2;flex:0 0 auto;display:grid;place-items:center;
   width:calc(1.3em + 10px);height:calc(1.3em + 10px);
   min-width:calc(1.3em + 10px);min-height:calc(1.3em + 10px);padding:0;margin:0;
   border:2px solid var(--fn-line);border-radius:50%;

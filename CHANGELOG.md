@@ -3,9 +3,9 @@
 ## Unreleased — restore the first-iteration tracker and align headers
 
 - Restored the active source to the first-iteration 8-stage, 21-card roadmap.
-- Put the circular sun/moon theme toggle at the far right of the hero eyebrow's
-  full-width text row; it matches the eyebrow's height and retains a transparent
-  44px pointer target.
+- Aligned the circular sun/moon theme toggle with the eyebrow at the hero's
+  far-right content edge on desktop and mobile; it matches the eyebrow's height
+  and retains a transparent 44px pointer target.
 - Removed the obsolete top lane reserved for the toggle's former position.
 - Rebuilt stage summaries as a four-column grid so the number/title and the
   percentage/disclosure sign share a row; the latter pair is vertically
