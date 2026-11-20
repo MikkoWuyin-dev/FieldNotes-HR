@@ -51,8 +51,8 @@ for import settings, progress migration and the production smoke-test checklist.
 ## Deliverable at a glance
 
 <!-- content-summary:start -->
-8 stages, 27 resource cards, 22 distinct card URLs, 94 planned hours.
-20 planned weeks; 24 cards have confirmed free-study evidence.
+8 stages, 21 resource cards, 21 distinct card URLs, 94 planned hours.
+20 planned weeks; 20 cards have confirmed free-study evidence.
 Certificate, account and professional-qualification terms are separate; partial findings are not counted as verified free.
 <!-- content-summary:end -->
 The manifest covers the current URL evidence; the first

@@ -1,5 +1,40 @@
 # Changelog
 
+## Unreleased — restore the first-iteration tracker and align headers
+
+- Restored the active source to the first-iteration 8-stage, 21-card roadmap.
+- Put the circular sun/moon theme toggle at the far right of the hero eyebrow's
+  full-width text row; it matches the eyebrow's height and retains a transparent
+  44px pointer target.
+- Removed the obsolete top lane reserved for the toggle's former position.
+- Rebuilt stage summaries as a four-column grid so the number/title and the
+  percentage/disclosure sign share a row; the latter pair is vertically
+  centered. Hid the generator's duplicate glyph and kept the duration below the
+  title.
+- Removed the reminder button, time control, permission prompt and scheduler;
+  legacy progress fields remain accepted for backup compatibility.
+- Preserved the existing progress payload before its first version-3 write.
+
+## Unreleased — theme control and dangling spider
+
+- Added a system-following light/dark theme with a circular, accessible sun/moon
+  button in the hero and a browser-local override.
+- Kept all text on yellow surfaces dark; the disabled "Checked in today" button
+  uses light ink on its dark-mode surface.
+- Added a locally drawn, fixed top-right spider Pal that stays visible while
+  scrolling, pauses with the other Pals, and respects reduced motion. The pinned
+  Piixpal payload was not changed.
+- Extended static and Chromium checks for theme behavior, contrast, spider
+  placement/scrolling, pause and reduced motion.
+
+## Unreleased — daily check-in and resource progress
+
+- Added manual daily check-in and same-day undo independent of resource ticks.
+- Version 3 backups retain manual/legacy activity provenance and accept older
+  progress files without creating import-day attendance. Existing Done ticks
+  retain their credit; writes are transactional, and the task detail switch is
+  confirmed before changing tracking mode.
+
 ## Unreleased — Phase 2 content and progress contracts
 
 - Added one canonical catalogue plus narrative slots; generated document,

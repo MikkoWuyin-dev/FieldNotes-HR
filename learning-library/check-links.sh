@@ -18,6 +18,7 @@ urls=(
   "https://alison.com/course/diploma-in-human-resources-hr"
   "https://learn.saylor.org/course/BUS301"
   "https://www.coursera.org/learn/recruiting-hiring-onboarding-employees"
+  "https://learner.coursera.help/hc/en-us/articles/209818613-Enrollment-options"
   "https://www.onetonline.org/"
   "https://resources.workable.com/hr-templates/"
   "https://support.greenhouse.io/hc/en-us/articles/360007245452-Structured-hiring-Introduction"
@@ -41,6 +42,17 @@ urls=(
   "https://support.saylor.org/hc/en-us/articles/23586212781844-FAQ-General"
   "https://learn.saylor.org/mod/page/view.php?id=94644"
   "https://www.jobberman.com/job-seeker"
+  # Current Stage 3–8 evidence URLs; the historical sweep record above remains unchanged.
+  "https://resources.workable.com/recruiter-job-description"
+  "https://resources.workable.com/hire-hr-directors-boolean-search-strings"
+  "https://rework.withgoogle.com/intl/en/guides/how-to-create-a-positive-experience-for-candidates"
+  "https://www.open.edu/openlearn/money-business/human-resources/human-resources-recruitment-and-selection/content-section-4.10/"
+  "https://www.youtube.com/watch?v=zariLo_tX00"
+  "https://rework.withgoogle.com/intl/en/guides/a-data-driven-approach-to-optimizing-employee-onboarding"
+  "https://www.hubspot.com/products/crm"
+  "https://www.greenhouse.com/recruiting-benchmarks"
+  "https://cdn.prod.website-files.com/6668a687e71e2722fccb8357/6af3aa54e0a5c01ffec1552e_The-Hire-Standard-Fall-2026_US.pdf"
+  "https://www.youtube.com/watch?v=LPzWMrLvMGY"
 )
 for url in "${urls[@]}"; do
   code=$(curl -sS -o /dev/null -w "%{http_code}" -L --max-time 25 "$url" 2>/dev/null || echo 000)

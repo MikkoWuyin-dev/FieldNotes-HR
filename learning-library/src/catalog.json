@@ -58,50 +58,6 @@
               "https://www.youtube.com/playlist?list=PLeDNHX61_qlQWYcxZNB19TDOKbl625W2c"
             ]
           }
-        },
-        {
-          "title": "PRDV226: Introduction to Human Resource Management",
-          "provider": "Saylor University",
-          "url": "https://learn.saylor.org/course/view.php?id=1292",
-          "modality": "Written course with lectures and videos",
-          "cost": "Free, with a free completion certificate",
-          "duration": "About 14 hours for the whole course",
-          "why": "Units 1 and 2 cover where the right people are and how to recruit and keep quality employees. It gives the structured foundation the shorter videos skip.",
-          "action": "Work through Units 1 and 2 this fortnight; come back for Units 3 and 4 in Stage 2.",
-          "access_note": "Verified 2026-10-26 on the course syllabus and the Saylor FAQ: no tuition or fees, all materials free, free course completion certificate at 70 percent on the final exam. A free account is needed for assessments and the exam. Only the proctored college-credit route carries a fee; you do not need it for the free certificate.",
-          "link_label": "Open the course",
-          "id": "saylor-prdv226",
-          "checked_at": "2026-10-26",
-          "access": {
-            "study": "free",
-            "certificate": "free_completion",
-            "account": "required",
-            "evidence_urls": [
-              "https://learn.saylor.org/course/view.php?id=1292"
-            ]
-          }
-        },
-        {
-          "title": "Principles of Management, Chapter 11: Human Resource Management",
-          "provider": "OpenStax (Rice University)",
-          "url": "https://openstax.org/books/principles-management/pages/11-introduction",
-          "modality": "Free peer-reviewed textbook",
-          "cost": "Free",
-          "duration": "About 1 hour for the introduction and section 11.1",
-          "why": "A university-level explanation of how HR became a strategic function and what talent acquisition is for. Useful when you need the reasoning, not just the steps.",
-          "action": "Read the chapter introduction and 11.1; note three ways HR creates value that you can repeat in an interview.",
-          "access_note": "Verified 2026-10-26: free openly licensed textbook, readable in web view. US-oriented examples; treat the legal sections as context, not Nigerian law.",
-          "link_label": "Read Chapter 11",
-          "id": "openstax-hr",
-          "checked_at": "2026-10-26",
-          "access": {
-            "study": "free",
-            "certificate": "not_verified",
-            "account": "not_verified",
-            "evidence_urls": [
-              "https://openstax.org/books/principles-management/pages/11-introduction"
-            ]
-          }
         }
       ],
       "id": "orientation",
@@ -128,41 +84,19 @@
           "url": "https://www.open.edu/openlearn/money-business/human-resources/human-resources-recruitment-and-selection/content-section-0",
           "modality": "Free written course with activities",
           "cost": "Free, with a free statement of participation",
-          "duration": "12 hours",
-          "why": "The single best free beginner course for the actual sequence: job analysis, job description, person specification, attracting applicants, advertising, shortlisting and references. It is the spine of this stage.",
-          "action": "Complete sections 4.2 to 4.5 and draft a job analysis for one real Lagos vacancy you find online.",
-          "access_note": "Verified 2026-10-26 on the provider course page: free course, free statement of participation; a free account is needed to track progress, claim the statement and open all quizzes and activities. Course content was last updated in 2018 and uses UK equality-law framing - pair it with the Nigerian sources in Stage 7.",
+          "duration": "About 12 hours for the full course; assigned sections 4.2–4.5 only",
+          "why": "A focused written treatment of job analysis, organisational analysis, job descriptions and person specifications. Sections 4.2–4.5 are a subset of the 12-hour course and add a practical checklist and examples; later advertising, shortlisting and references are not assigned here.",
+          "action": "Complete sections 4.2–4.5, then draft a one-page job analysis, job description and essential/desirable person specification for one real Lagos vacancy. Keep each requirement tied to the work.",
+          "access_note": "Checked 2026-10-26 on the official OpenLearn course page: the course text is free and its sections can be opened without signing in. A free account is needed to track progress, access all quizzes and activities, and claim the free Statement of Participation. Course content was last updated in 2018 and uses UK equality-law framing; pair it with the Nigerian sources in Stage 7.",
           "link_label": "Open the free course",
           "id": "openlearn-recruitment",
           "checked_at": "2026-10-26",
           "access": {
             "study": "free",
             "certificate": "free_participation",
-            "account": "not_verified",
+            "account": "conditional",
             "evidence_urls": [
               "https://www.open.edu/openlearn/money-business/human-resources/human-resources-recruitment-and-selection/content-section-0"
-            ]
-          }
-        },
-        {
-          "title": "Diploma in Human Resources (HR)",
-          "provider": "Alison",
-          "url": "https://alison.com/course/diploma-in-human-resources-hr",
-          "modality": "Free video diploma course",
-          "cost": "Free to study; the optional certificate costs extra",
-          "duration": "10-15 hours",
-          "why": "A video-led alternative to the text-heavy OpenLearn course. It covers the key skills and responsibilities of HR, recruitment and selection, and employee separation.",
-          "action": "Use it for revision: watch the recruitment and selection modules and compare the sequence with OpenLearn section 4.",
-          "access_note": "Verified 2026-10-26 on Alison's help centre and certification page: all courses are free to study and complete; a paid digital or printed certificate is optional and a free Learner Record is available instead. The provider page did not show an exact certificate price, so I am not quoting one. Alison lists 15 free recruitment courses on its recruitment tag page.",
-          "link_label": "Open the course",
-          "id": "alison-hr-diploma",
-          "checked_at": "2026-10-26",
-          "access": {
-            "study": "free",
-            "certificate": "paid_optional",
-            "account": "required",
-            "evidence_urls": [
-              "https://alison.com/course/diploma-in-human-resources-hr"
             ]
           }
         },
@@ -170,12 +104,12 @@
           "title": "BUS301: Human Resource Management",
           "provider": "Saylor University",
           "url": "https://learn.saylor.org/course/BUS301",
-          "modality": "Written course with lectures and videos",
+          "modality": "Mixed written course and videos",
           "cost": "Free, with a free completion certificate",
-          "duration": "About 24 hours for the full course",
-          "why": "A deeper follow-on to PRDV226 with strategic HR planning, staffing, compliance and labour relations. Use selected units rather than the whole course if you are short on time.",
-          "action": "Read the staffing and recruitment/selection units only; skip performance and compensation units until you are job hunting.",
-          "access_note": "Verified 2026-10-26 via the Saylor FAQ and course syllabus: no tuition or fees, free final exam and free completion certificate. The US employment-law material is not Nigerian law.",
+          "duration": "About 5 hours for assigned Units 2–3; about 24 hours for the full course",
+          "why": "A free mixed-media path through staffing plans, job analysis and KSAs, job descriptions/specifications, attraction, screening, interviews, tests and offers. The selected units include readings, videos and practice assessments; U.S. legal material is not Nigerian law.",
+          "action": "Complete Units 2 and 3 only (about five hours), including their linked readings, videos and practice assessments. Skip performance, compensation and the other units for this stage.",
+          "access_note": "Checked 2026-10-26 on the official BUS301 page and Saylor FAQ: no tuition or fees; a free account is required to enroll; course materials and the course-completion certificate are free, subject to completing the course requirements. U.S. employment-law material is not Nigerian law.",
           "link_label": "Open the course",
           "id": "saylor-bus301",
           "checked_at": "2026-10-26",
@@ -184,29 +118,31 @@
             "certificate": "free_completion",
             "account": "required",
             "evidence_urls": [
-              "https://learn.saylor.org/course/BUS301"
+              "https://learn.saylor.org/course/BUS301",
+              "https://support.saylor.org/hc/en-us/articles/23586212781844-FAQ-General"
             ]
           }
         },
         {
-          "title": "Recruiting, Hiring, and Onboarding Employees (audit option)",
+          "title": "Recruiting, Hiring, and Onboarding Employees",
           "provider": "University of Minnesota on Coursera",
           "url": "https://www.coursera.org/learn/recruiting-hiring-onboarding-employees",
           "modality": "University video course",
-          "cost": "Paid or conditional - not counted as confirmed free",
+          "cost": "Full-course access is not confirmed free; a limited first-module preview may be free. Coursera Plus and the certificate route are paid; a free trial is temporary.",
           "duration": "About 2 weeks at 10 hours a week (about 20 hours)",
           "why": "The syllabus is a strong match for this roadmap: workforce planning, job analysis, legal selection, sourcing, hiring analytics and onboarding. Four modules with 14 videos in module 1 alone.",
-          "action": "Only consider it after the free stages. Try to select the Full Course, No Certificate option if it is offered to you, then decide whether the certificate is worth paying for.",
-          "access_note": "NOT counted as confirmed free. Verified 2026-10-26: the course page shows an 'Enroll for free' button and 'Included with Coursera Plus', but the same page's FAQ says that to access course materials you need to purchase the Certificate experience, start a Free Trial, or use a Full Course, No Certificate option where available. I could not confirm that the no-certificate option is offered for this course. Financial aid is mentioned in the FAQ. Prices vary by region and promotion; check the page before enrolling.",
+          "action": "Only consider it after the free stages. Check the enrollment page for a free Preview (typically the first module only) or a Full Course, No Certificate option; confirm any trial duration and billing/cancellation terms. Coursera Plus is a paid subscription. Neither full-course no-certificate access nor Nigeria-specific checkout pricing has been confirmed. Do not treat “Enroll for free” or a time-limited trial as proof of a free full course.",
+          "access_note": "NOT confirmed free for the full course. Checked 2026-10-26 on the course page and Coursera Help Center: “Enroll for free” does not establish permanent free access. The page lists inclusion with Coursera Plus (a paid subscription); the course FAQ says course materials are available through paid Certificate access, a free trial, or Full Course, No Certificate where available. A Coursera account may be required to enroll or use a preview; no account-free full-course route was verified. Coursera Help says previews for most courses are limited to the first module and provide no certificate; Full Course, No Certificate is offered only for selected courses. I could not confirm that this course offers that option. A free trial is temporary, not proof of ongoing free access; the course-specific duration, post-trial billing/cancellation terms, and Nigeria checkout price were not verified. Financial aid is mentioned in the FAQ. Eligibility and course-specific coverage were not confirmed; it is not counted as free. Treat as paid/conditional, not confirmed free. Prices vary by region and promotion.",
           "link_label": "Check the enrolment options",
           "id": "coursera-hiring",
           "checked_at": "2026-10-26",
           "access": {
             "study": "conditional",
-            "certificate": "conditional",
+            "certificate": "paid_optional",
             "account": "conditional",
             "evidence_urls": [
-              "https://www.coursera.org/learn/recruiting-hiring-onboarding-employees"
+              "https://www.coursera.org/learn/recruiting-hiring-onboarding-employees",
+              "https://learner.coursera.help/hc/en-us/articles/209818613-Enrollment-options"
             ]
           }
         }
@@ -216,7 +152,7 @@
       "focus": "Run a full and fair recruitment and selection process.",
       "level": "Beginner; Stage 1 vocabulary assumed.",
       "practice": "Write a one-page fair-process checklist for a small Lagos employer hiring its first employee.",
-      "effort_note": ""
+      "effort_note": " The 14-hour figure is a planning allowance for the selected OpenLearn sections, Saylor Units 2–3 and practice; the full 20-hour Coursera course is optional and not included. Do not add full-course estimates together."
     },
     {
       "title": "Define the role - job analysis, descriptions and success criteria",
@@ -230,66 +166,66 @@
       ],
       "resources": [
         {
-          "title": "ONET OnLine (Occupational Information Network)",
+          "title": "O*NET OnLine: occupation tasks, skills and knowledge",
           "provider": "US Department of Labor",
           "url": "https://www.onetonline.org/",
           "modality": "Free official occupational database",
-          "cost": "Free",
-          "duration": "About 2 hours to explore one occupation properly",
-          "why": "Over 1,000 occupation profiles with tasks, skills, knowledge and work activities. It teaches you how to derive requirements from the work itself instead of copying a competitor's advert.",
-          "action": "Look up one role you want to recruit for, export the task list, and highlight the five tasks a new hire must do in month one.",
-          "access_note": "Verified 2026-10-26: free public database, 1,016 occupation titles listed on the site, no login seen. It is US data, so use it to learn the method of job analysis, then validate duties against Nigerian job adverts.",
+          "cost": "Free; U.S. occupational data",
+          "duration": "About 2 hours to analyse one occupation",
+          "why": "Use O*NET task and skill descriptions to learn how to derive role requirements from the work rather than copying another advert. Treat its U.S. occupation data as a method example, then validate duties against Lagos vacancies.",
+          "action": "Search O*NET for the practice role, read its tasks and skills, and mark five duties to validate against Nigerian job adverts.",
+          "access_note": "Checked 2026-10-26 on the official O*NET homepage: public occupation search and profile information opened without a sign-in or payment prompt. Account: not required for the public database. Form: none shown. Trial: none. Certificate: none offered. The classifications and labour-market data are U.S.-based, not Nigerian requirements.",
           "link_label": "Search occupations",
           "id": "onet-job-analysis",
           "checked_at": "2026-10-26",
           "access": {
             "study": "free",
             "certificate": "not_verified",
-            "account": "not_verified",
+            "account": "not_required",
             "evidence_urls": [
               "https://www.onetonline.org/"
             ]
           }
         },
         {
-          "title": "HR templates: job descriptions, interview kits and email templates",
+          "title": "Recruiter job description (free public sample)",
           "provider": "Workable",
-          "url": "https://resources.workable.com/hr-templates/",
-          "modality": "Free official templates and guides",
-          "cost": "Free",
-          "duration": "1-2 hours to adapt a template",
-          "why": "More than 1,000 free job descriptions, 390-plus interview kits, 50-plus recruiting email templates, onboarding checklists and Boolean cheatsheets. Good raw material once you understand the structure.",
-          "action": "Rewrite one downloaded job description so that every requirement maps to a task you identified in ONET. Delete anything you cannot defend.",
-          "access_note": "Verified 2026-10-26 on the provider templates index: templates are described as free to download. The page also advertises a separate 15-day free trial of the paid Workable software; you do not need the trial to use the templates. Templates are generic and US/UK flavoured - localise pay, notice and leave wording.",
+          "url": "https://resources.workable.com/recruiter-job-description",
+          "modality": "Free written job-description example",
+          "cost": "Free public sample; Workable software trial is separate",
+          "duration": "About 1 hour to inspect and adapt",
+          "why": "A worked Recruiter job-description example shows how a role summary, responsibilities and requirements can be organised. Use it as a structural example, not as a copy-ready list of requirements.",
+          "action": "Compare the sample with the Stage 3 task list for a real Lagos vacancy. Remove unsupported requirements and mark each retained criterion essential or desirable.",
+          "access_note": "Checked 2026-10-26 on Workable’s Recruiter job-description page: the sample text is publicly readable without payment or sign-in. Account: not required to read. Form: none shown for the sample. Trial: Workable advertises a separate 15-day software trial for posting jobs; it is not needed to study or adapt the sample. Certificate: none offered. The template is generic and should be localised.",
           "link_label": "Browse the free templates",
           "id": "workable-job-templates",
           "checked_at": "2026-10-26",
           "access": {
             "study": "free",
             "certificate": "not_verified",
-            "account": "not_verified",
+            "account": "not_required",
             "evidence_urls": [
-              "https://resources.workable.com/hr-templates/"
+              "https://resources.workable.com/recruiter-job-description"
             ]
           }
         },
         {
-          "title": "Structured hiring: Introduction (with free worksheets)",
+          "title": "Structured hiring: Introduction (free worksheets)",
           "provider": "Greenhouse Support",
           "url": "https://support.greenhouse.io/hc/en-us/articles/360007245452-Structured-hiring-Introduction",
           "modality": "Free official process documentation",
-          "cost": "Free",
+          "cost": "Free article and direct worksheet/eBook downloads; no software purchase required",
           "duration": "About 2 hours including the worksheets",
           "why": "Sets out the six-step structured hiring process: role kick-off, scorecard definition, interview planning, interview kit, sourcing and interviewing, and candidate round-up. It makes you define success before you search.",
           "action": "Download the linked worksheet and build a scorecard for your practice role with no more than six attributes.",
-          "access_note": "Verified 2026-10-26 on the provider support article: the article and its two downloadable PDFs (a structured interview worksheet about 4 MB and an interactive eBook about 9 MB) are available without a login. The document is product documentation but the method transfers to any hiring process.",
+          "access_note": "Checked 2026-10-26 on Greenhouse Support: the six-step structured-hiring article is readable and links two direct PDF downloads. Account: not required. Form: none shown for the article or downloads. Trial: none needed; Greenhouse software is a separate product. Certificate: none offered. The method is product documentation but transfers to other hiring systems.",
           "link_label": "Read and download",
           "id": "greenhouse-scorecard",
           "checked_at": "2026-10-26",
           "access": {
             "study": "free",
             "certificate": "not_verified",
-            "account": "not_verified",
+            "account": "not_required",
             "evidence_urls": [
               "https://support.greenhouse.io/hc/en-us/articles/360007245452-Structured-hiring-Introduction"
             ]
@@ -315,24 +251,24 @@
       ],
       "resources": [
         {
-          "title": "Boolean search cheatsheets for sourcing",
+          "title": "Boolean search cheatsheet: Google operators for sourcing",
           "provider": "Workable",
-          "url": "https://resources.workable.com/boolean-search-cheatsheets/",
-          "modality": "Free written cheat sheets",
-          "cost": "Free",
-          "duration": "About 2 hours to practise",
-          "why": "Role-specific Boolean strings show you how brackets, quotes, AND, OR and NOT actually work when searching for people. This is the core craft skill of sourcing.",
-          "action": "Take one cheatsheet, rebuild its string for a Lagos-based role, and run it in a free search engine. Save ten plausible profiles and note why each matched.",
-          "access_note": "Verified 2026-10-26 on the provider page: the cheatsheets are free with no account or payment shown. Most examples target technical and sales roles; adapt the keywords for Nigerian job titles.",
+          "url": "https://resources.workable.com/hire-hr-directors-boolean-search-strings",
+          "modality": "Free written Boolean-search example",
+          "cost": "Free to read; separate Workable software trial not needed",
+          "duration": "About 1–2 hours to adapt and practise",
+          "why": "A specific Workable example demonstrates operators such as intitle:, inurl:, site:, OR and exclusions. It teaches the search-string method; its U.S.-oriented examples need local adaptation.",
+          "action": "Build three Boolean strings for the practice vacancy in Lagos. Test the logic with dummy terms or public search results; do not collect real candidate CVs or personal data for practice.",
+          "access_note": "Checked 2026-10-26 on the individual Workable cheat sheet and its public index: the article and PDF link are readable without payment, sign-in or a content form. Account: not required. Form: none shown. Trial: a separate 15-day Workable hiring-software trial is advertised in the page footer; it is not needed to use the cheat sheet. Certificate: none offered.",
           "link_label": "Open the cheatsheets",
           "id": "workable-boolean",
           "checked_at": "2026-10-26",
           "access": {
             "study": "free",
             "certificate": "not_verified",
-            "account": "not_verified",
+            "account": "not_required",
             "evidence_urls": [
-              "https://resources.workable.com/boolean-search-cheatsheets/"
+              "https://resources.workable.com/hire-hr-directors-boolean-search-strings"
             ]
           }
         },
@@ -345,60 +281,38 @@
           "duration": "7 minutes",
           "why": "A quick tour of employer branding, referrals, job boards, pipelines, CV mining and job fairs, plus the growth-mindset argument for looking past job titles.",
           "action": "After watching, pick two sourcing channels that fit a small Lagos employer and explain why you skipped the others.",
-          "access_note": "Verified 2026-10-26: public video, no payment shown. Content developed by Heather Staples, PhD, SPHR, SHRM-SCP; the description states the videos are produced using AI-supported tools. Useful as an overview, not as a primary authority.",
+          "access_note": "Checked 2026-10-26 on the public YouTube video page: 6:34, with description and transcript accessible without payment or sign-in. Account: not required for this public listing. Form: none. Trial: none. Certificate: none offered. The creator discloses AI-supported production; playback was not tested, and this is an overview rather than a primary authority.",
           "link_label": "Watch the lesson",
           "id": "hrlab-sourcing-video",
           "checked_at": "2026-10-26",
           "access": {
             "study": "free",
             "certificate": "not_verified",
-            "account": "not_verified",
+            "account": "not_required",
             "evidence_urls": [
               "https://www.youtube.com/watch?v=yMnw_2VNOVE"
             ]
           }
         },
         {
-          "title": "Google re:Work guides (hiring set)",
+          "title": "How to create a positive experience for candidates",
           "provider": "Google re:Work",
-          "url": "https://rework.withgoogle.com/intl/en/guides/",
-          "modality": "Free official practice guides",
+          "url": "https://rework.withgoogle.com/intl/en/guides/how-to-create-a-positive-experience-for-candidates",
+          "modality": "Free official practice guide",
           "cost": "Free",
-          "duration": "About 3 hours across the relevant guides",
-          "why": "The index lists 23 free guides. The hiring ones cover creating a job description, reviewing resumes, shaping candidate experience, structured interviewing, interviewer training, hiring committees and onboarding. They are the closest thing to an open playbook from a major employer.",
-          "action": "From the index, open Shape the candidate experience and note three changes you would make to a typical Nigerian recruitment process.",
-          "access_note": "Verified 2026-10-26 on the provider guides index: 23 guides listed with step and tool counts, no login or payment shown. Individual guides were not all opened; the structured interviewing and interviewer training guides were read directly. Google's data is from its own workforce, not Nigerian employers.",
+          "duration": "About 1 hour including the outreach exercise",
+          "why": "Google’s guide covers first contact, interview preparation, communication during delays, offers and declines. It gives a concrete basis for planning a respectful candidate journey.",
+          "action": "Draft a short first-contact message and a candidate-update plan for the practice role, including interview preparation and a clear delay update. Localise the examples for Lagos.",
+          "access_note": "Checked 2026-10-26 by reading the full Google re:Work guide (updated March 2026). Account: not required. Form: none shown. Trial: none. Payment: none. Certificate: none offered. The examples describe Google’s own practice, not Nigerian law or a guarantee of outcomes.",
           "link_label": "Open the guides index",
           "id": "google-hiring-guides",
           "checked_at": "2026-10-26",
           "access": {
             "study": "free",
             "certificate": "not_verified",
-            "account": "not_verified",
+            "account": "not_required",
             "evidence_urls": [
-              "https://rework.withgoogle.com/intl/en/guides/"
-            ]
-          }
-        },
-        {
-          "title": "Jobberman free employer listing (practice channel)",
-          "provider": "Jobberman Nigeria",
-          "url": "https://www.jobberman.com/employer/free-listing",
-          "modality": "Free job board and applicant tracking tool",
-          "cost": "Free listing; paid tiers exist",
-          "duration": "1-2 hours to set up a practice advert",
-          "why": "A Nigeria-specific channel where you can see how local employers write adverts and how applicants are sorted. Useful for practising without spending money.",
-          "action": "Draft and save a practice advert for your Stage 3 role. Do not publish a real vacancy without authorisation.",
-          "access_note": "Partially verified on 2026-10-26: the provider page returned only a cookie banner when I retrieved it, so I could not read the full terms. The free-listing claim comes from Jobberman's own search listing, which describes free job posting, CV sorting and an ATS. Confirm current terms, eligibility and any limits before relying on it.",
-          "link_label": "Check the free listing",
-          "id": "jobberman-practice",
-          "checked_at": "2026-10-26",
-          "access": {
-            "study": "not_verified",
-            "certificate": "not_verified",
-            "account": "not_verified",
-            "evidence_urls": [
-              "https://www.jobberman.com/employer/free-listing"
+              "https://rework.withgoogle.com/intl/en/guides/how-to-create-a-positive-experience-for-candidates"
             ]
           }
         }
@@ -407,7 +321,7 @@
       "short_title": "Find people",
       "focus": "Build Boolean strings and a candidate experience plan.",
       "level": "Beginner; a defined practice role from Stage 3 assumed.",
-      "practice": "Build three Boolean strings and a short outreach message for that vacancy.",
+      "practice": "Compare job boards, referrals, pipelines and direct search for the practice role; build three Boolean strings and a short outreach message, then add a simple candidate-update plan.",
       "effort_note": ""
     },
     {
@@ -422,68 +336,46 @@
       ],
       "resources": [
         {
-          "title": "Google re:Work guide: Review resumes",
-          "provider": "Google re:Work",
-          "url": "https://rework.withgoogle.com/intl/en/guides/",
-          "modality": "Free official practice guide",
-          "cost": "Free",
-          "duration": "About 1 hour",
-          "why": "A five-step guide to screening for qualifications, consistency and impact. It gives you an explicit standard, which is what most beginner screeners lack.",
-          "action": "From the guides index, open Review resumes. Then screen ten practice CVs and write one line of evidence for each decision.",
-          "access_note": "Verified 2026-10-26 on the provider guides index, where Review resumes is listed as a five-step guide. I did not open the individual guide page, so the exact steps were not read. No login or payment shown on the index.",
-          "link_label": "Open the guides index",
-          "id": "google-cv-review",
-          "checked_at": "2026-10-26",
-          "access": {
-            "study": "free",
-            "certificate": "not_verified",
-            "account": "not_verified",
-            "evidence_urls": [
-              "https://rework.withgoogle.com/intl/en/guides/"
-            ]
-          }
-        },
-        {
-          "title": "Greenhouse guidance library (screening and interviewing)",
-          "provider": "Greenhouse",
-          "url": "https://www.greenhouse.com/guidance",
-          "modality": "Free official articles, eBooks and worksheets",
-          "cost": "Free",
-          "duration": "2-3 hours browsing and reading",
-          "why": "Filterable by topic, including interviewing, candidate experience, DE and I, and recruiter tips. It shows how a hiring-software company explains screening problems to recruiters.",
-          "action": "Read one interviewing article and one bias-related article, then add two bias checks to your Stage 3 scorecard.",
-          "access_note": "Verified 2026-10-26 on the provider guidance hub: articles, eBooks, webinars and worksheets listed as free resources. Some gated items such as the 2026 hiring benchmarks report may require a form; treat those as unverified for free access. Content is vendor marketing as well as guidance.",
-          "link_label": "Open the guidance hub",
-          "id": "greenhouse-screening",
-          "checked_at": "2026-10-26",
-          "access": {
-            "study": "free",
-            "certificate": "not_verified",
-            "account": "not_verified",
-            "evidence_urls": [
-              "https://www.greenhouse.com/guidance"
-            ]
-          }
-        },
-        {
-          "title": "OpenLearn section 4.10: Shortlisting (revisit)",
+          "title": "OpenLearn section 4.10: Shortlisting",
           "provider": "The Open University (OpenLearn)",
-          "url": "https://www.open.edu/openlearn/money-business/human-resources/human-resources-recruitment-and-selection/content-section-0",
-          "modality": "Free written course section",
-          "cost": "Free",
-          "duration": "About 1 hour",
-          "why": "Rather than a new course, return to the shortlisting section of the Stage 2 course now that you have a real scorecard. It connects fair selection criteria to paperwork and references.",
-          "action": "Re-read 4.10 to 4.12 and compare its shortlisting method with your Stage 3 scorecard. Note one conflict and how you would resolve it.",
-          "access_note": "Same free course as Stage 2; no separate card or extra cost. Verification details are in the Stage 2 card.",
+          "url": "https://www.open.edu/openlearn/money-business/human-resources/human-resources-recruitment-and-selection/content-section-4.10/",
+          "modality": "Free written course section and activity",
+          "cost": "Free to read; account only for enrolment, progress and the optional free statement",
+          "duration": "About 1 hour including the activity",
+          "why": "A focused revisit to systematic shortlisting against a job specification, with a worked candidate comparison and a short activity. Stage 2 assigned sections 4.2–4.5, not this section.",
+          "action": "Read section 4.10 and complete its shortlisting activity using the Stage 3 person specification. Record one job-related reason for each decision and check for unsupported assumptions.",
+          "access_note": "Checked 2026-10-26 on the direct OpenLearn section page: the section and activity instructions are readable without signing in. Account: a free account is needed to enrol, save progress, use course activities/quizzes and claim the free Statement of Participation; it is not needed to read this section. Form: account creation only. Trial/payment: none. Certificate: optional free Statement of Participation, not a professional qualification. The course uses older UK examples; use Stage 7 for Nigerian legal material.",
           "link_label": "Return to the course",
           "id": "openlearn-shortlisting",
           "checked_at": "2026-10-26",
           "access": {
             "study": "free",
             "certificate": "free_participation",
-            "account": "not_verified",
+            "account": "conditional",
             "evidence_urls": [
-              "https://www.open.edu/openlearn/money-business/human-resources/human-resources-recruitment-and-selection/content-section-0"
+              "https://www.open.edu/openlearn/money-business/human-resources/human-resources-recruitment-and-selection/content-section-4.10/"
+            ]
+          }
+        },
+        {
+          "title": "Screening Candidates (video 24)",
+          "provider": "HR Learning Lab (YouTube)",
+          "url": "https://www.youtube.com/watch?v=zariLo_tX00",
+          "modality": "Free video lesson",
+          "cost": "Free public YouTube video",
+          "duration": "8 minutes 14 seconds",
+          "why": "A concise overview moves from application forms and CVs through job-related assessments, screening interviews and references. It complements the detailed shortlisting activity rather than replacing its evidence-recording practice.",
+          "action": "Watch the lesson, map each screening step to a Stage 3 criterion, and draft five consistent job-related phone-screen questions. Use fictional practice records; do not make decisions from protected or irrelevant traits.",
+          "access_note": "Checked 2026-10-26 on the public YouTube page: the 8:14 listing and transcript were accessible without payment or sign-in. Account: not required for this public listing. Form: none. Trial: none. Certificate: none offered. Playback was not tested. The creator discloses AI-supported production; the transcript mentions U.S. federal/state rules, which are not Nigerian legal guidance.",
+          "link_label": "Watch the screening video",
+          "id": "hrlab-screening-candidates",
+          "checked_at": "2026-10-26",
+          "access": {
+            "study": "free",
+            "certificate": "not_verified",
+            "account": "not_required",
+            "evidence_urls": [
+              "https://www.youtube.com/watch?v=zariLo_tX00"
             ]
           }
         }
@@ -492,7 +384,7 @@
       "short_title": "Screen",
       "focus": "Shortlist against criteria and record defensible evidence.",
       "level": "Beginner to intermediate; a scorecard from Stage 3 assumed.",
-      "practice": "Screen ten practice CVs against your scorecard and record one line of evidence for each decision.",
+      "practice": "Screen ten fictional practice CVs against your Stage 3 scorecard, record one evidence line per decision, then draft five consistent job-related phone-screen questions.",
       "effort_note": ""
     },
     {
@@ -514,15 +406,15 @@
           "cost": "Free",
           "duration": "About 2 hours",
           "why": "The most important single document in this library. Updated in March 2026, it explains the four parts of structured interviewing, how to define hiring attributes, how to draft questions and follow-ups, and how to score with a shared rubric.",
-          "action": "Write eight questions for your practice role: four behavioural and four hypothetical, each mapped to a scorecard attribute. Add what a poor and an outstanding answer would sound like.",
-          "access_note": "Verified 2026-10-26 by reading the provider page: marked Updated March 2026, free, no login or payment shown. Google reports these results from its own hiring data; the method is widely supported by research, but the specific numbers are not a promise for your context.",
+          "action": "Write eight questions for your practice role: four behavioural and four hypothetical, each mapped to a scorecard attribute. Add poor and outstanding scoring anchors, then assemble the questions and rubric using your existing Stage 3 scorecard rather than another template card.",
+          "access_note": "Checked 2026-10-26 by reading the full Google re:Work guide (updated March 2026). Account: not required. Form: none shown. Trial: none. Payment: none. Certificate: none offered. The guide’s examples and internal results are Google-specific; use the method, not its metrics as local guarantees.",
           "link_label": "Read the guide",
           "id": "google-structured-interviews",
           "checked_at": "2026-10-26",
           "access": {
             "study": "free",
             "certificate": "not_verified",
-            "account": "not_verified",
+            "account": "not_required",
             "evidence_urls": [
               "https://rework.withgoogle.com/intl/en/guides/a-guide-to-structured-interviewing-for-better-hiring-practices"
             ]
@@ -537,38 +429,16 @@
           "duration": "About 1 hour",
           "why": "Shows how to write useful interview feedback, avoid vague comments and personality judgements, and leave time for candidate questions. This is what makes a rubric work in a real panel.",
           "action": "After your mock interview, rewrite your feedback using the guide's rules and check whether a stranger could reconstruct the evidence.",
-          "access_note": "Verified via the provider's own page content returned in search results on 2026-10-26; the guide is part of the same free re:Work set. The page itself was not opened directly, so individual steps were not fully read.",
+          "access_note": "Checked 2026-10-26 by reading the full Google re:Work guide (updated March 2026). Account: not required. Form: none shown. Trial: none. Payment: none. Certificate: none offered. It is guidance, not a formal interviewer qualification.",
           "link_label": "Read the guide",
           "id": "google-interviewer-training",
           "checked_at": "2026-10-26",
           "access": {
             "study": "free",
             "certificate": "not_verified",
-            "account": "not_verified",
+            "account": "not_required",
             "evidence_urls": [
               "https://rework.withgoogle.com/intl/en/guides/effective-interviewer-training-for-better-candidate-experiences"
-            ]
-          }
-        },
-        {
-          "title": "Reuse: Greenhouse structured hiring introduction and Workable interview kits",
-          "provider": "Greenhouse and Workable",
-          "url": "https://support.greenhouse.io/hc/en-us/articles/360007245452-Structured-hiring-Introduction",
-          "modality": "Free official templates and process docs",
-          "cost": "Free",
-          "duration": "About 2 hours",
-          "why": "You already have these from Stage 3. The Greenhouse worksheet turns your questions into an interview plan; the Workable kits show how commercial teams package questions by stage.",
-          "action": "Assemble a one-page interview kit: purpose, attributes, questions, scoring anchors and a recommendation field.",
-          "access_note": "No new resource or cost. Verification details are in the Stage 3 cards.",
-          "link_label": "Reopen the worksheets",
-          "id": "interview-kit-practice",
-          "checked_at": "2026-10-26",
-          "access": {
-            "study": "free",
-            "certificate": "not_verified",
-            "account": "not_verified",
-            "evidence_urls": [
-              "https://support.greenhouse.io/hc/en-us/articles/360007245452-Structured-hiring-Introduction"
             ]
           }
         }
@@ -600,14 +470,14 @@
           "duration": "About 3 hours for the relevant articles",
           "why": "A recruiter handles CVs, references and background checks, which are personal data. The GAID sets out the principles, lawful bases, consent rules, information duties for data subjects, breach notification and data processing agreements.",
           "action": "Read Articles 15, 16, 17, 18, 27, 33 and 34, then draft a six-line privacy notice you could put on a job application form.",
-          "access_note": "Verified 2026-10-26 by reading the official NDPC PDF (reference NDPC/NDP ACT-GAID/01/2025). I read the arrangement of articles and the opening articles, not the entire document. This is a regulator's implementation directive, not the Act itself, and it is not legal advice. Confirm the current text and any later amendments with a Nigerian lawyer.",
+          "access_note": "Checked 2026-10-26 by opening the official NDPC PDF: the document is publicly readable without an account, form, trial or payment; no certificate is offered. I checked its arrangement of articles and opening provisions, not every assigned article or the whole directive. It is regulatory guidance, not legal advice; confirm current law with a Nigerian lawyer.",
           "link_label": "Open the official PDF",
           "id": "ndpc-gaid",
           "checked_at": "2026-10-26",
           "access": {
             "study": "free",
             "certificate": "not_verified",
-            "account": "not_verified",
+            "account": "not_required",
             "evidence_urls": [
               "https://ndpc.gov.ng/wp-content/uploads/2025/07/NDP-ACT-GAID-2025-MARCH-20TH.pdf"
             ]
@@ -622,38 +492,38 @@
           "duration": "About 2 hours for Parts I and II",
           "why": "Part II is specifically about recruiting, including prohibitions on recruiting without a permit or licence, employer permits, recruiter licences and restrictions. Section 7 covers written particulars of employment terms, which matters when you prepare an offer.",
           "action": "Read sections 7, 23, 24, 25, 26 and 71. Write down three questions you would ask an employer before running a search on their behalf.",
-          "access_note": "Verified 2026-10-26 by reading the free statute PDF. The Act dates from 1971 and is reproduced as Cap. L1 LFN 2004; the ILO NATLEX entry records the 1990 revised edition. It may have been amended or partly superseded, so check current law and get local legal advice before acting on it. This is an official-style reproduction, not a government gazette download.",
+          "access_note": "Checked 2026-10-26 by opening the public PLAC PDF: no account, form, trial or payment is required; no certificate is offered. This is an official-style reproduction, not a government gazette. The Labour Act dates from 1971/Cap. L1 LFN 2004 and may have been amended or partly superseded; verify current law and seek Nigerian legal advice before acting.",
           "link_label": "Open the statute PDF",
           "id": "nigeria-labour-act",
           "checked_at": "2026-10-26",
           "access": {
             "study": "free",
             "certificate": "not_verified",
-            "account": "not_verified",
+            "account": "not_required",
             "evidence_urls": [
               "https://lawsofnigeria.placng.org/laws/L1.pdf"
             ]
           }
         },
         {
-          "title": "Google re:Work: onboarding and candidate experience guides",
+          "title": "A data-driven approach to optimizing employee onboarding",
           "provider": "Google re:Work",
-          "url": "https://rework.withgoogle.com/intl/en/guides/",
-          "modality": "Free official practice guides",
+          "url": "https://rework.withgoogle.com/intl/en/guides/a-data-driven-approach-to-optimizing-employee-onboarding",
+          "modality": "Free official practice guide",
           "cost": "Free",
-          "duration": "About 2 hours",
-          "why": "Closes the loop from Stage 4. The data-driven onboarding guide and the candidate experience guide show what happens after the offer is signed, which is where a recruiter's responsibility often quietly ends.",
-          "action": "From the guides index, open the onboarding guide and sketch a 30-day onboarding checklist for your practice role.",
-          "access_note": "Verified 2026-10-26 on the provider guides index; those two guides are listed among the 23 free results. I did not open the individual guide pages. No login or payment shown on the index.",
+          "duration": "About 1 hour including a checklist exercise",
+          "why": "The guide describes onboarding check-ins at 30, 90 and 365 days and shows how new-hire feedback can identify support gaps across tools, skills and connection.",
+          "action": "Use the guide’s survey themes to draft a 30-day onboarding checklist for the practice role, with an owner and one check-in point for each item.",
+          "access_note": "Checked 2026-10-26 by reading the full Google re:Work page (August 2025). Account: not required. Form: none shown. Trial: none. Payment: none. Certificate: none offered. The examples describe Google’s own programme; adapt the approach to a Lagos employer.",
           "link_label": "Open the guides index",
           "id": "google-onboarding",
           "checked_at": "2026-10-26",
           "access": {
             "study": "free",
             "certificate": "not_verified",
-            "account": "not_verified",
+            "account": "not_required",
             "evidence_urls": [
-              "https://rework.withgoogle.com/intl/en/guides/"
+              "https://rework.withgoogle.com/intl/en/guides/a-data-driven-approach-to-optimizing-employee-onboarding"
             ]
           }
         }
@@ -684,8 +554,8 @@
           "cost": "Free",
           "duration": "20 minutes",
           "why": "A free CRM is a practical stand-in for an applicant tracking system while you practise. The Academy's course catalogue is explicitly free and online.",
-          "action": "Create a free account, add your ten practice candidates, and label each with a stage so you can produce a funnel count.",
-          "access_note": "Verified 2026-10-26 on the HubSpot Academy courses page: the catalogue is described as completely free and online, with a free account required; this lesson is listed at 20 minutes. The CRM is a commercial product with paid tiers; the free tier is enough for the practice task.",
+          "action": "Create a free Academy account and use the free CRM tier to add ten fictional practice candidates, label their stages, and produce a simple funnel count. Do not upload real candidate data.",
+          "access_note": "Checked 2026-10-26 on the lesson page and HubSpot CRM product page. Study: the lesson is explicitly free (four videos, 20 minutes). Account: a free Academy account is required; the signup form collects account details and the page states that product updates/promotional emails may be sent. Form: account creation only, no separate lesson form. Trial/payment: the CRM free tier is described as non-expiring and requires no credit card; paid tiers exist but are not needed. Certificate: none is advertised for this lesson.",
           "link_label": "Open the lesson",
           "id": "hubspot-contacts",
           "checked_at": "2026-10-26",
@@ -694,51 +564,53 @@
             "certificate": "not_verified",
             "account": "required",
             "evidence_urls": [
-              "https://academy.hubspot.com/lessons/managing-your-contacts-with-the-hubspot-crm"
+              "https://academy.hubspot.com/lessons/managing-your-contacts-with-the-hubspot-crm",
+              "https://www.hubspot.com/products/crm"
             ]
           }
         },
         {
-          "title": "Greenhouse guidance: recruiting metrics and benchmarks",
+          "title": "HR Metrics That Support Hiring Decisions (video 43)",
+          "provider": "HR Learning Lab (YouTube)",
+          "url": "https://www.youtube.com/watch?v=LPzWMrLvMGY",
+          "modality": "Free video lesson",
+          "cost": "Free public YouTube video",
+          "duration": "4 minutes 19 seconds",
+          "why": "A short explanation of hiring measures, including cost per hire, time to fill and selection ratio, with calculation examples. It teaches the concepts; the separate Greenhouse report provides a U.S.-only benchmark case study.",
+          "action": "Watch the video, note its selection-ratio and time-to-fill formulas, then calculate stage-to-stage conversion rates from your fictional HubSpot pipeline.",
+          "access_note": "Checked 2026-10-26 on the public YouTube page: the 4:19 listing and transcript were accessible without payment or sign-in. Account: not required for this public listing. Form: none. Trial: none. Certificate: none offered. Playback was not tested. The creator discloses AI-supported production; use the definitions as a primer and verify consequential decisions against primary sources.",
+          "link_label": "Watch the hiring-metrics video",
+          "id": "hrlab-hiring-metrics",
+          "checked_at": "2026-10-26",
+          "access": {
+            "study": "free",
+            "certificate": "not_verified",
+            "account": "not_required",
+            "evidence_urls": [
+              "https://www.youtube.com/watch?v=LPzWMrLvMGY"
+            ]
+          }
+        },
+        {
+          "title": "The Hire Standard: Fall 2026 U.S. recruiting benchmarks",
           "provider": "Greenhouse",
-          "url": "https://www.greenhouse.com/guidance",
-          "modality": "Free official articles and reports",
-          "cost": "Free",
-          "duration": "2-3 hours",
-          "why": "Recruiters are judged on time to hire, source of hire, pass-through rates and quality of hire. Learning the vocabulary lets you discuss your practice project in an interview.",
-          "action": "Calculate four funnel rates from your practice pipeline and write a short paragraph explaining the bottleneck.",
-          "access_note": "Verified 2026-10-26 on the provider guidance hub: free articles and resources listed. The 2026 hiring benchmarks report is advertised on the same page and may require a form; I did not verify its access terms, so do not assume the underlying dataset is freely downloadable.",
+          "url": "https://cdn.prod.website-files.com/6668a687e71e2722fccb8357/6af3aa54e0a5c01ffec1552e_The-Hire-Standard-Fall-2026_US.pdf",
+          "modality": "Free public report (PDF)",
+          "cost": "Free direct PDF; U.S. hiring data only",
+          "duration": "About 45 minutes for the executive summary and selected tables",
+          "why": "A current worked example of application, assessment, interview and hire conversion measures, with comparisons by company size. Treat the figures as a U.S. case study, not Lagos targets.",
+          "action": "Read the executive summary and selected funnel tables. Note how company size changes the reported rates, then calculate your own practice-pipeline conversions rather than adopting the U.S. averages.",
+          "access_note": "Checked 2026-10-26 on Greenhouse’s report page and direct PDF. Study: the provider advertises free access and the direct PDF opened without account, payment or a submitted form; the landing page has a free-access/download CTA. Account: not required for the direct file. Form: no form submission was needed at the PDF URL. Trial: none. Certificate: none offered. Data covers U.S. organizations using Greenhouse through August 2026 and is not a Nigerian benchmark.",
           "link_label": "Open the guidance hub",
           "id": "greenhouse-metrics",
           "checked_at": "2026-10-26",
           "access": {
             "study": "free",
             "certificate": "not_verified",
-            "account": "not_verified",
+            "account": "not_required",
             "evidence_urls": [
-              "https://www.greenhouse.com/guidance"
-            ]
-          }
-        },
-        {
-          "title": "CIPM Nigeria: professional membership by examination",
-          "provider": "Chartered Institute of Personnel Management of Nigeria",
-          "url": "https://cipmnigeria.org/membership/membership-routes/",
-          "modality": "Paid professional qualification",
-          "cost": "Paid - NGN fees shown on the provider site",
-          "duration": "Five exam stages, four exam diets a year",
-          "why": "CIPM is the body chartered to regulate HR practice in Nigeria. Its syllabus shows the local body of knowledge, including Nigerian Labour Law, workforce planning and HR metrics, and its qualification is recognised locally.",
-          "action": "Do not enrol yet. Read the syllabus and exam FAQ, then decide after you have six months of experience whether the qualification is right for your path.",
-          "access_note": "Verified 2026-10-26 on the provider membership routes page and exam FAQ. Published fees: application NGN 10,000; acceptance NGN 12,000; Foundation NGN 55,440; Intermediate I NGN 57,190; Intermediate II NGN 58,200; Professional I NGN 64,050; Professional II NGN 70,050, with exemption fees from NGN 20,250 to NGN 24,300. The provider states fees are subject to review. Minimum entry is a degree or HND with five SSCE credits including English and Mathematics; undergraduates may enrol but are inducted only after graduating. Prices are in naira because the provider publishes in naira; no USD conversion is implied.",
-          "link_label": "Check current fees",
-          "id": "cipm-professional-route",
-          "checked_at": "2026-10-26",
-          "access": {
-            "study": "paid",
-            "certificate": "paid_qualification",
-            "account": "not_verified",
-            "evidence_urls": [
-              "https://cipmnigeria.org/membership/membership-routes/"
+              "https://www.greenhouse.com/recruiting-benchmarks",
+              "https://cdn.prod.website-files.com/6668a687e71e2722fccb8357/6af3aa54e0a5c01ffec1552e_The-Hire-Standard-Fall-2026_US.pdf"
             ]
           }
         }
@@ -798,7 +670,7 @@
         "url": "https://www.open.edu/openlearn/money-business/human-resources/human-resources-recruitment-and-selection/content-section-0",
         "status": "confirmed",
         "verified_at": "2026-10-27",
-        "note": "OpenLearn course page: free course, free statement of participation. CI sweep 2026-10-27 got 403 (bot filtering); page re-read the same day and the claim still holds."
+        "note": "Official OpenLearn page identifies this as a free course and offers a free Statement of Participation; course text opens without sign-in, while a free account is needed for progress tracking, all activities/quizzes and the statement. The CI sweep returned 403 (bot filtering) on 2026-10-27; the page was re-read the same day."
       },
       {
         "url": "https://alison.com/course/diploma-in-human-resources-hr",
@@ -810,97 +682,103 @@
         "url": "https://learn.saylor.org/course/BUS301",
         "status": "confirmed",
         "verified_at": "2026-10-26",
-        "note": "Saylor BUS301 course page read."
+        "note": "Rechecked 2026-10-26: BUS301 page lists a Free Certificate; Saylor FAQ confirms no tuition or fees and free completion certificates."
       },
       {
         "url": "https://www.coursera.org/learn/recruiting-hiring-onboarding-employees",
         "status": "ambiguous",
         "verified_at": "2026-10-26",
-        "note": "Page read, but FAQ ties full access to purchase/trial/no-certificate option. NOT counted as free."
+        "note": "Rechecked 2026-10-26: course page says “Enroll for free”; FAQ says full course material access requires paid Certificate access, a free trial or Full Course, No Certificate where available. Exact full-course no-certificate availability for this course was not confirmed; not counted as free."
+      },
+      {
+        "url": "https://learner.coursera.help/hc/en-us/articles/209818613-Enrollment-options",
+        "status": "confirmed",
+        "verified_at": "2026-10-26",
+        "note": "Official Coursera Help Center enrollment-options page checked 2026-10-26: Preview is limited to the first module with no certificate; Full Course, No Certificate is available only for selected courses."
       },
       {
         "url": "https://www.onetonline.org/",
         "status": "confirmed",
         "verified_at": "2026-10-26",
-        "note": "Free public occupational database."
+        "note": "Checked 2026-10-26: official public O*NET occupation search/profile opened without account or payment; U.S. database with 1,016 occupation titles."
       },
       {
         "url": "https://resources.workable.com/hr-templates/",
         "status": "confirmed",
         "verified_at": "2026-10-26",
-        "note": "Templates free to download; no software trial required."
+        "note": "Checked 2026-10-26: index explicitly labels job-description samples free to download; other listed kits were not all individually verified. A separate 15-day Workable software trial is not needed to read public examples."
       },
       {
         "url": "https://support.greenhouse.io/hc/en-us/articles/360007245452-Structured-hiring-Introduction",
         "status": "confirmed",
         "verified_at": "2026-10-26",
-        "note": "Free structured-hiring article and worksheets."
+        "note": "Checked 2026-10-26: public structured-hiring article lists six steps and direct PDF worksheet/eBook downloads; no account or content form shown, and no software trial is needed."
       },
       {
         "url": "https://resources.workable.com/boolean-search-cheatsheets/",
         "status": "confirmed",
         "verified_at": "2026-10-26",
-        "note": "Free cheatsheets confirmed."
+        "note": "Checked 2026-10-26: public index and a representative HR Boolean article are readable without account or form; Workable advertises a separate software trial, not needed for the cheat sheet."
       },
       {
         "url": "https://www.youtube.com/watch?v=yMnw_2VNOVE",
         "status": "confirmed",
         "verified_at": "2026-10-26",
-        "note": "Public free video checked directly."
+        "note": "Checked 2026-10-26: public 6:34 video page and transcript accessible without payment or sign-in; playback not tested; creator discloses AI-supported production."
       },
       {
         "url": "https://rework.withgoogle.com/intl/en/guides/",
         "status": "confirmed",
         "verified_at": "2026-10-26",
-        "note": "Guides index plus two guides read; other guides cited by name from the index."
+        "note": "Checked 2026-10-26: guides index lists the hiring guides. Four retained English guides were also opened directly; the English Review resumes route returned 404 and is not retained."
       },
       {
         "url": "https://www.jobberman.com/employer/free-listing",
         "status": "partial",
-        "verified_at": null,
-        "note": "Returned only a cookie banner. Free-listing claim from provider search listing; card marked partially verified."
+        "verified_at": "2026-10-26",
+        "note": "Checked 2026-10-26: direct page returned only a cookie prompt. Official search listing describes a free Basic listing and says to wait for Customer Experience confirmation; eligibility, account/form fields and a draft-only practice flow remain unverified. Not retained."
       },
       {
         "url": "https://www.greenhouse.com/guidance",
-        "status": "confirmed",
+        "status": "ambiguous",
         "verified_at": "2026-10-26",
-        "note": "Free guidance hub read."
+        "note": "Checked 2026-10-26: broad hub labels resources free, but selected Greenhouse guidance pages display contact-form gates and free access to the Stage 5 assignment was not established. Not counted as free and not retained."
       },
       {
         "url": "https://rework.withgoogle.com/intl/en/guides/a-guide-to-structured-interviewing-for-better-hiring-practices",
         "status": "confirmed",
         "verified_at": "2026-10-26",
-        "note": "Guides index plus two guides read; other guides cited by name from the index."
+        "note": "Checked 2026-10-26 by reading the full English guide: public text, no account/form/payment/trial requirement shown; updated March 2026."
       },
       {
         "url": "https://rework.withgoogle.com/intl/en/guides/effective-interviewer-training-for-better-candidate-experiences",
         "status": "confirmed",
         "verified_at": "2026-10-26",
-        "note": "Guides index plus two guides read; other guides cited by name from the index."
+        "note": "Checked 2026-10-26 by reading the full English guide: public text, no account/form/payment/trial requirement shown; updated March 2026."
       },
       {
         "url": "https://ndpc.gov.ng/wp-content/uploads/2025/07/NDP-ACT-GAID-2025-MARCH-20TH.pdf",
         "status": "confirmed",
-        "verified_at": "2026-10-27",
-        "note": "Regulator PDF; arrangements of articles and opening provisions read, not cover to cover. CI sweep 2026-10-27 got 403 (bot filtering); PDF re-read the same day and is intact."
+        "verified_at": "2026-10-26",
+        "note": "Checked 2026-10-26: public official NDPC PDF opened without account, form, trial or payment. Arrangement of articles and opening provisions reviewed; not read cover to cover."
       },
       {
         "url": "https://lawsofnigeria.placng.org/laws/L1.pdf",
         "status": "confirmed",
         "verified_at": "2026-10-26",
-        "note": "Statute copy; arrangements and opening provisions read, not cover to cover. Not legal advice."
+        "note": "Checked 2026-10-26: public PLAC Labour Act PDF opened without account, form, trial or payment; not a government-gazette copy or legal advice."
       },
       {
         "url": "https://academy.hubspot.com/lessons/managing-your-contacts-with-the-hubspot-crm",
         "status": "confirmed",
         "verified_at": "2026-10-26",
-        "note": "Academy catalogue described as free with a free account."
+        "note": "Checked 2026-10-26: lesson is explicitly free, four videos/20 minutes; free Academy account required. No trial is needed for the lesson."
       },
       {
         "url": "https://cipmnigeria.org/membership/membership-routes/",
         "status": "confirmed",
         "verified_at": "2026-10-26",
-        "note": "Paid route; naira fee table published. Prices subject to review."
+        "note": "Checked 2026-10-26: paid professional route with provider-published NGN fees; resource removed from Stage 8 under free-first rule."
       },
       {
         "url": "https://www.linkedin.com/learning/",
@@ -942,7 +820,7 @@
         "url": "https://support.saylor.org/hc/en-us/articles/23586212781844-FAQ-General",
         "status": "confirmed",
         "verified_at": "2026-10-27",
-        "note": "Saylor general FAQ: no tuition or fees, completion certificates free. CI sweep 2026-10-27 got 403 (bot filtering); FAQ re-read the same day and the claim still holds."
+        "note": "Official Saylor FAQ confirms no tuition or course fees and free course-completion certificates; a free account is needed to enroll. The CI sweep returned 403 (bot filtering) on 2026-10-27; the FAQ was re-read the same day."
       },
       {
         "url": "https://learn.saylor.org/mod/page/view.php?id=94644",
@@ -955,6 +833,66 @@
         "status": "not_confirmed",
         "verified_at": null,
         "note": "Lead page only; no access claim verified."
+      },
+      {
+        "url": "https://resources.workable.com/recruiter-job-description",
+        "status": "confirmed",
+        "verified_at": "2026-10-26",
+        "note": "Checked 2026-10-26: public Recruiter job-description sample is readable without an account or payment. A separate 15-day trial is advertised for posting jobs, not for reading the sample."
+      },
+      {
+        "url": "https://resources.workable.com/hire-hr-directors-boolean-search-strings",
+        "status": "confirmed",
+        "verified_at": "2026-10-26",
+        "note": "Checked 2026-10-26: public HR Boolean-search example and PDF link are readable without account, form or payment; separate Workable software trial is unnecessary."
+      },
+      {
+        "url": "https://rework.withgoogle.com/intl/en/guides/how-to-create-a-positive-experience-for-candidates",
+        "status": "confirmed",
+        "verified_at": "2026-10-26",
+        "note": "Checked 2026-10-26 by reading the full English Google re:Work guide, updated March 2026; no account, form, payment or trial shown."
+      },
+      {
+        "url": "https://www.open.edu/openlearn/money-business/human-resources/human-resources-recruitment-and-selection/content-section-4.10/",
+        "status": "confirmed",
+        "verified_at": "2026-10-26",
+        "note": "Checked 2026-10-26: direct OpenLearn section 4.10 and activity text are readable without sign-in; free account is optional for reading and required for enrolment/progress and the free Statement of Participation."
+      },
+      {
+        "url": "https://www.youtube.com/watch?v=zariLo_tX00",
+        "status": "confirmed",
+        "verified_at": "2026-10-26",
+        "note": "Checked 2026-10-26: public 8:14 YouTube listing and transcript; no payment or account shown; playback not tested; AI-supported production disclosed."
+      },
+      {
+        "url": "https://rework.withgoogle.com/intl/en/guides/a-data-driven-approach-to-optimizing-employee-onboarding",
+        "status": "confirmed",
+        "verified_at": "2026-10-26",
+        "note": "Checked 2026-10-26 by reading the full English Google re:Work onboarding guide; no account, form, payment or trial shown."
+      },
+      {
+        "url": "https://www.hubspot.com/products/crm",
+        "status": "confirmed",
+        "verified_at": "2026-10-26",
+        "note": "Checked 2026-10-26: HubSpot states the CRM free tier does not expire and requires no credit card; paid tiers are separate."
+      },
+      {
+        "url": "https://www.greenhouse.com/recruiting-benchmarks",
+        "status": "confirmed",
+        "verified_at": "2026-10-26",
+        "note": "Checked 2026-10-26: Greenhouse report page advertises free access and links the direct PDF; report is U.S.-specific."
+      },
+      {
+        "url": "https://cdn.prod.website-files.com/6668a687e71e2722fccb8357/6af3aa54e0a5c01ffec1552e_The-Hire-Standard-Fall-2026_US.pdf",
+        "status": "confirmed",
+        "verified_at": "2026-10-26",
+        "note": "Checked 2026-10-26: direct Fall 2026 U.S. Hire Standard PDF retrieved and read without submitting a form; no account or payment required."
+      },
+      {
+        "url": "https://www.youtube.com/watch?v=LPzWMrLvMGY",
+        "status": "confirmed",
+        "verified_at": "2026-10-26",
+        "note": "Checked 2026-10-26: public 4:19 YouTube listing and transcript; no payment or account shown; playback not tested; AI-supported production disclosed."
       }
     ]
   }

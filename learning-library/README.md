@@ -16,11 +16,11 @@ You chose: free-first (paid extras listed separately), a balanced blend of video
 | `out/Recruiter-TA-Library.pdf` | The full library, 15 pages. Best for printing or sharing. |
 | `out/Recruiter-TA-Library.docx` | Editable Word version of the same document. |
 | `out/Recruiter-TA-Library.html` | Self-contained static web page. No scripts, no external assets. |
-| `out/roadmap-app.html` | Single-file interactive tracker: 8 stages, checkboxes, progress, daily streak, export/import. **Styled with the Fieldnotes design system and decorated with 10 optional pixel pals.** Open it in a browser. |
+| `out/roadmap-app.html` | Single-file interactive tracker: 8 stages, checkboxes, progress, daily streak, export/import. **Styled with the Fieldnotes design system and decorated with 10 optional pixel pals plus a dangling spider.** Open it in a browser. |
 | `src/recruiter-talent-acquisition-library.md` | Generated document projection; do not edit directly. |
 | `src/roadmap-app.json` | Generated tracker data projection; do not edit directly. |
 | `src/fieldnotes-theme.css` | The ported Fieldnotes design tokens and component overrides. |
-| `src/pals/` | The 10 decorative pals: `src/pals/pals.json` (placements), `src/pals/pals-controller.js`, `src/pals/pals.css`, the vendored MIT-licensed Piixpal engine and its licence. |
+| `src/pals/` | The Pals: `src/pals/pals.json` (10 Piixpal placements plus the dangling spider), `src/pals/pals-controller.js`, `src/pals/pals.css`, the vendored MIT-licensed Piixpal engine and its licence. |
 | `tools/build_tracker.py` | Builds the themed tracker from the JSON while leaving the vendored skill untouched, then injects the pals. |
 | `DESIGN-SYSTEM.md` | Provenance, token table, selector mapping, constraints and verification of the port. |
 | `out/Recruiter-TA-Library.md` | A byte-identical copy of the source, kept with the other outputs. |
@@ -43,20 +43,24 @@ All changes live in `src/fieldnotes-theme.css` (plus one input-attribute edit in
 
 The `web-design-guidelines`, `design-system-patterns` and `accessibility-compliance` skills from the `skill-issue` MCP collection were applied to focus states, tap targets, tabular numerals, form-control semantics, component tokens and WCAG AA contrast.
 
-## The ten decorative pals
+## The decorative Pals
 
-The tracker now carries **10 optional animated pixel creatures** ported from the
-reference project's Piixpal v0.4.0 engine. They are MIT-licensed; the full
-notice is in `THIRD-PARTY-NOTICES.md` and the licence text in
-`src/pals/LICENSE-MIT.txt`.
+The tracker carries **10 optional animated pixel creatures** ported from the
+reference project's Piixpal v0.4.0 engine plus one small locally authored
+ dangling spider at the viewport's top-right. The engine sprites are
+MIT-licensed; the full notice is in `THIRD-PARTY-NOTICES.md` and the licence
+text in `src/pals/LICENSE-MIT.txt`.
 
-All eight sprites (`bitbug`, `lurk`, `moss`, `pip`, `capy`, `bumble`, `shel`,
-`frog`) appear once, with `moss` and `bumble` repeating under hue rotations.
-They are spread from the hero to the footer against **visible prose** targets —
-never a button or link, because a pal's canvas would swallow the tap. The
-engine is an inert `<template>` loaded on idle, so it never blocks the roadmap;
-there is a **Pause tiny pals** toggle with a live status line, and pals are off
-by default for visitors who prefer reduced motion.
+All eight Piixpal sprites (`bitbug`, `lurk`, `moss`, `pip`, `capy`, `bumble`,
+`shel`, `frog`) appear among the ten placements, with repeated `moss` and
+`bumble` under hue rotations. They are spread from the hero to the footer
+against **visible prose** targets — never a button or link, because a creature's
+canvas would swallow the tap. The dangling spider stays fixed at the top-right
+while scrolling and never intercepts pointer input. The engine is an inert
+`<template>` loaded on idle, so it never blocks the roadmap; a **Pause tiny
+pals** toggle with a live status line controls all eleven decorations. Pals are
+off by default for visitors who prefer reduced motion; the spider's sway is
+also disabled under reduced motion.
 
 Placement is edited in `src/pals/pals.json`. Current-state rules and acceptance
 criteria are in `docs/DESIGN-SPEC.md` §7. The engine adds about 92 KB, taking
@@ -108,7 +112,7 @@ The `url()` strings you may spot in the tracker are JavaScript identifiers (`new
 
 ## About the tracker
 
-Progress lives in **this browser's local storage**. The streak uses the device's local calendar. Reminders are checked **only while the app page is open** - it cannot notify you in the background, does not sync between devices, and has no backend or push service. Browser notifications need a supported browser, your permission and a secure context such as HTTPS or localhost; if they are unavailable or denied, in-app check-ins still work. Use the export button now and then to keep a manual backup.
+Progress lives in **this browser's local storage**. Each resource's existing action is one required task tick; it is self-reported, not graded. Use **I studied today** to record attendance separately—ticking a task never adds a study day. The streak uses the device's local calendar. Version 3 exports preserve manual check-ins separately from older activity dates, and older version 1/2 backups are still accepted. Reminders are checked **only while the app page is open** - it cannot notify you in the background, does not sync between devices, and has no backend or push service. Browser notifications need a supported browser, your permission and a secure context such as HTTPS or localhost; if they are unavailable or denied, in-app check-ins still work. Use the export button now and then to keep a manual backup.
 
 ## If you want a revision
 
@@ -135,15 +139,16 @@ Follow the generated library document’s “Your first hour” section: it uses
 Hero h1 reduced by 25%; Pals now scroll natively in document space rather than
 using a fixed layer with frame-delayed corrections. New browser regressions cover
 native scroll alignment and legacy saved progress. Historical verification rows
-above describe the earlier 26-card build; the current build has 27 cards. The two
-new playlist URLs have not yet been included in a CI HTTP sweep; their public
-metadata was read, but playback and mobile app handoff still need device testing.
+above describe the earlier 26-card and 27-card builds; the current first-iteration
+route has 21 resource cards. The two new playlist URLs have not yet been included
+in a CI HTTP sweep; their public metadata was read, but playback and mobile app
+handoff still need device testing.
 
 ## Current maintenance summary
 
 <!-- content-summary:start -->
-8 stages, 27 resource cards, 22 distinct card URLs, 94 planned hours.
-20 planned weeks; 24 cards have confirmed free-study evidence.
+8 stages, 21 resource cards, 21 distinct card URLs, 94 planned hours.
+20 planned weeks; 20 cards have confirmed free-study evidence.
 Certificate, account and professional-qualification terms are separate; partial findings are not counted as verified free.
 <!-- content-summary:end -->
 

@@ -7,6 +7,9 @@
   identifies a learning task, not a URL: revisits of one URL can be separate tasks.
 - `learning-library/src/library-narrative.md`: document-only teaching/context.
   Named slots insert canonical stages, resource cards, totals and first action.
+- `learning-library/src/app-copy.json`: concise tracker-only headings, summaries,
+  task labels and access snapshots. Full research notes stay in the catalogue and
+  generated library document.
 - `learning-library/src/history/first-link-sweep.json`: frozen executed sweep.
   Do not append current URLs to an old result. A new sweep needs its own evidence.
 - `learning-library/src/progress-compatibility.json`: frozen legacy aliases;

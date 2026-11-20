@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#11142B">
-<meta name="color-scheme" content="light">
+<meta name="color-scheme" content="light dark">
 <meta name="description" content="A free-first, roadmap-ordered learning library for breaking into HR through the Recruiter / Talent Acquisition path, with browser-local progress tracking.">
 <title>Zero to Recruiter: a Talent Acquisition roadmap | Fieldnotes HR</title>
 <style>
@@ -18,6 +18,87 @@
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
 </style>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2311142B'/%3E%3Crect x='4' y='7' width='24' height='4' fill='%23FFE168'/%3E%3Crect x='4' y='14' width='16' height='4' fill='%2365E8FF'/%3E%3Crect x='4' y='21' width='20' height='4' fill='%23FF4E91'/%3E%3C/svg%3E">
+<script data-theme-controller>
+/* Theme preference for the self-contained FieldNotes tracker. */
+(function () {
+  'use strict';
+
+  var STORAGE_KEY = 'fieldnotes-hr-theme-v1';
+  var root = document.documentElement;
+  var media = typeof window.matchMedia === 'function'
+    ? window.matchMedia('(prefers-color-scheme: dark)')
+    : null;
+
+  function readPreference() {
+    try {
+      var saved = window.localStorage.getItem(STORAGE_KEY);
+      return saved === 'light' || saved === 'dark' ? saved : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  var preference = readPreference();
+  var effectiveTheme = preference || (media && media.matches ? 'dark' : 'light');
+  var preferenceSaved = preference !== null;
+
+  function updateButton() {
+    var button = document.getElementById('theme-toggle');
+    if (!button) return;
+    button.setAttribute('aria-pressed', String(effectiveTheme === 'dark'));
+    button.setAttribute('aria-label', 'Toggle color theme');
+    button.setAttribute('data-theme-icon', effectiveTheme === 'dark' ? 'moon' : 'sun');
+    button.title = preference
+      ? preferenceSaved
+        ? 'Saved as ' + preference + ' theme in this browser.'
+        : 'Theme choice applies until this page closes; browser storage is unavailable.'
+      : 'Following your system setting (' + effectiveTheme + '). Click to save a choice.';
+  }
+
+  function applyTheme(theme) {
+    effectiveTheme = theme;
+    root.setAttribute('data-theme', theme);
+    root.setAttribute('data-theme-source', preference ? 'user' : 'system');
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', theme === 'dark' ? '#0B0D16' : '#11142B');
+    updateButton();
+  }
+
+  function setupToggle() {
+    var button = document.getElementById('theme-toggle');
+    if (!button) return;
+    updateButton();
+    button.addEventListener('click', function () {
+      preference = effectiveTheme === 'dark' ? 'light' : 'dark';
+      try {
+        window.localStorage.setItem(STORAGE_KEY, preference);
+        preferenceSaved = true;
+      } catch (_) {
+        preferenceSaved = false;
+      }
+      applyTheme(preference);
+    });
+  }
+
+  function followSystem(event) {
+    if (preference) return;
+    applyTheme(event.matches ? 'dark' : 'light');
+  }
+
+  // Apply the stored choice or system default before the page's theme CSS loads.
+  applyTheme(effectiveTheme);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupToggle, { once: true });
+  } else {
+    setupToggle();
+  }
+
+  if (media) {
+    if (typeof media.addEventListener === 'function') media.addEventListener('change', followSystem);
+    else if (typeof media.addListener === 'function') media.addListener(followSystem);
+  }
+})();
+</script>
 <style data-theme="fieldnotes">
 /* ==========================================================================
    FIELDNOTES DESIGN SYSTEM
@@ -31,7 +112,13 @@
 :root{
   color-scheme:light;
   --fn-stack-gap:52px;
+  --fn-canvas:#11142B;
   --fn-ink:#11142B;
+  --fn-accent-ink:#11142B;
+  --fn-tag-ink:#11142B;
+  --fn-control-bg:#fff;
+  --fn-stage-number-ink:#fff;
+  --fn-check-accent:#15805D;
   --fn-paper:#FFF8E7;
   --fn-cream:#FFFDF6;
   --fn-line:#1E2553;
@@ -42,6 +129,7 @@
   --fn-cyan:#65E8FF;
   --fn-pink:#FF4E91;
   --fn-yellow:#FFE168;
+  --fn-shadow:#E63E7A;
   --fn-green:#5EE780;
   --fn-orange:#FF9958;
   --fn-status-live-bg:#E9FFEF;
@@ -74,16 +162,39 @@
   --ink:var(--fn-ink);
   --muted:var(--fn-muted);
   --border:var(--fn-line);
-  --green:#15805D;
+  --green:var(--fn-check-accent);
   --amber:#B56A12;
   --red:#A63B4B;
 }
 
+/* Dark semantic palette: keep Fieldnotes accents, invert page surfaces and text. */
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --fn-canvas:#080A13;
+  --fn-ink:#F4F3EE;
+  --fn-paper:#141827;
+  --fn-cream:#1D2334;
+  --fn-line:#687398;
+  --fn-muted:#C3C9D9;
+  --fn-shade:#30374C;
+  --fn-blue-ink:#AFC0FF;
+  --fn-shadow:#FF4E91;
+  --fn-control-bg:#242A3B;
+  --fn-stage-number-ink:#11142B;
+  --fn-check-accent:#5EE780;
+  --fn-status-live-bg:#153C2A;
+  --fn-status-live-ink:#D7FFE3;
+  --fn-status-archive-bg:#4A2638;
+  --fn-status-archive-ink:#FFD5E4;
+  --fn-status-caveat-bg:#F4D66D;
+  --fn-status-caveat-ink:#6E4A00;
+}
+
 /* ---------- 2. Global canvas ---------- */
-html{background:var(--fn-ink);scroll-behavior:smooth;scroll-padding-top:20px}
+html{background:var(--fn-canvas);scroll-behavior:smooth;scroll-padding-top:20px}
 body{
   margin:0;
-  background:var(--fn-ink);
+  background:var(--fn-canvas);
   color:var(--fn-ink);
   font:16px/1.55 var(--fn-mono);
   overflow-wrap:break-word;
@@ -97,7 +208,7 @@ button{cursor:pointer}
 .skip-link{
   position:fixed;z-index:1000;top:10px;left:-999px;
   padding:10px 14px;border:2px solid var(--fn-line);
-  background:var(--fn-yellow);color:var(--fn-ink);font-weight:900;
+  background:var(--fn-yellow);color:var(--fn-accent-ink);font-weight:900;
 }
 .skip-link:focus{left:10px}
 
@@ -123,14 +234,14 @@ button{cursor:pointer}
   margin-left:calc(-1 * var(--fn-app-pad));
   margin-right:calc(-1 * var(--fn-app-pad));
   display:flex;align-items:center;justify-content:space-between;gap:24px;
-  padding:clamp(18px,6.3vw,77px) clamp(14px,5.4vw,70px) 36px;
+  padding:clamp(16px,2vw,24px) clamp(14px,5.4vw,70px) 36px;
   border:4px solid var(--fn-cyan);
   border-radius:0;
   background:var(--fn-blue);
   color:#fff;
-  /* Bottom-only offset: the hero now touches the sheet edges, so a right
-     offset shadow would push past the viewport on narrow screens. */
-  box-shadow:0 10px 0 var(--fn-pink);
+  /* Bottom-only shadow keeps the hero inside narrow viewports. The compact
+     top inset avoids reserving the old empty lane above the eyebrow row. */
+  box-shadow:0 10px 0 var(--fn-shadow);
 }
 /* Banded grid square, the source's .hero::after decoration. */
 .hero::after{
@@ -147,18 +258,21 @@ button{cursor:pointer}
   mask-image:linear-gradient(to top left,#000 26%,transparent 74%);
 }
 .hero>div{position:relative;z-index:1}
+.hero>div:first-child{flex:1 1 0;min-width:0}
 .eyebrow,.hero-eyebrow{
   display:inline-block;padding:5px 8px;
-  background:var(--fn-yellow);color:var(--fn-ink);
+  background:var(--fn-yellow);color:var(--fn-accent-ink);
   font:800 .77rem/1.3 var(--fn-mono);
   letter-spacing:.06em;text-transform:uppercase;
 }
-/* The generator ships `.hero p{color:#DCEAF1;margin:10px 0 0}` (specificity
-   0,1,1), which beats a plain `.eyebrow` rule (0,1,0). That made the chip render
-   pale blue-white AND collapsed its bottom margin to zero. Raise specificity to
-   0,2,0 to restore the dark ink, keep the 10px top, and add the requested extra
-   5px of space between the eyebrow and the h1. */
-.hero .eyebrow,.hero .hero-eyebrow{margin:10px 0 5px;color:var(--fn-ink)}
+/* The generator's `.hero p` rule outranks a plain `.eyebrow` rule. Keep the
+   eyebrow ink explicit, and give its paired theme control the same 26px row. */
+.hero .eyebrow,.hero .hero-eyebrow{margin:0;color:var(--fn-accent-ink)}
+.hero-eyebrow-row{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  width:100%;max-width:100%;margin:0 0 5px;
+}
+.hero-eyebrow-row .eyebrow{flex:0 1 auto;min-width:0}
 .hero h1{
   /* 25% smaller than the previous hero scale, for mobile wrapping. */
   max-width:18ch;margin:0 0 10px;
@@ -194,6 +308,34 @@ button{cursor:pointer}
 }
 .hero-stat strong{display:block;font:900 1.86rem/1 var(--fn-prose);letter-spacing:-.05em;color:#fff}
 .hero-stat span{display:block;color:#fff;font:700 .864rem/1.4 var(--fn-mono);text-transform:uppercase}
+.hero #theme-toggle{
+  position:relative;z-index:2;flex:0 0 auto;display:grid;place-items:center;
+  width:calc(1.3em + 10px);height:calc(1.3em + 10px);
+  min-width:calc(1.3em + 10px);min-height:calc(1.3em + 10px);padding:0;margin:0;
+  border:2px solid var(--fn-line);border-radius:50%;
+  background:var(--fn-yellow);color:var(--fn-accent-ink);
+  box-shadow:3px 3px 0 var(--fn-accent-ink);
+  font:800 .77rem/1.3 var(--fn-mono);cursor:pointer;
+  transition:transform .14s ease,box-shadow .14s ease;
+}
+/* Keep the compact visible icon aligned with the eyebrow without sacrificing
+   a 44px pointer target for touch. The enlarged hit area is transparent. */
+.hero #theme-toggle::before{
+  content:"";position:absolute;left:50%;top:50%;width:44px;height:44px;
+  transform:translate(-50%,-50%);border-radius:50%;
+}
+.hero #theme-toggle .theme-icon{
+  display:block;width:60%;height:60%;min-width:12px;min-height:12px;max-width:18px;max-height:18px;
+  fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
+}
+.hero #theme-toggle .theme-icon-sun circle{fill:currentColor;stroke:none}
+.hero #theme-toggle .theme-icon-moon{display:none;fill:currentColor;stroke:currentColor;stroke-width:1.2}
+:root[data-theme="dark"] .hero #theme-toggle .theme-icon-sun{display:none}
+:root[data-theme="dark"] .hero #theme-toggle .theme-icon-moon{display:block}
+.hero #theme-toggle:hover,.hero #theme-toggle:focus-visible{
+  transform:translate(-1px,-1px);background:var(--fn-yellow);
+  box-shadow:4px 4px 0 var(--fn-accent-ink);color:var(--fn-accent-ink);
+}
 
 /* ---------- 4. Dashboard panels ---------- */
 .dashboard{display:grid;grid-template-columns:1fr 1fr;gap:clamp(12px,3vw,18px);margin:var(--fn-stack-gap) 0 18px}
@@ -201,7 +343,7 @@ button{cursor:pointer}
   min-width:0;padding:clamp(13px,3.6vw,20px);
   border:3px solid var(--fn-line);border-radius:0;
   background:var(--fn-cream);
-  box-shadow:6px 6px 0 var(--fn-line);
+  box-shadow:6px 6px 0 var(--fn-shadow);
 }
 .panel-head{display:flex;justify-content:space-between;gap:12px;align-items:baseline;margin-bottom:10px}
 .panel h2{margin:0;font:900 1rem/1.25 var(--fn-mono);letter-spacing:.04em;text-transform:uppercase;color:var(--fn-ink)}
@@ -209,7 +351,7 @@ button{cursor:pointer}
 .panel p{margin:12px 0 0;color:var(--fn-muted);font:.9rem/1.5 var(--fn-prose)}
 .progress-track{
   height:13px;overflow:hidden;border:2px solid var(--fn-line);
-  border-radius:0;background:#fff;
+  border-radius:0;background:var(--fn-control-bg);
 }
 .progress-fill{height:100%;width:0;background:var(--fn-blue);transition:width .2s ease}
 
@@ -218,7 +360,7 @@ button{cursor:pointer}
   display:flex;align-items:center;gap:10px;flex-wrap:wrap;
   margin:18px 0;padding:14px;
   border:3px solid var(--fn-line);border-radius:0;
-  background:var(--fn-cream);box-shadow:6px 6px 0 var(--fn-line);
+  background:var(--fn-cream);box-shadow:6px 6px 0 var(--fn-shadow);
 }
 .toolbar button,.file-button{
   display:inline-flex;align-items:center;justify-content:center;gap:8px;
@@ -228,74 +370,87 @@ button{cursor:pointer}
   font:700 .76rem/1.3 var(--fn-mono);text-align:center;text-decoration:none;
   transition:transform .14s ease,box-shadow .14s ease,background-color .14s ease;
 }
-.toolbar button.primary{background:var(--fn-yellow);border-color:var(--fn-line);color:var(--fn-ink)}
+.toolbar button.primary{background:var(--fn-yellow);border-color:var(--fn-line);color:var(--fn-accent-ink)}
 .toolbar button:hover,.file-button:hover,.toolbar button:focus-visible,.file-button:focus-visible{
   transform:translate(-1px,-1px);background:var(--fn-yellow);
-  box-shadow:3px 3px 0 var(--fn-line);color:var(--fn-ink);filter:none;
+  box-shadow:3px 3px 0 var(--fn-shadow);color:var(--fn-accent-ink);filter:none;
 }
 .toolbar label{color:var(--fn-muted);font:700 .76rem/1.3 var(--fn-mono);text-transform:uppercase;letter-spacing:.04em}
-/* The visible "REMINDER TIME" label was visually loud and disrupted the
-   toolbar's flex row. Keep it for screen readers (the native for/id association
-   stays), remove it from layout, and let the input announce itself via its own
-   aria-label plus a title tooltip for a mouse hover cue. Absolutely positioning
-   it takes it out of the flex flow entirely. */
-.toolbar label[for="reminder-time"]{
-  position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;
-  overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
-}
-.toolbar input[type=time]{
-  min-height:44px;padding:8px 10px;border:2px solid var(--fn-line);
-  border-radius:0;background:#fff;color:var(--fn-ink);font:700 .8rem/1.3 var(--fn-mono);
-}
 .file-button{position:relative}
 .file-button input{position:absolute;width:1px;height:1px;opacity:0}
 .toolbar .status{flex:1 1 260px;min-width:220px;color:var(--fn-muted);font:.78rem/1.45 var(--fn-prose)}
+
+.back-to-top{
+  position:fixed;right:clamp(14px,2.5vw,24px);bottom:clamp(14px,2.5vw,24px);
+  z-index:2147483000;display:grid;place-items:center;
+  width:48px;height:48px;padding:0;
+  border:2px solid var(--fn-line);border-radius:0;
+  background:var(--fn-yellow);color:var(--fn-accent-ink);
+  box-shadow:3px 3px 0 var(--fn-shadow);
+  transition:transform .14s ease,box-shadow .14s ease;
+}
+.back-to-top:hover,.back-to-top:focus-visible{
+  transform:translate(-1px,-1px);background:var(--fn-yellow);
+  box-shadow:4px 4px 0 var(--fn-shadow);color:var(--fn-accent-ink);
+}
+.back-to-top svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
 
 /* ---------- 6. Notice (caveat panel) ---------- */
 .notice{
   margin:18px 0 var(--fn-stack-gap);padding:clamp(13px,3.6vw,18px);
   border:3px solid var(--fn-line);border-left:6px solid var(--fn-pink);border-radius:0;
   background:var(--fn-status-caveat-bg);
-  box-shadow:6px 6px 0 var(--fn-line);
+  box-shadow:6px 6px 0 var(--fn-shadow);
   color:var(--fn-status-caveat-ink);font:.9rem/1.55 var(--fn-prose);
 }
-.notice strong{color:var(--fn-ink);font:900 .78rem/1.4 var(--fn-mono);letter-spacing:.04em;text-transform:uppercase}
+.notice strong{color:var(--fn-status-caveat-ink);font:900 .78rem/1.4 var(--fn-mono);letter-spacing:.04em;text-transform:uppercase}
 
 /* ---------- 7. Stage accordions ---------- */
 .stage{
   background:var(--fn-paper);
   border:3px solid var(--fn-line);border-radius:0;
   margin:0 0 18px;overflow:visible;
-  box-shadow:6px 6px 0 var(--fn-line);
+  box-shadow:6px 6px 0 var(--fn-shadow);
   scroll-margin-top:18px;
 }
 .stage summary{
-  list-style:none;cursor:pointer;display:flex;gap:14px;
-  /* Baseline alignment puts the number badge, the 0% counter and the +/-
-     toggle on the SAME line as the stage title. `center` aligned them to the
-     two-line heading block, which sat ~10px lower than the title text. */
-  align-items:baseline;
-  min-height:64px;padding:clamp(10px,2.7vw,14px);
-  background:var(--fn-cream);
-  border-bottom:0;
+  list-style:none;cursor:pointer;display:grid;
+  grid-template-columns:29px minmax(0,1fr) minmax(4ch,max-content) 24px;
+  grid-template-rows:auto auto;column-gap:clamp(6px,1.6vw,12px);row-gap:2px;
+  align-items:start;min-height:64px;padding:clamp(10px,2.7vw,14px);
+  background:var(--fn-cream);border-bottom:0;
 }
 .stage summary::-webkit-details-marker{display:none}
-.stage summary:after{
-  content:"+";margin-left:auto;
-  color:var(--fn-blue-ink);font:900 1.5rem/1 var(--fn-mono);
-}
-.stage[open] summary:after{content:"\2212"}
+/* The vendored summary adds its own trailing plus, which auto-flows below the
+   number in this grid. Keep only the purpose-built grid indicator. */
+.stage>summary::after,.stage[open]>summary::after{content:none;display:none}
 .stage[open] summary{border-bottom:3px solid var(--fn-line)}
 .stage-num{
-  flex:0 0 29px;width:29px;height:29px;display:grid;place-items:center;
+  grid-column:1;grid-row:1;align-self:start;
+  width:29px;height:29px;display:grid;place-items:center;
   border:2px solid var(--fn-line);border-radius:0;
-  background:var(--fn-pink);color:#fff;
+  background:var(--fn-pink);color:var(--fn-stage-number-ink);
   font:900 .72rem/1 var(--fn-mono);
 }
-.stage-heading{min-width:0;flex:1}
-.stage-heading strong{display:block;color:var(--fn-ink);font:900 1rem/1.2 var(--fn-prose);letter-spacing:-.025em}
-.stage-heading small{display:block;color:var(--fn-muted);margin-top:5px;font:.72rem/1.35 var(--fn-prose)}
-.stage-meter{min-width:70px;text-align:right;color:var(--fn-blue-ink);font:900 .72rem/1.3 var(--fn-mono)}
+.stage-heading{
+  grid-column:2;grid-row:1;align-self:start;min-width:0;margin:0;
+  color:var(--fn-ink);font:900 1rem/1.2 var(--fn-prose);letter-spacing:-.025em;
+}
+.stage-subheading{
+  grid-column:2;grid-row:2;align-self:start;min-width:0;margin:0;
+  color:var(--fn-muted);font:.72rem/1.35 var(--fn-prose);
+}
+.stage-meter{
+  grid-column:3;grid-row:1;align-self:center;min-width:4ch;white-space:nowrap;
+  text-align:right;color:var(--fn-blue-ink);font:900 .72rem/1.2 var(--fn-mono);
+}
+.stage-toggle-indicator{
+  grid-column:4;grid-row:1;align-self:center;display:grid;place-items:center;
+  width:24px;min-width:24px;height:1.2em;margin:0;
+  color:var(--fn-blue-ink);font:900 1.25rem/1 var(--fn-mono);
+}
+.stage-toggle-indicator::before{content:"+"}
+.stage[open] .stage-toggle-indicator::before{content:"−"}
 .stage-body{padding:clamp(11px,3.15vw,16px);background:var(--fn-paper)}
 /* Top margin now equals the bottom margin (was 0 / 14px). */
 .stage-description{max-width:78ch;margin:14px 0 14px;color:var(--fn-ink);font:.94rem/1.55 var(--fn-prose)}
@@ -303,7 +458,7 @@ button{cursor:pointer}
 .outcomes li{
   /* Symmetric 8px top/bottom padding; the marker is a centred filled square. */
   position:relative;padding:8px 10px 8px 30px;
-  border:2px solid var(--fn-line);background:#fff;color:var(--fn-ink);
+  border:2px solid var(--fn-line);background:var(--fn-control-bg);color:var(--fn-ink);
   font:.84rem/1.4 var(--fn-prose);
 }
 .outcomes li::before{
@@ -328,14 +483,14 @@ button{cursor:pointer}
   padding:clamp(13px,3.6vw,18px);
   padding-bottom:calc(clamp(13px,3.6vw,18px) + 56px);
   border:3px solid var(--fn-line);border-radius:0;
-  background:var(--fn-cream);box-shadow:6px 6px 0 var(--fn-line);
+  background:var(--fn-cream);box-shadow:6px 6px 0 var(--fn-shadow);
   transition:transform .14s ease,box-shadow .14s ease;
 }
-.resource:hover{transform:translate(-3px,-3px);box-shadow:10px 10px 0 var(--fn-pink)}
+.resource:hover{transform:translate(-3px,-3px);box-shadow:10px 10px 0 var(--fn-shadow)}
 .resource.done{
   border-color:var(--fn-line);
   background:var(--fn-status-live-bg);
-  box-shadow:6px 6px 0 var(--fn-line);
+  box-shadow:6px 6px 0 var(--fn-shadow);
 }
 /* The generator nests the link inside an unclassed div and puts the completion
    label beside it. Absolute positioning lets both land in the reserved foot
@@ -357,7 +512,7 @@ button{cursor:pointer}
   display:inline-flex;align-items:center;justify-content:flex-start;
   min-width:35px;max-width:100%;padding:3px 6px;
   border:2px solid var(--fn-line);border-radius:0;
-  background:var(--fn-tag-cycle-1);color:var(--fn-ink);
+  background:var(--fn-tag-cycle-1);color:var(--fn-tag-ink);
   font:800 .68rem/1.3 var(--fn-mono);text-align:left;overflow-wrap:break-word;
 }
 .resource-meta .tag:nth-child(5n+1){background:var(--fn-tag-cycle-1)}
@@ -366,8 +521,8 @@ button{cursor:pointer}
 .resource-meta .tag:nth-child(5n+4){background:var(--fn-tag-cycle-4)}
 .resource-meta .tag:nth-child(5n+5){background:var(--fn-tag-cycle-5)}
 /* Same specificity as the nth-child rules, placed later so they win. */
-.resource-meta .tag.cost{background:var(--fn-tag-action);color:var(--fn-ink)}
-.resource-meta .tag.paid{background:var(--fn-tag-pixel);color:var(--fn-ink)}
+.resource-meta .tag.cost{background:var(--fn-tag-action);color:var(--fn-tag-ink)}
+.resource-meta .tag.paid{background:var(--fn-tag-pixel);color:var(--fn-tag-ink)}
 .resource p{margin:6px 0;color:var(--fn-ink);font:.88rem/1.55 var(--fn-prose)}
 /* Card foot: resource link pinned bottom-left, Done pinned bottom-right. */
 .resource a{
@@ -392,10 +547,10 @@ button{cursor:pointer}
   bottom:clamp(13px,3.6vw,18px);
   display:inline-flex;align-items:center;justify-content:center;gap:8px;
   min-height:44px;padding:6px;
-  border:2px solid var(--fn-line);background:#fff;color:var(--fn-muted);
+  border:2px solid var(--fn-line);background:var(--fn-control-bg);color:var(--fn-muted);
   font:800 .67rem/1.3 var(--fn-mono);white-space:nowrap;cursor:pointer;
 }
-.completion input{width:18px;height:18px;margin:0;accent-color:#15805D;cursor:pointer}
+.completion input{width:18px;height:18px;margin:0;accent-color:var(--fn-check-accent);cursor:pointer}
 .resource.done .completion{background:var(--fn-status-live-bg);color:var(--fn-status-live-ink)}
 
 /* ---------- 9. Footer ---------- */
@@ -424,6 +579,7 @@ button{cursor:pointer}
   /* Tighter chips -> progress cards gap where the hero stacks vertically.
      On desktop those two groups sit side by side, so only mobile needs it. */
   .hero{align-items:flex-start;flex-direction:column;gap:12px}
+  .hero>div:first-child{width:100%}
   .hero-stats{width:100%}
   .hero-stat{flex:1}
   .hero::after{opacity:.2}
@@ -445,12 +601,12 @@ button{cursor:pointer}
 .hero-stat strong,.panel-head strong,.stage-meter,.progress-fill,
 #overall-percent,#streak-count{font-variant-numeric:tabular-nums}
 /* Avoid widows on short display headings. */
-.hero h1,.panel h2,.stage-heading strong,.resource h3{text-wrap:balance}
+.hero h1,.panel h2,.stage-heading,.resource h3{text-wrap:balance}
 /* Mobile: remove the 300ms double-tap delay; set the tap flash deliberately. */
 :where(a,button,input,label,summary){touch-action:manipulation}
 :where(a,button,input,label,summary){-webkit-tap-highlight-color:rgba(55,104,255,.18)}
-/* Flex children must be allowed to shrink or long words overflow the card. */
-.toolbar>*,.stage summary>*,.completion>*{min-width:0}
+/* Flexible controls and headings may shrink without forcing horizontal overflow. */
+.toolbar>*,.completion>*{min-width:0}
 
 /* ---------- 12. Motion and print ---------- */
 @media(prefers-reduced-motion:reduce){
@@ -470,7 +626,7 @@ button{cursor:pointer}
   .hero h1,.hero p#subtitle,.hero-stat strong,.hero-stat span{color:#111}
   .eyebrow,.hero-facts span,.hero-stat{border:1px solid #111;background:#fff;color:#111}
   .panel,.toolbar,.notice,.stage,.resource{border:1px solid #111;background:#fff;box-shadow:none}
-  .toolbar,.notice{display:none}
+  .toolbar,.notice,.back-to-top,.hero #theme-toggle{display:none!important}
   .stage,.resource{break-inside:avoid}
   .tag{border:1px solid #111;background:#fff!important}
   a{text-decoration:none}
@@ -478,6 +634,50 @@ button{cursor:pointer}
   .resource a::after{content:" (" attr(href) ")";font-size:.75em;word-break:break-all;color:#333;display:inline}
   @page{margin:14mm}
 }
+
+/* Independent attendance controls and the task-level progress disclosure. */
+.daily-checkin-controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.daily-checkin-controls button{min-height:44px;padding:10px 14px;border:2px solid var(--fn-line);background:var(--fn-yellow);color:var(--fn-accent-ink);font:inherit;font-weight:700;cursor:pointer}
+.daily-checkin-controls button:disabled{background:var(--fn-paper);color:var(--fn-ink);cursor:default}
+.daily-checkin-controls button:focus-visible{outline:3px solid var(--fn-blue);outline-offset:3px}
+.daily-checkin-controls [hidden],.use-detailed[hidden]{display:none}
+
+.completion{cursor:default}
+.selection-progress{font-size:.84rem!important;font-weight:700}
+.milestone-note{font-size:.8rem!important}
+.milestones{margin:12px 0 0;border:2px solid var(--fn-line);background:var(--fn-paper);min-width:0}
+.milestones>summary{display:flex;align-items:center;gap:12px;cursor:pointer;padding:12px;font-weight:800;list-style:revert}
+.milestones>summary::after{content:"+";position:static;margin-left:auto;flex:0 0 auto}
+.milestones[open]>summary{border-bottom:2px solid var(--fn-line)}
+.milestones[open]>summary::after{content:"\2212"}
+.milestone-group{padding:8px 12px 0;font-weight:800!important}
+.milestone-list{margin:0;padding:0 12px 12px;list-style:none}
+.milestone-list li{border-top:1px solid var(--fn-line);padding:8px 0}
+.milestone-label{display:flex;gap:10px;align-items:flex-start;min-height:44px;cursor:pointer;padding:8px 0}
+.milestone-label input{width:22px;height:22px;flex:0 0 22px;margin:0;accent-color:var(--fn-check-accent)}
+.milestone-label span{overflow-wrap:anywhere;font:.9rem/1.5 var(--fn-prose)}
+.milestones:focus-within{outline:2px solid var(--fn-blue);outline-offset:2px}
+.use-detailed{min-height:44px;max-width:100%;white-space:normal;padding:10px;border:2px solid var(--fn-line);background:var(--fn-paper);color:var(--fn-ink);font:inherit;cursor:pointer}
+.prior-learning{border:2px solid var(--fn-line);padding:12px;margin:18px 0;background:var(--fn-paper)}
+.prior-learning summary{cursor:pointer;min-height:44px;font-weight:800;padding:10px 0}
+.prior-learning p{font:.9rem/1.6 var(--fn-prose);overflow-wrap:anywhere}
+
+/* Keep access facts easy to scan in both the summary and full evidence. */
+.access-summary,.access-note-list{
+  list-style-type:square;padding-left:1.2rem;margin:8px 0!important;
+  font-size:.82rem!important;line-height:1.45;overflow-wrap:anywhere;
+}
+.access-summary{font-weight:700}
+.access-summary li,.access-note-list li{margin:0 0 4px}
+.access-summary li:last-child,.access-note-list li:last-child{margin-bottom:0}
+.resource-access{margin:0 0 8px;border-top:1px solid var(--fn-line)}
+.resource-access>summary{
+  display:flex;align-items:center;gap:8px;min-height:44px;padding:6px 0;
+  border:0;background:transparent;cursor:pointer;font:700 .76rem/1.4 var(--fn-mono);
+}
+.stage .resource-access>summary::after{content:"+";margin-left:auto}
+.stage .resource-access[open]>summary::after{content:"\2212"}
+.resource-access>.access-note-list{font-weight:400}
 </style>
 <style data-pals="fieldnotes">
 /* Decorative pals (Piixpal v0.4.0, MIT) — Fieldnotes styling.
@@ -495,6 +695,34 @@ div[data-piixpal] {
   overflow: clip !important;
 }
 
+/* A locally drawn spider hangs from the viewport edge, not a document target.
+   Its pointer-transparent layer stays pinned while the roadmap scrolls. */
+.fieldnotes-dangling-spider {
+  position: fixed;
+  top: env(safe-area-inset-top, 0px);
+  right: max(4px, env(safe-area-inset-right, 0px));
+  z-index: 2147483001;
+  width: 64px;
+  height: 108px;
+  overflow: visible;
+  pointer-events: none;
+}
+.fieldnotes-dangling-spider[hidden] { display: none !important; }
+.fieldnotes-dangling-spider svg { display: block; width: 64px; height: 108px; overflow: visible; }
+.spider-thread { fill: none; stroke: var(--fn-ink); stroke-width: 2; stroke-linecap: round; }
+.spider-legs { fill: none; stroke: var(--fn-ink); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.spider-body { fill: var(--fn-yellow); stroke: var(--fn-ink); stroke-width: 1.6; }
+.spider-eyes { fill: var(--fn-ink); }
+.spider-dangle {
+  transform-box: view-box;
+  transform-origin: 52px 70px;
+  animation: fieldnotes-spider-sway 3.8s ease-in-out infinite;
+}
+@keyframes fieldnotes-spider-sway {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+
 /* The optional control panel sits between the caveat notice and the roadmap.
    Styled with the same square, thick-bordered, hard-shadow language as the
    toolbar. */
@@ -508,7 +736,7 @@ div[data-piixpal] {
   border: 3px solid var(--fn-line);
   border-radius: 0;
   background: var(--fn-cream);
-  box-shadow: 6px 6px 0 var(--fn-line);
+  box-shadow: 6px 6px 0 var(--fn-shadow);
 }
 .pals-controls[hidden] { display: none; }
 
@@ -522,7 +750,7 @@ div[data-piixpal] {
   border: 2px solid var(--fn-line);
   border-radius: 0;
   background: var(--fn-yellow);
-  color: var(--fn-ink);
+  color: var(--fn-accent-ink);
   font: 700 .76rem/1.3 var(--fn-mono);
   text-align: center;
   cursor: pointer;
@@ -531,9 +759,12 @@ div[data-piixpal] {
 .pals-controls button:hover,
 .pals-controls button:focus-visible {
   transform: translate(-1px, -1px);
-  box-shadow: 3px 3px 0 var(--fn-line);
+  box-shadow: 3px 3px 0 var(--fn-shadow);
 }
-.pals-controls button[aria-pressed="false"] { background: var(--fn-cream); }
+.pals-controls button[aria-pressed="false"] {
+  background: var(--fn-cream);
+  color: var(--fn-ink);
+}
 
 .pals-status {
   flex: 1 1 240px;
@@ -546,6 +777,7 @@ div[data-piixpal] {
 /* Decoration never belongs on paper. */
 @media print {
   .pals-controls,
+  .fieldnotes-dangling-spider,
   div[data-piixpal] { display: none !important; }
 }
 
@@ -554,6 +786,7 @@ div[data-piixpal] {
    residual motion if a visitor explicitly opts in anyway. */
 @media (prefers-reduced-motion: reduce) {
   div[data-piixpal] .a { transition: none !important; animation: none !important; }
+  .spider-dangle { animation: none !important; }
 }
 </style>
 </head>
@@ -561,23 +794,21 @@ div[data-piixpal] {
 <a class="skip-link" href="#roadmap">Skip to roadmap</a>
 <div class="app">
 <header class="hero">
-  <div><p class="eyebrow">FIELDNOTES / HR</p><h1 id="title"></h1><p id="subtitle"></p>
-      <div class="hero-facts" aria-label="Roadmap overview"><span>08 STAGES</span><span>27 LEARNING CARDS</span><span>94 HOURS / 20 WEEKS</span><span>24 VERIFIED FREE</span></div></div>
+  <div><div class="hero-eyebrow-row"><p class="eyebrow">FIELDNOTES / HR</p><button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle color theme" data-theme-icon="sun" aria-pressed="false" title="Follows your system setting by default; your choice is saved in this browser."><svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g class="theme-icon-sun"><circle cx="12" cy="12" r="3.75"></circle><path d="M12 1.75v2.1m0 16.3v2.1M4.76 4.76l1.49 1.49m11.5 11.5 1.49 1.49M1.75 12h2.1m16.3 0h2.1M4.76 19.24l1.49-1.49m11.5-11.5 1.49-1.49"></path></g><path class="theme-icon-moon" d="M20.4 15.1A8.55 8.55 0 0 1 8.9 3.6 8.6 8.6 0 1 0 20.4 15.1Z"></path></svg></button></div><h1 id="title"></h1><p id="subtitle"></p>
+      <div class="hero-facts" aria-label="Roadmap overview"><span>08 STAGES</span><span>21 LEARNING CARDS</span><span>94 HOURS / 20 WEEKS</span><span>20 VERIFIED FREE</span></div></div>
   <div class="hero-stats" aria-label="Learning stats"><div class="hero-stat"><strong id="overall-percent">0%</strong><span>complete</span></div><div class="hero-stat"><strong id="streak-count">0</strong><span>day streak</span></div></div>
 </header>
 <section class="dashboard" aria-label="Progress overview">
   <div class="panel"><div class="panel-head"><h2>Overall roadmap</h2><strong id="progress-label">0 of 0 complete</strong></div><div class="progress-track" role="progressbar" aria-label="Overall roadmap progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-fill" id="progress-fill"></div></div><p id="next-step">Start with the first item in the roadmap.</p></div>
   <div class="panel"><div class="panel-head"><h2>Today's check-in</h2><strong id="today-status">Not logged yet</strong></div><p id="reminder-summary">Complete one learning task today to record activity toward your streak.</p></div>
 </section>
-<div class="toolbar" aria-label="Reminder and progress controls">
-  <button class="primary" id="enable-notifications" type="button">Enable browser reminders</button>
-  <label for="reminder-time">Reminder time</label><input id="reminder-time" name="reminder-time" type="time" autocomplete="off" aria-label="Reminder time" title="Reminder time" value="19:00">
-  <span class="status" id="notification-status" role="status" aria-live="polite">Browser reminders require permission and this page to remain open.</span>
-  <button id="export-progress" type="button">Export progress</button>
-  <label class="file-button" for="import-progress">Import progress<input id="import-progress" name="import-progress" type="file" accept="application/json,.json"></label>
-  <button id="reset-progress" type="button">Reset</button>
+<div class="toolbar" aria-label="Tracker controls">
+  <span class="status" id="progress-status" role="status" aria-live="polite">Progress updates will appear here.</span>
+  <button id="export-progress" type="button">Download backup</button>
+  <label class="file-button" for="import-progress">Import backup<input id="import-progress" name="import-progress" type="file" accept="application/json,.json"></label>
+  <button id="reset-progress" type="button">Clear progress</button>
 </div>
-<div class="notice"><strong>Saved on this device.</strong> Progress stays in this browser's local storage, follows this device's local calendar for streaks, and does not sync across devices. Browser notifications are checked while this page is open; they cannot reliably alert you after it is closed. If notifications are unavailable or permission is denied, the in-app check-in still works.</div>
+<div class="notice"><strong>Saved in this browser.</strong> Progress stays here and won't move to other devices. Streaks use your local date. Check off tasks when done; progress is self-reported.</div>
 <div class="pals-controls" id="pals-controls" hidden>
   <button id="pals-toggle" type="button" aria-pressed="true">Pause tiny pals</button>
   <p class="pals-status" id="pals-status" role="status" aria-live="polite"></p>
@@ -587,11 +818,12 @@ div[data-piixpal] {
 </div>
 <script>
 'use strict';
-const DATA = {"title":"Zero to Recruiter: a Talent Acquisition roadmap","subtitle":"An 8-stage path for an absolute beginner in Lagos, Nigeria. About 5 hours a week. Free resources first; paid options are marked and listed separately in the library document.","reminder_time":"19:00","storage_id":"rll-recruiter-ta-2026-10-26","stages":[{"title":"Stage 1: Orientation - what a recruiter actually does","description":"Learn the hiring lifecycle end to end, the vocabulary of talent acquisition, and where the recruiter fits alongside hiring managers. No prior HR knowledge assumed.","duration":"Weeks 1-2","estimated_hours":8,"outcomes":["Describe the stages from workforce planning to onboarding","Name the common recruiter roles and the difference between agency and in-house recruiting","Explain why hiring decisions should be based on defined criteria rather than gut feel"],"resources":[{"title":"The HR Learning Lab: HR Essentials (video playlist)","provider":"HR Learning Lab (YouTube)","url":"https://www.youtube.com/playlist?list=PLeDNHX61_qlQeRK1_i5flRpz2T0wjQXN2","modality":"Free video series","cost":"Free","duration":"1 hour for starter lessons and notes (study budget)","why":"Start with what HR does, the employee life cycle and the wider HR profession before specialising in talent acquisition.","action":"Watch lessons 1-4, then sketch the employee life cycle and explain where recruitment fits. Use remaining study time for notes and review.","access_note":"Checked 2026-10-27: public HR Essentials playlist, 16 listed videos; description and initial lesson titles readable without sign-in. The fetch also exposed a YouTube error banner, so playback and mobile app handoff remain untested. Content developed by Dr. Heather Staples; videos produced using AI-supported tools. This is introductory study, not a professional qualification.","verification_date":"2026-10-27","link_label":"Open the playlist"},{"title":"The HR Learning Lab: Talent Acquisition (video playlist)","provider":"HR Learning Lab (YouTube)","url":"https://www.youtube.com/playlist?list=PLeDNHX61_qlQWYcxZNB19TDOKbl625W2c","modality":"Free video series","cost":"Free","duration":"About 2 hours of selected lessons and notes (study budget)","why":"Short, beginner-oriented lessons on job analysis, workforce planning, recruiting, selection and hiring practice. The fastest way to hear the vocabulary before reading heavier material.","action":"Watch the first five lessons and write a one-page diagram of the hiring lifecycle in your own words.","access_note":"Checked 2026-10-27: public Talent Acquisition playlist, 43 listed videos, description and lesson titles readable without sign-in; playback and mobile app handoff not tested. Creator discloses AI-supported production; confirm consequential claims against primary sources.","verification_date":"2026-10-27","link_label":"Open the playlist"},{"title":"PRDV226: Introduction to Human Resource Management","provider":"Saylor University","url":"https://learn.saylor.org/course/view.php?id=1292","modality":"Written course with lectures and videos","cost":"Free, with a free completion certificate","duration":"About 14 hours for the whole course","why":"Units 1 and 2 cover where the right people are and how to recruit and keep quality employees. It gives the structured foundation the shorter videos skip.","action":"Work through Units 1 and 2 this fortnight; come back for Units 3 and 4 in Stage 2.","access_note":"Verified 2026-10-26 on the course syllabus and the Saylor FAQ: no tuition or fees, all materials free, free course completion certificate at 70 percent on the final exam. A free account is needed for assessments and the exam. Only the proctored college-credit route carries a fee; you do not need it for the free certificate.","verification_date":"2026-10-26","link_label":"Open the course"},{"title":"Principles of Management, Chapter 11: Human Resource Management","provider":"OpenStax (Rice University)","url":"https://openstax.org/books/principles-management/pages/11-introduction","modality":"Free peer-reviewed textbook","cost":"Free","duration":"About 1 hour for the introduction and section 11.1","why":"A university-level explanation of how HR became a strategic function and what talent acquisition is for. Useful when you need the reasoning, not just the steps.","action":"Read the chapter introduction and 11.1; note three ways HR creates value that you can repeat in an interview.","access_note":"Verified 2026-10-26: free openly licensed textbook, readable in web view. US-oriented examples; treat the legal sections as context, not Nigerian law.","verification_date":"2026-10-26","link_label":"Read Chapter 11"}]},{"title":"Stage 2: Foundations - fair process, job roles and the law","description":"Build the ground rules: equal opportunity, job and person requirements, the recruitment and selection sequence, and the legal duties that apply when handling candidate information in Nigeria.","duration":"Weeks 3-5","estimated_hours":14,"outcomes":["Run a full and fair recruitment and selection process step by step","Separate job requirements from person specifications","Recognise the basic compliance duties that apply to candidate data in Nigeria"],"resources":[{"title":"Human resources: recruitment and selection","provider":"The Open University (OpenLearn)","url":"https://www.open.edu/openlearn/money-business/human-resources/human-resources-recruitment-and-selection/content-section-0","modality":"Free written course with activities","cost":"Free, with a free statement of participation","duration":"12 hours","why":"The single best free beginner course for the actual sequence: job analysis, job description, person specification, attracting applicants, advertising, shortlisting and references. It is the spine of this stage.","action":"Complete sections 4.2 to 4.5 and draft a job analysis for one real Lagos vacancy you find online.","access_note":"Verified 2026-10-26 on the provider course page: free course, free statement of participation; a free account is needed to track progress, claim the statement and open all quizzes and activities. Course content was last updated in 2018 and uses UK equality-law framing - pair it with the Nigerian sources in Stage 7.","verification_date":"2026-10-26","link_label":"Open the free course"},{"title":"Diploma in Human Resources (HR)","provider":"Alison","url":"https://alison.com/course/diploma-in-human-resources-hr","modality":"Free video diploma course","cost":"Free to study; the optional certificate costs extra","duration":"10-15 hours","why":"A video-led alternative to the text-heavy OpenLearn course. It covers the key skills and responsibilities of HR, recruitment and selection, and employee separation.","action":"Use it for revision: watch the recruitment and selection modules and compare the sequence with OpenLearn section 4.","access_note":"Verified 2026-10-26 on Alison's help centre and certification page: all courses are free to study and complete; a paid digital or printed certificate is optional and a free Learner Record is available instead. The provider page did not show an exact certificate price, so I am not quoting one. Alison lists 15 free recruitment courses on its recruitment tag page.","verification_date":"2026-10-26","link_label":"Open the course"},{"title":"BUS301: Human Resource Management","provider":"Saylor University","url":"https://learn.saylor.org/course/BUS301","modality":"Written course with lectures and videos","cost":"Free, with a free completion certificate","duration":"About 24 hours for the full course","why":"A deeper follow-on to PRDV226 with strategic HR planning, staffing, compliance and labour relations. Use selected units rather than the whole course if you are short on time.","action":"Read the staffing and recruitment/selection units only; skip performance and compensation units until you are job hunting.","access_note":"Verified 2026-10-26 via the Saylor FAQ and course syllabus: no tuition or fees, free final exam and free completion certificate. The US employment-law material is not Nigerian law.","verification_date":"2026-10-26","link_label":"Open the course"},{"title":"Recruiting, Hiring, and Onboarding Employees (audit option)","provider":"University of Minnesota on Coursera","url":"https://www.coursera.org/learn/recruiting-hiring-onboarding-employees","modality":"University video course","cost":"Paid or conditional - not counted as confirmed free","duration":"About 2 weeks at 10 hours a week (about 20 hours)","why":"The syllabus is a strong match for this roadmap: workforce planning, job analysis, legal selection, sourcing, hiring analytics and onboarding. Four modules with 14 videos in module 1 alone.","action":"Only consider it after the free stages. Try to select the Full Course, No Certificate option if it is offered to you, then decide whether the certificate is worth paying for.","access_note":"NOT counted as confirmed free. Verified 2026-10-26: the course page shows an 'Enroll for free' button and 'Included with Coursera Plus', but the same page's FAQ says that to access course materials you need to purchase the Certificate experience, start a Free Trial, or use a Full Course, No Certificate option where available. I could not confirm that the no-certificate option is offered for this course. Financial aid is mentioned in the FAQ. Prices vary by region and promotion; check the page before enrolling.","verification_date":"2026-10-26","link_label":"Check the enrolment options"}]},{"title":"Stage 3: Define the role - job analysis, descriptions and success criteria","description":"Before sourcing anyone, learn to work out what the job actually requires and what good evidence of it looks like. Most bad hiring starts here.","duration":"Weeks 6-7","estimated_hours":10,"outcomes":["Turn a vague request into a written job description and person specification","Define measurable hiring attributes before speaking to candidates","Build a simple scorecard that every interviewer can use"],"resources":[{"title":"ONET OnLine (Occupational Information Network)","provider":"US Department of Labor","url":"https://www.onetonline.org/","modality":"Free official occupational database","cost":"Free","duration":"About 2 hours to explore one occupation properly","why":"Over 1,000 occupation profiles with tasks, skills, knowledge and work activities. It teaches you how to derive requirements from the work itself instead of copying a competitor's advert.","action":"Look up one role you want to recruit for, export the task list, and highlight the five tasks a new hire must do in month one.","access_note":"Verified 2026-10-26: free public database, 1,016 occupation titles listed on the site, no login seen. It is US data, so use it to learn the method of job analysis, then validate duties against Nigerian job adverts.","verification_date":"2026-10-26","link_label":"Search occupations"},{"title":"HR templates: job descriptions, interview kits and email templates","provider":"Workable","url":"https://resources.workable.com/hr-templates/","modality":"Free official templates and guides","cost":"Free","duration":"1-2 hours to adapt a template","why":"More than 1,000 free job descriptions, 390-plus interview kits, 50-plus recruiting email templates, onboarding checklists and Boolean cheatsheets. Good raw material once you understand the structure.","action":"Rewrite one downloaded job description so that every requirement maps to a task you identified in ONET. Delete anything you cannot defend.","access_note":"Verified 2026-10-26 on the provider templates index: templates are described as free to download. The page also advertises a separate 15-day free trial of the paid Workable software; you do not need the trial to use the templates. Templates are generic and US/UK flavoured - localise pay, notice and leave wording.","verification_date":"2026-10-26","link_label":"Browse the free templates"},{"title":"Structured hiring: Introduction (with free worksheets)","provider":"Greenhouse Support","url":"https://support.greenhouse.io/hc/en-us/articles/360007245452-Structured-hiring-Introduction","modality":"Free official process documentation","cost":"Free","duration":"About 2 hours including the worksheets","why":"Sets out the six-step structured hiring process: role kick-off, scorecard definition, interview planning, interview kit, sourcing and interviewing, and candidate round-up. It makes you define success before you search.","action":"Download the linked worksheet and build a scorecard for your practice role with no more than six attributes.","access_note":"Verified 2026-10-26 on the provider support article: the article and its two downloadable PDFs (a structured interview worksheet about 4 MB and an interactive eBook about 9 MB) are available without a login. The document is product documentation but the method transfers to any hiring process.","verification_date":"2026-10-26","link_label":"Read and download"}]},{"title":"Stage 4: Find people - sourcing, Boolean search and candidate experience","description":"Learn where candidates are, how to search for them, how to write outreach that gets replies, and how to treat people well while doing it.","duration":"Weeks 8-10","estimated_hours":14,"outcomes":["Build Boolean search strings for a real role","Compare job boards, referrals, pipelines and direct search","Write a short outreach message and a simple candidate experience plan"],"resources":[{"title":"Boolean search cheatsheets for sourcing","provider":"Workable","url":"https://resources.workable.com/boolean-search-cheatsheets/","modality":"Free written cheat sheets","cost":"Free","duration":"About 2 hours to practise","why":"Role-specific Boolean strings show you how brackets, quotes, AND, OR and NOT actually work when searching for people. This is the core craft skill of sourcing.","action":"Take one cheatsheet, rebuild its string for a Lagos-based role, and run it in a free search engine. Save ten plausible profiles and note why each matched.","access_note":"Verified 2026-10-26 on the provider page: the cheatsheets are free with no account or payment shown. Most examples target technical and sales roles; adapt the keywords for Nigerian job titles.","verification_date":"2026-10-26","link_label":"Open the cheatsheets"},{"title":"Talent Sourcing Strategies (video 16)","provider":"HR Learning Lab (YouTube)","url":"https://www.youtube.com/watch?v=yMnw_2VNOVE","modality":"Free video lesson","cost":"Free","duration":"7 minutes","why":"A quick tour of employer branding, referrals, job boards, pipelines, CV mining and job fairs, plus the growth-mindset argument for looking past job titles.","action":"After watching, pick two sourcing channels that fit a small Lagos employer and explain why you skipped the others.","access_note":"Verified 2026-10-26: public video, no payment shown. Content developed by Heather Staples, PhD, SPHR, SHRM-SCP; the description states the videos are produced using AI-supported tools. Useful as an overview, not as a primary authority.","verification_date":"2026-10-26","link_label":"Watch the lesson"},{"title":"Google re:Work guides (hiring set)","provider":"Google re:Work","url":"https://rework.withgoogle.com/intl/en/guides/","modality":"Free official practice guides","cost":"Free","duration":"About 3 hours across the relevant guides","why":"The index lists 23 free guides. The hiring ones cover creating a job description, reviewing resumes, shaping candidate experience, structured interviewing, interviewer training, hiring committees and onboarding. They are the closest thing to an open playbook from a major employer.","action":"From the index, open Shape the candidate experience and note three changes you would make to a typical Nigerian recruitment process.","access_note":"Verified 2026-10-26 on the provider guides index: 23 guides listed with step and tool counts, no login or payment shown. Individual guides were not all opened; the structured interviewing and interviewer training guides were read directly. Google's data is from its own workforce, not Nigerian employers.","verification_date":"2026-10-26","link_label":"Open the guides index"},{"title":"Jobberman free employer listing (practice channel)","provider":"Jobberman Nigeria","url":"https://www.jobberman.com/employer/free-listing","modality":"Free job board and applicant tracking tool","cost":"Free listing; paid tiers exist","duration":"1-2 hours to set up a practice advert","why":"A Nigeria-specific channel where you can see how local employers write adverts and how applicants are sorted. Useful for practising without spending money.","action":"Draft and save a practice advert for your Stage 3 role. Do not publish a real vacancy without authorisation.","access_note":"Partially verified on 2026-10-26: the provider page returned only a cookie banner when I retrieved it, so I could not read the full terms. The free-listing claim comes from Jobberman's own search listing, which describes free job posting, CV sorting and an ATS. Confirm current terms, eligibility and any limits before relying on it.","verification_date":"2026-10-26","link_label":"Check the free listing"}]},{"title":"Stage 5: Screen and shortlist - reading CVs against criteria","description":"Turn a pile of applications into a defensible shortlist. Practice consistent screening before you ever speak to a candidate.","duration":"Weeks 11-12","estimated_hours":10,"outcomes":["Screen a CV against the scorecard instead of against your impressions","Write a short phone-screen script with the same questions for everyone","Record evidence for rejections in a way you can defend"],"resources":[{"title":"Google re:Work guide: Review resumes","provider":"Google re:Work","url":"https://rework.withgoogle.com/intl/en/guides/","modality":"Free official practice guide","cost":"Free","duration":"About 1 hour","why":"A five-step guide to screening for qualifications, consistency and impact. It gives you an explicit standard, which is what most beginner screeners lack.","action":"From the guides index, open Review resumes. Then screen ten practice CVs and write one line of evidence for each decision.","access_note":"Verified 2026-10-26 on the provider guides index, where Review resumes is listed as a five-step guide. I did not open the individual guide page, so the exact steps were not read. No login or payment shown on the index.","verification_date":"2026-10-26","link_label":"Open the guides index"},{"title":"Greenhouse guidance library (screening and interviewing)","provider":"Greenhouse","url":"https://www.greenhouse.com/guidance","modality":"Free official articles, eBooks and worksheets","cost":"Free","duration":"2-3 hours browsing and reading","why":"Filterable by topic, including interviewing, candidate experience, DE and I, and recruiter tips. It shows how a hiring-software company explains screening problems to recruiters.","action":"Read one interviewing article and one bias-related article, then add two bias checks to your Stage 3 scorecard.","access_note":"Verified 2026-10-26 on the provider guidance hub: articles, eBooks, webinars and worksheets listed as free resources. Some gated items such as the 2026 hiring benchmarks report may require a form; treat those as unverified for free access. Content is vendor marketing as well as guidance.","verification_date":"2026-10-26","link_label":"Open the guidance hub"},{"title":"OpenLearn section 4.10: Shortlisting (revisit)","provider":"The Open University (OpenLearn)","url":"https://www.open.edu/openlearn/money-business/human-resources/human-resources-recruitment-and-selection/content-section-0","modality":"Free written course section","cost":"Free","duration":"About 1 hour","why":"Rather than a new course, return to the shortlisting section of the Stage 2 course now that you have a real scorecard. It connects fair selection criteria to paperwork and references.","action":"Re-read 4.10 to 4.12 and compare its shortlisting method with your Stage 3 scorecard. Note one conflict and how you would resolve it.","access_note":"Same free course as Stage 2; no separate card or extra cost. Verification details are in the Stage 2 card.","verification_date":"2026-10-26","link_label":"Return to the course"}]},{"title":"Stage 6: Interview and decide - structured interviewing in practice","description":"Learn the highest-value skill in this roadmap: asking the same well-designed questions and scoring answers against a written rubric.","duration":"Weeks 13-15","estimated_hours":16,"outcomes":["Write behavioural and hypothetical questions tied to defined attributes","Build a rubric that distinguishes poor, borderline, solid and outstanding answers","Run a mock interview and score it independently of a partner"],"resources":[{"title":"A guide to structured interviewing for better hiring practices","provider":"Google re:Work","url":"https://rework.withgoogle.com/intl/en/guides/a-guide-to-structured-interviewing-for-better-hiring-practices","modality":"Free official practice guide","cost":"Free","duration":"About 2 hours","why":"The most important single document in this library. Updated in March 2026, it explains the four parts of structured interviewing, how to define hiring attributes, how to draft questions and follow-ups, and how to score with a shared rubric.","action":"Write eight questions for your practice role: four behavioural and four hypothetical, each mapped to a scorecard attribute. Add what a poor and an outstanding answer would sound like.","access_note":"Verified 2026-10-26 by reading the provider page: marked Updated March 2026, free, no login or payment shown. Google reports these results from its own hiring data; the method is widely supported by research, but the specific numbers are not a promise for your context.","verification_date":"2026-10-26","link_label":"Read the guide"},{"title":"Effective interviewer training for better candidate experiences","provider":"Google re:Work","url":"https://rework.withgoogle.com/intl/en/guides/effective-interviewer-training-for-better-candidate-experiences","modality":"Free official practice guide","cost":"Free","duration":"About 1 hour","why":"Shows how to write useful interview feedback, avoid vague comments and personality judgements, and leave time for candidate questions. This is what makes a rubric work in a real panel.","action":"After your mock interview, rewrite your feedback using the guide's rules and check whether a stranger could reconstruct the evidence.","access_note":"Verified via the provider's own page content returned in search results on 2026-10-26; the guide is part of the same free re:Work set. The page itself was not opened directly, so individual steps were not fully read.","verification_date":"2026-10-26","link_label":"Read the guide"},{"title":"Reuse: Greenhouse structured hiring introduction and Workable interview kits","provider":"Greenhouse and Workable","url":"https://support.greenhouse.io/hc/en-us/articles/360007245452-Structured-hiring-Introduction","modality":"Free official templates and process docs","cost":"Free","duration":"About 2 hours","why":"You already have these from Stage 3. The Greenhouse worksheet turns your questions into an interview plan; the Workable kits show how commercial teams package questions by stage.","action":"Assemble a one-page interview kit: purpose, attributes, questions, scoring anchors and a recommendation field.","access_note":"No new resource or cost. Verification details are in the Stage 3 cards.","verification_date":"2026-10-26","link_label":"Reopen the worksheets"}]},{"title":"Stage 7: Offer, onboarding and the law in Nigeria","description":"Close the loop: references, offers, onboarding, and the two legal areas that a Lagos-based recruiter will meet immediately - data protection and employment law.","duration":"Weeks 16-17","estimated_hours":10,"outcomes":["Explain the lawful bases for processing candidate data under Nigerian law","Draft a short candidate privacy notice","Read the recruiting provisions of the Labour Act and know when to escalate to a lawyer"],"resources":[{"title":"Nigeria Data Protection Act 2023: General Application and Implementation Directive (GAID) 2025","provider":"Nigeria Data Protection Commission (NDPC)","url":"https://ndpc.gov.ng/wp-content/uploads/2025/07/NDP-ACT-GAID-2025-MARCH-20TH.pdf","modality":"Free primary legal guidance (official PDF)","cost":"Free","duration":"About 3 hours for the relevant articles","why":"A recruiter handles CVs, references and background checks, which are personal data. The GAID sets out the principles, lawful bases, consent rules, information duties for data subjects, breach notification and data processing agreements.","action":"Read Articles 15, 16, 17, 18, 27, 33 and 34, then draft a six-line privacy notice you could put on a job application form.","access_note":"Verified 2026-10-26 by reading the official NDPC PDF (reference NDPC/NDP ACT-GAID/01/2025). I read the arrangement of articles and the opening articles, not the entire document. This is a regulator's implementation directive, not the Act itself, and it is not legal advice. Confirm the current text and any later amendments with a Nigerian lawyer.","verification_date":"2026-10-26","link_label":"Open the official PDF"},{"title":"Labour Act, Chapter L1 Laws of the Federation of Nigeria 2004","provider":"PLAC Laws of Nigeria (statute copy); ILO NATLEX listing","url":"https://lawsofnigeria.placng.org/laws/L1.pdf","modality":"Free primary legislation (official-style PDF)","cost":"Free","duration":"About 2 hours for Parts I and II","why":"Part II is specifically about recruiting, including prohibitions on recruiting without a permit or licence, employer permits, recruiter licences and restrictions. Section 7 covers written particulars of employment terms, which matters when you prepare an offer.","action":"Read sections 7, 23, 24, 25, 26 and 71. Write down three questions you would ask an employer before running a search on their behalf.","access_note":"Verified 2026-10-26 by reading the free statute PDF. The Act dates from 1971 and is reproduced as Cap. L1 LFN 2004; the ILO NATLEX entry records the 1990 revised edition. It may have been amended or partly superseded, so check current law and get local legal advice before acting on it. This is an official-style reproduction, not a government gazette download.","verification_date":"2026-10-26","link_label":"Open the statute PDF"},{"title":"Google re:Work: onboarding and candidate experience guides","provider":"Google re:Work","url":"https://rework.withgoogle.com/intl/en/guides/","modality":"Free official practice guides","cost":"Free","duration":"About 2 hours","why":"Closes the loop from Stage 4. The data-driven onboarding guide and the candidate experience guide show what happens after the offer is signed, which is where a recruiter's responsibility often quietly ends.","action":"From the guides index, open the onboarding guide and sketch a 30-day onboarding checklist for your practice role.","access_note":"Verified 2026-10-26 on the provider guides index; those two guides are listed among the 23 free results. I did not open the individual guide pages. No login or payment shown on the index.","verification_date":"2026-10-26","link_label":"Open the guides index"}]},{"title":"Stage 8: Work the process - tools, metrics and getting hired","description":"Pull the pieces into a portfolio, learn the numbers recruiters are judged on, and start applying for junior recruiter and HR assistant roles in Lagos.","duration":"Weeks 18-20","estimated_hours":12,"outcomes":["Track a practice pipeline in a free tool and report simple funnel numbers","Present one finished hiring project as a portfolio piece","Apply for entry-level roles with evidence rather than certificates alone"],"resources":[{"title":"Managing Your Contacts With the HubSpot CRM","provider":"HubSpot Academy","url":"https://academy.hubspot.com/lessons/managing-your-contacts-with-the-hubspot-crm","modality":"Free short video lesson","cost":"Free","duration":"20 minutes","why":"A free CRM is a practical stand-in for an applicant tracking system while you practise. The Academy's course catalogue is explicitly free and online.","action":"Create a free account, add your ten practice candidates, and label each with a stage so you can produce a funnel count.","access_note":"Verified 2026-10-26 on the HubSpot Academy courses page: the catalogue is described as completely free and online, with a free account required; this lesson is listed at 20 minutes. The CRM is a commercial product with paid tiers; the free tier is enough for the practice task.","verification_date":"2026-10-26","link_label":"Open the lesson"},{"title":"Greenhouse guidance: recruiting metrics and benchmarks","provider":"Greenhouse","url":"https://www.greenhouse.com/guidance","modality":"Free official articles and reports","cost":"Free","duration":"2-3 hours","why":"Recruiters are judged on time to hire, source of hire, pass-through rates and quality of hire. Learning the vocabulary lets you discuss your practice project in an interview.","action":"Calculate four funnel rates from your practice pipeline and write a short paragraph explaining the bottleneck.","access_note":"Verified 2026-10-26 on the provider guidance hub: free articles and resources listed. The 2026 hiring benchmarks report is advertised on the same page and may require a form; I did not verify its access terms, so do not assume the underlying dataset is freely downloadable.","verification_date":"2026-10-26","link_label":"Open the guidance hub"},{"title":"CIPM Nigeria: professional membership by examination","provider":"Chartered Institute of Personnel Management of Nigeria","url":"https://cipmnigeria.org/membership/membership-routes/","modality":"Paid professional qualification","cost":"Paid - NGN fees shown on the provider site","duration":"Five exam stages, four exam diets a year","why":"CIPM is the body chartered to regulate HR practice in Nigeria. Its syllabus shows the local body of knowledge, including Nigerian Labour Law, workforce planning and HR metrics, and its qualification is recognised locally.","action":"Do not enrol yet. Read the syllabus and exam FAQ, then decide after you have six months of experience whether the qualification is right for your path.","access_note":"Verified 2026-10-26 on the provider membership routes page and exam FAQ. Published fees: application NGN 10,000; acceptance NGN 12,000; Foundation NGN 55,440; Intermediate I NGN 57,190; Intermediate II NGN 58,200; Professional I NGN 64,050; Professional II NGN 70,050, with exemption fees from NGN 20,250 to NGN 24,300. The provider states fees are subject to review. Minimum entry is a degree or HND with five SSCE credits including English and Mathematics; undergraduates may enrol but are inducted only after graduating. Prices are in naira because the provider publishes in naira; no USD conversion is implied.","verification_date":"2026-10-26","link_label":"Check current fees"}]}]};
+const DATA = {"title":"Zero to Recruiter: a Talent Acquisition roadmap","subtitle":"Learn recruiting in Lagos, one step at a time. Plan about 5 hours a week. Free resources come first; paid options are marked.","reminder_time":"19:00","storage_id":"rll-recruiter-ta-2026-10-26","stages":[{"title":"Stage 1: What recruiters do","description":"Learn the hiring process from workforce planning to onboarding, and where recruiters work with hiring managers.","duration":"Weeks 1-2","estimated_hours":8,"outcomes":["Trace hiring from workforce planning to onboarding","Compare agency and in-house recruiter roles","Use clear criteria instead of gut feel"],"resources":[{"title":"The HR Learning Lab: HR Essentials (video playlist)","provider":"HR Learning Lab (YouTube)","url":"https://www.youtube.com/playlist?list=PLeDNHX61_qlQeRK1_i5flRpz2T0wjQXN2","modality":"Free video series","cost":"Free","duration":"1 hour for starter lessons and notes","why":"Learn what HR does, then see where recruiting fits in the employee life cycle.","action":"Watch lessons 1–4. Sketch the employee life cycle and mark where recruitment fits.","access_note":"Checked 2026-10-27: public HR Essentials playlist, 16 listed videos; description and initial lesson titles readable without sign-in. The fetch also exposed a YouTube error banner, so playback and mobile app handoff remain untested. Content developed by Dr. Heather Staples; videos produced using AI-supported tools. This is introductory study, not a professional qualification.","verification_date":"2026-10-27","link_label":"Open the playlist"},{"title":"The HR Learning Lab: Talent Acquisition (video playlist)","provider":"HR Learning Lab (YouTube)","url":"https://www.youtube.com/playlist?list=PLeDNHX61_qlQWYcxZNB19TDOKbl625W2c","modality":"Free video series","cost":"Free","duration":"About 2 hours for selected lessons and notes","why":"Get the key terms and a quick tour of job analysis, sourcing, selection and hiring.","action":"Watch the first five lessons. Draw the hiring process in your own words.","access_note":"Checked 2026-10-27: public Talent Acquisition playlist, 43 listed videos, description and lesson titles readable without sign-in; playback and mobile app handoff not tested. Creator discloses AI-supported production; confirm consequential claims against primary sources.","verification_date":"2026-10-27","link_label":"Open the playlist"}]},{"title":"Stage 2: Fair hiring basics","description":"Learn fair hiring, job requirements, selection steps and the rules for candidate data in Nigeria.","duration":"Weeks 3-5","estimated_hours":14,"outcomes":["Follow a fair hiring process","Separate job requirements from person specifications","Handle candidate data with care"],"resources":[{"title":"Human resources: recruitment and selection","provider":"The Open University (OpenLearn)","url":"https://www.open.edu/openlearn/money-business/human-resources/human-resources-recruitment-and-selection/content-section-0","modality":"Free written course with activities","cost":"Free; optional Statement of Participation","duration":"About 12 hours for the full course; assigned sections 4.2–4.5 only","why":"See how job analysis leads to a job description and person specification.","action":"Read sections 4.2–4.5. Draft a job analysis, job description and person specification for a Lagos vacancy. Tie each criterion to the work.","access_note":"Checked 2026-10-26 on the official OpenLearn course page: the course text is free and its sections can be opened without signing in. A free account is needed to track progress, access all quizzes and activities, and claim the free Statement of Participation. Course content was last updated in 2018 and uses UK equality-law framing; pair it with the Nigerian sources in Stage 7.","verification_date":"2026-10-26","link_label":"Open the free course"},{"title":"BUS301: Human Resource Management","provider":"Saylor University","url":"https://learn.saylor.org/course/BUS301","modality":"Mixed written course and videos","cost":"Free course and certificate","duration":"About 5 hours for assigned Units 2–3; about 24 hours for the full course","why":"Review staffing plans, job analysis, interviews, tests and offers through readings, videos and practice.","action":"Complete Units 2–3: readings, videos and practice. Skip the other units.","access_note":"Checked 2026-10-26 on the official BUS301 page and Saylor FAQ: no tuition or fees; a free account is required to enroll; course materials and the course-completion certificate are free, subject to completing the course requirements. U.S. employment-law material is not Nigerian law.","verification_date":"2026-10-26","link_label":"Open the course"},{"title":"Recruiting, Hiring, and Onboarding Employees","provider":"University of Minnesota on Coursera","url":"https://www.coursera.org/learn/recruiting-hiring-onboarding-employees","modality":"University video course","cost":"Full course not confirmed free; paid options","duration":"About 20 hours for the full course","why":"Covers workforce planning, job analysis, sourcing, selection, hiring metrics and onboarding.","action":"After the free stages, check whether a preview or no-certificate option is available. Confirm trial and billing terms before enrolling; free access is not confirmed.","access_note":"NOT confirmed free for the full course. Checked 2026-10-26 on the course page and Coursera Help Center: “Enroll for free” does not establish permanent free access. The page lists inclusion with Coursera Plus (a paid subscription); the course FAQ says course materials are available through paid Certificate access, a free trial, or Full Course, No Certificate where available. A Coursera account may be required to enroll or use a preview; no account-free full-course route was verified. Coursera Help says previews for most courses are limited to the first module and provide no certificate; Full Course, No Certificate is offered only for selected courses. I could not confirm that this course offers that option. A free trial is temporary, not proof of ongoing free access; the course-specific duration, post-trial billing/cancellation terms, and Nigeria checkout price were not verified. Financial aid is mentioned in the FAQ. Eligibility and course-specific coverage were not confirmed; it is not counted as free. Treat as paid/conditional, not confirmed free. Prices vary by region and promotion.","verification_date":"2026-10-26","link_label":"Check the enrolment options"}]},{"title":"Stage 3: Define the role","description":"Define the work and what success looks like before you source candidates.","duration":"Weeks 6-7","estimated_hours":10,"outcomes":["Turn a vague request into a job description","Set clear hiring criteria before interviews","Build a scorecard for every interviewer"],"resources":[{"title":"O*NET OnLine: occupation tasks, skills and knowledge","provider":"US Department of Labor","url":"https://www.onetonline.org/","modality":"Free official occupational database","cost":"Free; U.S. data","duration":"About 2 hours","why":"Set role requirements from the work, not from another job advert.","action":"Search O*NET for your practice role. Pick five duties to check against Nigerian job ads.","access_note":"Checked 2026-10-26 on the official O*NET homepage: public occupation search and profile information opened without a sign-in or payment prompt. Account: not required for the public database. Form: none shown. Trial: none. Certificate: none offered. The classifications and labour-market data are U.S.-based, not Nigerian requirements.","verification_date":"2026-10-26","link_label":"Search occupations"},{"title":"Recruiter job description (free public sample)","provider":"Workable","url":"https://resources.workable.com/recruiter-job-description","modality":"Free written job-description example","cost":"Free sample; software trial separate","duration":"About 1 hour","why":"See how a recruiter role summary, duties and requirements fit together.","action":"Compare the sample with a Lagos vacancy. Keep supported requirements and mark each essential or desirable.","access_note":"Checked 2026-10-26 on Workable’s Recruiter job-description page: the sample text is publicly readable without payment or sign-in. Account: not required to read. Form: none shown for the sample. Trial: Workable advertises a separate 15-day software trial for posting jobs; it is not needed to study or adapt the sample. Certificate: none offered. The template is generic and should be localised.","verification_date":"2026-10-26","link_label":"Browse the free templates"},{"title":"Structured hiring: Introduction (free worksheets)","provider":"Greenhouse Support","url":"https://support.greenhouse.io/hc/en-us/articles/360007245452-Structured-hiring-Introduction","modality":"Free official process documentation","cost":"Free article and PDFs","duration":"About 2 hours including the worksheets","why":"Learn the six steps of structured hiring, starting with clear success criteria.","action":"Download the worksheet. Build a scorecard for your practice role with up to six criteria.","access_note":"Checked 2026-10-26 on Greenhouse Support: the six-step structured-hiring article is readable and links two direct PDF downloads. Account: not required. Form: none shown for the article or downloads. Trial: none needed; Greenhouse software is a separate product. Certificate: none offered. The method is product documentation but transfers to other hiring systems.","verification_date":"2026-10-26","link_label":"Read and download"}]},{"title":"Stage 4: Find candidates","description":"Find candidates, write clear outreach and treat people well throughout hiring.","duration":"Weeks 8-10","estimated_hours":14,"outcomes":["Write Boolean searches for a real role","Compare referrals, job boards and direct search","Plan outreach and candidate updates"],"resources":[{"title":"Boolean search cheatsheet: Google operators for sourcing","provider":"Workable","url":"https://resources.workable.com/hire-hr-directors-boolean-search-strings","modality":"Free written Boolean-search example","cost":"Free article and PDF","duration":"About 1–2 hours to adapt and practise","why":"Use search operators to find candidates by role, skill and location.","action":"Write three Boolean strings for a Lagos role. Test with dummy terms; do not collect real CVs or personal data.","access_note":"Checked 2026-10-26 on the individual Workable cheat sheet and its public index: the article and PDF link are readable without payment, sign-in or a content form. Account: not required. Form: none shown. Trial: a separate 15-day Workable hiring-software trial is advertised in the page footer; it is not needed to use the cheat sheet. Certificate: none offered.","verification_date":"2026-10-26","link_label":"Open the cheatsheets"},{"title":"Talent Sourcing Strategies (video 16)","provider":"HR Learning Lab (YouTube)","url":"https://www.youtube.com/watch?v=yMnw_2VNOVE","modality":"Free video lesson","cost":"Free","duration":"7 minutes","why":"Compare sourcing options such as referrals, job boards, pipelines and job fairs.","action":"Watch the video. Pick two channels for a small Lagos employer and explain why.","access_note":"Checked 2026-10-26 on the public YouTube video page: 6:34, with description and transcript accessible without payment or sign-in. Account: not required for this public listing. Form: none. Trial: none. Certificate: none offered. The creator discloses AI-supported production; playback was not tested, and this is an overview rather than a primary authority.","verification_date":"2026-10-26","link_label":"Watch the lesson"},{"title":"How to create a positive experience for candidates","provider":"Google re:Work","url":"https://rework.withgoogle.com/intl/en/guides/how-to-create-a-positive-experience-for-candidates","modality":"Free official practice guide","cost":"Free","duration":"About 1 hour","why":"Plan clear candidate updates, interview preparation and respectful decisions.","action":"Draft a first-contact message and an update plan for a Lagos role. Include interview prep and delay updates.","access_note":"Checked 2026-10-26 by reading the full Google re:Work guide (updated March 2026). Account: not required. Form: none shown. Trial: none. Payment: none. Certificate: none offered. The examples describe Google’s own practice, not Nigerian law or a guarantee of outcomes.","verification_date":"2026-10-26","link_label":"Open the guides index"}]},{"title":"Stage 5: Screen and shortlist","description":"Use job criteria to shortlist fairly before you speak with candidates.","duration":"Weeks 11-12","estimated_hours":10,"outcomes":["Screen CVs against the scorecard","Ask everyone the same job-related questions","Record clear reasons for each decision"],"resources":[{"title":"OpenLearn section 4.10: Shortlisting","provider":"The Open University (OpenLearn)","url":"https://www.open.edu/openlearn/money-business/human-resources/human-resources-recruitment-and-selection/content-section-4.10/","modality":"Free written course section and activity","cost":"Free to read; account for course extras","duration":"About 1 hour","why":"Practise comparing candidates against a job specification.","action":"Read section 4.10 and do its shortlisting activity. Give one job-related reason per choice; check your assumptions.","access_note":"Checked 2026-10-26 on the direct OpenLearn section page: the section and activity instructions are readable without signing in. Account: a free account is needed to enrol, save progress, use course activities/quizzes and claim the free Statement of Participation; it is not needed to read this section. Form: account creation only. Trial/payment: none. Certificate: optional free Statement of Participation, not a professional qualification. The course uses older UK examples; use Stage 7 for Nigerian legal material.","verification_date":"2026-10-26","link_label":"Return to the course"},{"title":"Screening Candidates (video 24)","provider":"HR Learning Lab (YouTube)","url":"https://www.youtube.com/watch?v=zariLo_tX00","modality":"Free video lesson","cost":"Free public video","duration":"8 minutes","why":"Review screening steps from CVs to references.","action":"Watch the video. Draft five phone-screen questions tied to job criteria. Use fictional records; do not judge protected or irrelevant traits.","access_note":"Checked 2026-10-26 on the public YouTube page: the 8:14 listing and transcript were accessible without payment or sign-in. Account: not required for this public listing. Form: none. Trial: none. Certificate: none offered. Playback was not tested. The creator discloses AI-supported production; the transcript mentions U.S. federal/state rules, which are not Nigerian legal guidance.","verification_date":"2026-10-26","link_label":"Watch the screening video"}]},{"title":"Stage 6: Interview and decide","description":"Ask job-related questions and score answers against a shared rubric.","duration":"Weeks 13-15","estimated_hours":16,"outcomes":["Write behavioural and hypothetical questions","Set clear examples for scoring answers","Run a mock interview and compare scores"],"resources":[{"title":"A guide to structured interviewing for better hiring practices","provider":"Google re:Work","url":"https://rework.withgoogle.com/intl/en/guides/a-guide-to-structured-interviewing-for-better-hiring-practices","modality":"Free official practice guide","cost":"Free","duration":"About 2 hours","why":"Learn to set criteria, write interview questions and score answers consistently.","action":"Write eight questions: four behavioural and four hypothetical. Link each to your Stage 3 scorecard and add poor and strong answer examples.","access_note":"Checked 2026-10-26 by reading the full Google re:Work guide (updated March 2026). Account: not required. Form: none shown. Trial: none. Payment: none. Certificate: none offered. The guide’s examples and internal results are Google-specific; use the method, not its metrics as local guarantees.","verification_date":"2026-10-26","link_label":"Read the guide"},{"title":"Effective interviewer training for better candidate experiences","provider":"Google re:Work","url":"https://rework.withgoogle.com/intl/en/guides/effective-interviewer-training-for-better-candidate-experiences","modality":"Free official practice guide","cost":"Free","duration":"About 1 hour","why":"Give useful feedback with evidence and leave time for candidate questions.","action":"After the mock interview, rewrite your notes with evidence so another person can follow your decision.","access_note":"Checked 2026-10-26 by reading the full Google re:Work guide (updated March 2026). Account: not required. Form: none shown. Trial: none. Payment: none. Certificate: none offered. It is guidance, not a formal interviewer qualification.","verification_date":"2026-10-26","link_label":"Read the guide"}]},{"title":"Stage 7: Offers, onboarding and Nigerian law","description":"Learn the basics of offers, onboarding, data protection and employment law in Nigeria.","duration":"Weeks 16-17","estimated_hours":10,"outcomes":["Explain why candidate data needs a lawful basis","Draft a short privacy notice","Know when to check the law or ask a lawyer"],"resources":[{"title":"Nigeria Data Protection Act 2023: General Application and Implementation Directive (GAID) 2025","provider":"Nigeria Data Protection Commission (NDPC)","url":"https://ndpc.gov.ng/wp-content/uploads/2025/07/NDP-ACT-GAID-2025-MARCH-20TH.pdf","modality":"Free primary legal guidance (official PDF)","cost":"Free","duration":"About 3 hours","why":"Learn the data-protection rules recruiters meet when they handle CVs and references.","action":"Read Articles 15, 16, 17, 18, 27, 33 and 34. Draft a six-line privacy notice for a job application.","access_note":"Checked 2026-10-26 by opening the official NDPC PDF: the document is publicly readable without an account, form, trial or payment; no certificate is offered. I checked its arrangement of articles and opening provisions, not every assigned article or the whole directive. It is regulatory guidance, not legal advice; confirm current law with a Nigerian lawyer.","verification_date":"2026-10-26","link_label":"Open the official PDF"},{"title":"Labour Act, Chapter L1 Laws of the Federation of Nigeria 2004","provider":"PLAC Laws of Nigeria (statute copy); ILO NATLEX listing","url":"https://lawsofnigeria.placng.org/laws/L1.pdf","modality":"Free primary legislation (official-style PDF)","cost":"Free","duration":"About 2 hours","why":"Review recruiting rules and the written terms employers must give workers.","action":"Read sections 7, 23, 24, 25, 26 and 71. Write three questions to ask before sourcing for an employer.","access_note":"Checked 2026-10-26 by opening the public PLAC PDF: no account, form, trial or payment is required; no certificate is offered. This is an official-style reproduction, not a government gazette. The Labour Act dates from 1971/Cap. L1 LFN 2004 and may have been amended or partly superseded; verify current law and seek Nigerian legal advice before acting.","verification_date":"2026-10-26","link_label":"Open the statute PDF"},{"title":"A data-driven approach to optimizing employee onboarding","provider":"Google re:Work","url":"https://rework.withgoogle.com/intl/en/guides/a-data-driven-approach-to-optimizing-employee-onboarding","modality":"Free official practice guide","cost":"Free","duration":"About 1 hour","why":"Use new-hire check-ins to spot gaps in tools, skills and support.","action":"Draft a 30-day onboarding checklist. Give each item an owner and check-in date.","access_note":"Checked 2026-10-26 by reading the full Google re:Work page (August 2025). Account: not required. Form: none shown. Trial: none. Payment: none. Certificate: none offered. The examples describe Google’s own programme; adapt the approach to a Lagos employer.","verification_date":"2026-10-26","link_label":"Open the guides index"}]},{"title":"Stage 8: Tools, metrics and job search","description":"Bring your work together, track hiring metrics and apply for junior roles in Lagos.","duration":"Weeks 18-20","estimated_hours":12,"outcomes":["Track a practice hiring pipeline","Show one hiring project in a portfolio","Apply with evidence, not just certificates"],"resources":[{"title":"Managing Your Contacts With the HubSpot CRM","provider":"HubSpot Academy","url":"https://academy.hubspot.com/lessons/managing-your-contacts-with-the-hubspot-crm","modality":"Free short video lesson","cost":"Free","duration":"20 minutes for the lesson","why":"Use a free CRM as a simple stand-in for an applicant tracking system.","action":"Create a free Academy account. Add ten fictional candidates to the free CRM, track their stages and count the funnel. Never upload real candidate data.","access_note":"Checked 2026-10-26 on the lesson page and HubSpot CRM product page. Study: the lesson is explicitly free (four videos, 20 minutes). Account: a free Academy account is required; the signup form collects account details and the page states that product updates/promotional emails may be sent. Form: account creation only, no separate lesson form. Trial/payment: the CRM free tier is described as non-expiring and requires no credit card; paid tiers exist but are not needed. Certificate: none is advertised for this lesson.","verification_date":"2026-10-26","link_label":"Open the lesson"},{"title":"HR Metrics That Support Hiring Decisions (video 43)","provider":"HR Learning Lab (YouTube)","url":"https://www.youtube.com/watch?v=LPzWMrLvMGY","modality":"Free video lesson","cost":"Free public video","duration":"4 minutes","why":"Learn key hiring measures, including time to fill and selection ratio.","action":"Watch the video. Note the selection-ratio and time-to-fill formulas, then calculate stage conversions in your fictional pipeline.","access_note":"Checked 2026-10-26 on the public YouTube page: the 4:19 listing and transcript were accessible without payment or sign-in. Account: not required for this public listing. Form: none. Trial: none. Certificate: none offered. Playback was not tested. The creator discloses AI-supported production; use the definitions as a primer and verify consequential decisions against primary sources.","verification_date":"2026-10-26","link_label":"Watch the hiring-metrics video"},{"title":"The Hire Standard: Fall 2026 U.S. recruiting benchmarks","provider":"Greenhouse","url":"https://cdn.prod.website-files.com/6668a687e71e2722fccb8357/6af3aa54e0a5c01ffec1552e_The-Hire-Standard-Fall-2026_US.pdf","modality":"Free public report (PDF)","cost":"Free PDF; U.S. data only","duration":"About 45 minutes","why":"See how hiring funnel rates vary by company size in a U.S. case study.","action":"Read the summary and funnel tables. Note how rates vary by company size, then calculate your practice-pipeline rates.","access_note":"Checked 2026-10-26 on Greenhouse’s report page and direct PDF. Study: the provider advertises free access and the direct PDF opened without account, payment or a submitted form; the landing page has a free-access/download CTA. Account: not required for the direct file. Form: no form submission was needed at the PDF URL. Trial: none. Certificate: none offered. Data covers U.S. organizations using Greenhouse through August 2026 and is not a Nigerian benchmark.","verification_date":"2026-10-26","link_label":"Open the guidance hub"}]}]};
 const STORAGE_KEY = 'rll-roadmap-progress-v1:' + (DATA.storage_id || DATA.title || 'roadmap').toLowerCase().replace(/[^a-z0-9]+/g,'-');
 const RESOURCE_ITEMS = [];
-const PROGRESS_IDENTITIES = [{"id":"orientation","resources":["hr-essentials","talent-acquisition","saylor-prdv226","openstax-hr"]},{"id":"foundations","resources":["openlearn-recruitment","alison-hr-diploma","saylor-bus301","coursera-hiring"]},{"id":"define-role","resources":["onet-job-analysis","workable-job-templates","greenhouse-scorecard"]},{"id":"sourcing","resources":["workable-boolean","hrlab-sourcing-video","google-hiring-guides","jobberman-practice"]},{"id":"screening","resources":["google-cv-review","greenhouse-screening","openlearn-shortlisting"]},{"id":"interviewing","resources":["google-structured-interviews","google-interviewer-training","interview-kit-practice"]},{"id":"nigerian-law","resources":["ndpc-gaid","nigeria-labour-act","google-onboarding"]},{"id":"career-tools","resources":["hubspot-contacts","greenhouse-metrics","cipm-professional-route"]}];
-DATA.stages.forEach((stage,si) => { stage.id=PROGRESS_IDENTITIES[si].id; stage.resources.forEach((resource,ri) => { resource.id=PROGRESS_IDENTITIES[si].resources[ri]; }); });
+const PROGRESS_IDENTITIES = [{"id":"orientation","resources":[{"id":"hr-essentials","milestones":[{"id":"first-iteration:hr-essentials:action","label":"Watch lessons 1\u20134. Sketch the employee life cycle and mark where recruitment fits.","kind":"task","required":true,"url":null}],"milestone_note":"","optional":false,"learning_notes":[],"references":[],"access_note":"Checked 2026-10-27: public HR Essentials playlist, 16 listed videos; description and initial lesson titles readable without sign-in. The fetch also exposed a YouTube error banner, so playback and mobile app handoff remain untested. Content developed by Dr. Heather Staples; videos produced using AI-supported tools. This is introductory study, not a professional qualification.","access_summary":"Public playlist; no sign-in to read. Playback untested. AI-assisted, introductory content."},{"id":"talent-acquisition","milestones":[{"id":"first-iteration:talent-acquisition:action","label":"Watch the first five lessons. Draw the hiring process in your own words.","kind":"task","required":true,"url":null}],"milestone_note":"","optional":false,"learning_notes":[],"references":[],"access_note":"Checked 2026-10-27: public Talent Acquisition playlist, 43 listed videos, description and lesson titles readable without sign-in; playback and mobile app handoff not tested. Creator discloses AI-supported production; confirm consequential claims against primary sources.","access_summary":"Public playlist; no sign-in to read. Playback untested. AI-assisted; check key claims."}]},{"id":"foundations","resources":[{"id":"openlearn-recruitment","milestones":[{"id":"first-iteration:openlearn-recruitment:action","label":"Read sections 4.2\u20134.5. Draft a job analysis, job description and person specification for a Lagos vacancy. Tie each criterion to the work.","kind":"task","required":true,"url":null}],"milestone_note":"","optional":false,"learning_notes":[],"references":[],"access_note":"Checked 2026-10-26 on the official OpenLearn course page: the course text is free and its sections can be opened without signing in. A free account is needed to track progress, access all quizzes and activities, and claim the free Statement of Participation. Course content was last updated in 2018 and uses UK equality-law framing; pair it with the Nigerian sources in Stage 7.","access_summary":"Free to read without sign-in. Account for quizzes and the free participation statement. Older UK-law examples; use Nigerian sources too."},{"id":"saylor-bus301","milestones":[{"id":"first-iteration:saylor-bus301:action","label":"Complete Units 2\u20133: readings, videos and practice. Skip the other units.","kind":"task","required":true,"url":null}],"milestone_note":"","optional":false,"learning_notes":[],"references":[],"access_note":"Checked 2026-10-26 on the official BUS301 page and Saylor FAQ: no tuition or fees; a free account is required to enroll; course materials and the course-completion certificate are free, subject to completing the course requirements. U.S. employment-law material is not Nigerian law.","access_summary":"Free course and certificate; account needed to enroll. U.S. law examples, not Nigerian law."},{"id":"coursera-hiring","milestones":[{"id":"first-iteration:coursera-hiring:action","label":"After the free stages, check whether a preview or no-certificate option is available. Confirm trial and billing terms before enrolling; free access is not confirmed.","kind":"task","required":true,"url":null}],"milestone_note":"","optional":false,"learning_notes":[],"references":[],"access_note":"NOT confirmed free for the full course. Checked 2026-10-26 on the course page and Coursera Help Center: \u201cEnroll for free\u201d does not establish permanent free access. The page lists inclusion with Coursera Plus (a paid subscription); the course FAQ says course materials are available through paid Certificate access, a free trial, or Full Course, No Certificate where available. A Coursera account may be required to enroll or use a preview; no account-free full-course route was verified. Coursera Help says previews for most courses are limited to the first module and provide no certificate; Full Course, No Certificate is offered only for selected courses. I could not confirm that this course offers that option. A free trial is temporary, not proof of ongoing free access; the course-specific duration, post-trial billing/cancellation terms, and Nigeria checkout price were not verified. Financial aid is mentioned in the FAQ. Eligibility and course-specific coverage were not confirmed; it is not counted as free. Treat as paid/conditional, not confirmed free. Prices vary by region and promotion.","access_summary":"Full-course access is not confirmed free. A preview may cover only module 1; Plus and certificates are paid. Trial terms and Nigeria pricing are unverified."}]},{"id":"define-role","resources":[{"id":"onet-job-analysis","milestones":[{"id":"first-iteration:onet-job-analysis:action","label":"Search O*NET for your practice role. Pick five duties to check against Nigerian job ads.","kind":"task","required":true,"url":null}],"milestone_note":"","optional":false,"learning_notes":[],"references":[],"access_note":"Checked 2026-10-26 on the official O*NET homepage: public occupation search and profile information opened without a sign-in or payment prompt. Account: not required for the public database. Form: none shown. Trial: none. Certificate: none offered. The classifications and labour-market data are U.S.-based, not Nigerian requirements.","access_summary":"Free public database; no account needed. U.S. data, not Nigerian requirements."},{"id":"workable-job-templates","milestones":[{"id":"first-iteration:workable-job-templates:action","label":"Compare the sample with a Lagos vacancy. Keep supported requirements and mark each essential or desirable.","kind":"task","required":true,"url":null}],"milestone_note":"","optional":false,"learning_notes":[],"references":[],"access_note":"Checked 2026-10-26 on Workable\u2019s Recruiter job-description page: the sample text is publicly readable without payment or sign-in. Account: not required to read. Form: none shown for the sample. Trial: Workable advertises a separate 15-day software trial for posting jobs; it is not needed to study or adapt the sample. Certificate: none offered. The template is generic and should be localised.","access_summary":"Free sample; no sign-in to read. The 15-day software trial is separate and not needed."},{"id":"greenhouse-scorecard","milestones":[{"id":"first-iteration:greenhouse-scorecard:action","label":"Download the worksheet. Build a scorecard for your practice role with up to six criteria.","kind":"task","required":true,"url":null}],"milestone_note":"","optional":false,"learning_notes":[],"references":[],"access_note":"Checked 2026-10-26 on Greenhouse Support: the six-step structured-hiring article is readable and links two direct PDF downloads. Account: not required. Form: none shown for the article or downloads. Trial: none needed; Greenhouse software is a separate product. Certificate: none offered. The method is product documentation but transfers to other hiring systems.","access_summary":"Free article and two PDFs; no account or form. The method works beyond Greenhouse."}]},{"id":"sourcing","resources":[{"id":"workable-boolean","milestones":[{"id":"first-iteration:workable-boolean:action","label":"Write three Boolean strings for a Lagos role. Test with dummy terms; do not collect real CVs or personal data.","kind":"task","required":true,"url":null}],"milestone_note":"","optional":false,"learning_notes":[],"references":[],"access_note":"Checked 2026-10-26 on the individual Workable cheat sheet and its public index: the article and PDF link are readable without payment, sign-in or a content form. Account: not required. Form: none shown. Trial: a separate 15-day Workable hiring-software trial is advertised in the page footer; it is not needed to use the cheat sheet. Certificate: none offered.","access_summary":"Free article and PDF; no sign-in or form. The software trial is separate."},{"id":"hrlab-sourcing-video","milestones":[{"id":"first-iteration:hrlab-sourcing-video:action","label":"Watch the video. Pick two channels for a small Lagos employer and explain why.","kind":"task","required":true,"url":null}],"milestone_note":"","optional":false,"learning_notes":[],"references":[],"access_note":"Checked 2026-10-26 on the public YouTube video page: 6:34, with description and transcript accessible without payment or sign-in. Account: not required for this public listing. Form: none. Trial: none. Certificate: none offered. The creator discloses AI-supported production; playback was not tested, and this is an overview rather than a primary authority.","access_summary":"Public video and transcript; no sign-in or payment. Playback untested. AI-assisted overview."},{"id":"google-hiring-guides","milestones":[{"id":"first-iteration:google-hiring-guides:action","label":"Draft a first-contact message and an update plan for a Lagos role. Include interview prep and delay updates.","kind":"task","required":true,"url":null}],"milestone_note":"","optional":false,"learning_notes":[],"references":[],"access_note":"Checked 2026-10-26 by reading the full Google re:Work guide (updated March 2026). Account: not required. Form: none shown. Trial: none. Payment: none. Certificate: none offered. The examples describe Google\u2019s own practice, not Nigerian law or a guarantee of outcomes.","access_summary":"Free guide; no account or form. Google examples, not Nigerian law or guaranteed results."}]},{"id":"screening","resources":[{"id":"openlearn-shortlisting","milestones":[{"id":"first-iteration:openlearn-shortlisting:action","label":"Read section 4.10 and do its shortlisting activity. Give one job-related reason per choice; check your assumptions.","kind":"task","required":true,"url":null}],"milestone_note":"","optional":false,"learning_notes":[],"references":[],"access_note":"Checked 2026-10-26 on the direct OpenLearn section page: the section and activity instructions are readable without signing in. Account: a free account is needed to enrol, save progress, use course activities/quizzes and claim the free Statement of Participation; it is not needed to read this section. Form: account creation only. Trial/payment: none. Certificate: optional free Statement of Participation, not a professional qualification. The course uses older UK examples; use Stage 7 for Nigerian legal material.","access_summary":"Free to read without sign-in. Account for course activities and the free participation statement. Older UK examples; use Nigerian sources too."},{"id":"hrlab-screening-candidates","milestones":[{"id":"first-iteration:hrlab-screening-candidates:action","label":"Watch the video. Draft five phone-screen questions tied to job criteria. Use fictional records; do not judge protected or irrelevant traits.","kind":"task","required":true,"url":null}],"milestone_note":"","optional":false,"learning_notes":[],"references":[],"access_note":"Checked 2026-10-26 on the public YouTube page: the 8:14 listing and transcript were accessible without payment or sign-in. Account: not required for this public listing. Form: none. Trial: none. Certificate: none offered. Playback was not tested. The creator discloses AI-supported production; the transcript mentions U.S. federal/state rules, which are not Nigerian legal guidance.","access_summary":"Public video and transcript; no sign-in. Playback untested. AI-assisted; U.S. law is not Nigerian guidance."}]},{"id":"interviewing","resources":[{"id":"google-structured-interviews","milestones":[{"id":"first-iteration:google-structured-interviews:action","label":"Write eight questions: four behavioural and four hypothetical. Link each to your Stage 3 scorecard and add poor and strong answer examples.","kind":"task","required":true,"url":null}],"milestone_note":"","optional":false,"learning_notes":[],"references":[],"access_note":"Checked 2026-10-26 by reading the full Google re:Work guide (updated March 2026). Account: not required. Form: none shown. Trial: none. Payment: none. Certificate: none offered. The guide\u2019s examples and internal results are Google-specific; use the method, not its metrics as local guarantees.","access_summary":"Free guide; no account. Google examples and results are not local guarantees."},{"id":"google-interviewer-training","milestones":[{"id":"first-iteration:google-interviewer-training:action","label":"After the mock interview, rewrite your notes with evidence so another person can follow your decision.","kind":"task","required":true,"url":null}],"milestone_note":"","optional":false,"learning_notes":[],"references":[],"access_note":"Checked 2026-10-26 by reading the full Google re:Work guide (updated March 2026). Account: not required. Form: none shown. Trial: none. Payment: none. Certificate: none offered. It is guidance, not a formal interviewer qualification.","access_summary":"Free guide; no account. Guidance, not a formal qualification."}]},{"id":"nigerian-law","resources":[{"id":"ndpc-gaid","milestones":[{"id":"first-iteration:ndpc-gaid:action","label":"Read Articles 15, 16, 17, 18, 27, 33 and 34. Draft a six-line privacy notice for a job application.","kind":"task","required":true,"url":null}],"milestone_note":"","optional":false,"learning_notes":[],"references":[],"access_note":"Checked 2026-10-26 by opening the official NDPC PDF: the document is publicly readable without an account, form, trial or payment; no certificate is offered. I checked its arrangement of articles and opening provisions, not every assigned article or the whole directive. It is regulatory guidance, not legal advice; confirm current law with a Nigerian lawyer.","access_summary":"Public NDPC PDF; no sign-in or payment. Only opening provisions checked. Not legal advice."},{"id":"nigeria-labour-act","milestones":[{"id":"first-iteration:nigeria-labour-act:action","label":"Read sections 7, 23, 24, 25, 26 and 71. Write three questions to ask before sourcing for an employer.","kind":"task","required":true,"url":null}],"milestone_note":"","optional":false,"learning_notes":[],"references":[],"access_note":"Checked 2026-10-26 by opening the public PLAC PDF: no account, form, trial or payment is required; no certificate is offered. This is an official-style reproduction, not a government gazette. The Labour Act dates from 1971/Cap. L1 LFN 2004 and may have been amended or partly superseded; verify current law and seek Nigerian legal advice before acting.","access_summary":"Public PLAC copy; no account or payment. Not a government gazette; the law may have changed. Ask a Nigerian lawyer."},{"id":"google-onboarding","milestones":[{"id":"first-iteration:google-onboarding:action","label":"Draft a 30-day onboarding checklist. Give each item an owner and check-in date.","kind":"task","required":true,"url":null}],"milestone_note":"","optional":false,"learning_notes":[],"references":[],"access_note":"Checked 2026-10-26 by reading the full Google re:Work page (August 2025). Account: not required. Form: none shown. Trial: none. Payment: none. Certificate: none offered. The examples describe Google\u2019s own programme; adapt the approach to a Lagos employer.","access_summary":"Free guide; no account. Google examples; adapt them for a Lagos employer."}]},{"id":"career-tools","resources":[{"id":"hubspot-contacts","milestones":[{"id":"first-iteration:hubspot-contacts:action","label":"Create a free Academy account. Add ten fictional candidates to the free CRM, track their stages and count the funnel. Never upload real candidate data.","kind":"task","required":true,"url":null}],"milestone_note":"","optional":false,"learning_notes":[],"references":[],"access_note":"Checked 2026-10-26 on the lesson page and HubSpot CRM product page. Study: the lesson is explicitly free (four videos, 20 minutes). Account: a free Academy account is required; the signup form collects account details and the page states that product updates/promotional emails may be sent. Form: account creation only, no separate lesson form. Trial/payment: the CRM free tier is described as non-expiring and requires no credit card; paid tiers exist but are not needed. Certificate: none is advertised for this lesson.","access_summary":"Free 20-minute lesson; Academy account needed. The CRM tier does not expire or need a credit card; paid tiers exist."},{"id":"hrlab-hiring-metrics","milestones":[{"id":"first-iteration:hrlab-hiring-metrics:action","label":"Watch the video. Note the selection-ratio and time-to-fill formulas, then calculate stage conversions in your fictional pipeline.","kind":"task","required":true,"url":null}],"milestone_note":"","optional":false,"learning_notes":[],"references":[],"access_note":"Checked 2026-10-26 on the public YouTube page: the 4:19 listing and transcript were accessible without payment or sign-in. Account: not required for this public listing. Form: none. Trial: none. Certificate: none offered. Playback was not tested. The creator discloses AI-supported production; use the definitions as a primer and verify consequential decisions against primary sources.","access_summary":"Public video and transcript; no sign-in. Playback untested. AI-assisted primer; verify key decisions with primary sources."},{"id":"greenhouse-metrics","milestones":[{"id":"first-iteration:greenhouse-metrics:action","label":"Read the summary and funnel tables. Note how rates vary by company size, then calculate your practice-pipeline rates.","kind":"task","required":true,"url":null}],"milestone_note":"","optional":false,"learning_notes":[],"references":[],"access_note":"Checked 2026-10-26 on Greenhouse\u2019s report page and direct PDF. Study: the provider advertises free access and the direct PDF opened without account, payment or a submitted form; the landing page has a free-access/download CTA. Account: not required for the direct file. Form: no form submission was needed at the PDF URL. Trial: none. Certificate: none offered. Data covers U.S. organizations using Greenhouse through August 2026 and is not a Nigerian benchmark.","access_summary":"Free direct PDF; no account or form. U.S. Greenhouse customer data through August 2026, not a Nigerian benchmark."}]}];
+DATA.retired_resources = [];
+DATA.stages.forEach((stage,si) => { stage.id=PROGRESS_IDENTITIES[si].id; stage.resources.forEach((resource,ri) => { Object.assign(resource,PROGRESS_IDENTITIES[si].resources[ri]); }); });
 let state = loadState();
 
 function el(tag, className, text) {
@@ -610,6 +842,14 @@ function localDateKey(date = new Date()) {
 }
 function dateFromKey(key) { const [y,m,d] = key.split('-').map(Number); return new Date(y,m-1,d,12,0,0,0); }
 function previousDay(key) { const d = dateFromKey(key); d.setDate(d.getDate()-1); return localDateKey(d); }
+// Preserve the existing payload before the first version-3 write.
+// Resource identities, aliases and the storage ID stay unchanged.
+function preserveProgressUpgradeSnapshot() {
+  const before=localStorage.getItem(STORAGE_KEY);
+  if(!before) return;
+  if(!localStorage.getItem(STORAGE_KEY+':before-progress-v3'))
+    localStorage.setItem(STORAGE_KEY+':before-progress-v3',before);
+}
 // Local extension: resource identities and backup validation, independent of order.
 function progressAliases() { return {"hr-essentials-v1": "resource:hr-essentials", "s0-complete": "stage:orientation", "s0-r0": "resource:talent-acquisition", "s0-r1": "resource:saylor-prdv226", "s0-r2": "resource:openstax-hr", "s1-complete": "stage:foundations", "s1-r0": "resource:openlearn-recruitment", "s1-r1": "resource:alison-hr-diploma", "s1-r2": "resource:saylor-bus301", "s1-r3": "resource:coursera-hiring", "s2-complete": "stage:define-role", "s2-r0": "resource:onet-job-analysis", "s2-r1": "resource:workable-job-templates", "s2-r2": "resource:greenhouse-scorecard", "s3-complete": "stage:sourcing", "s3-r0": "resource:workable-boolean", "s3-r1": "resource:hrlab-sourcing-video", "s3-r2": "resource:google-hiring-guides", "s3-r3": "resource:jobberman-practice", "s4-complete": "stage:screening", "s4-r0": "resource:google-cv-review", "s4-r1": "resource:greenhouse-screening", "s4-r2": "resource:openlearn-shortlisting", "s5-complete": "stage:interviewing", "s5-r0": "resource:google-structured-interviews", "s5-r1": "resource:google-interviewer-training", "s5-r2": "resource:interview-kit-practice", "s6-complete": "stage:nigerian-law", "s6-r0": "resource:ndpc-gaid", "s6-r1": "resource:nigeria-labour-act", "s6-r2": "resource:google-onboarding", "s7-complete": "stage:career-tools", "s7-r0": "resource:hubspot-contacts", "s7-r1": "resource:greenhouse-metrics", "s7-r2": "resource:cipm-professional-route"}; }
 function progressDate(value) {
@@ -620,7 +860,7 @@ function progressDate(value) {
 function progressTime(value) { return typeof value === 'string' && /^(?:[01]\d|2[0-3]):[0-5]\d$/.test(value); }
 function normalizeProgress(value, imported = false) {
   if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('format');
-  if (imported && value.version !== undefined && ![1,2].includes(value.version)) throw new Error('version');
+  if (imported && value.version !== undefined && ![1,2,3].includes(value.version)) throw new Error('version');
   if (value.storage_id !== undefined && value.storage_id !== DATA.storage_id) throw new Error('roadmap');
   if (imported && (!value.done || typeof value.done !== 'object' || Array.isArray(value.done) || !Array.isArray(value.activityDates))) throw new Error('format');
   const input = value.done && typeof value.done === 'object' && !Array.isArray(value.done) ? value.done : {};
@@ -633,8 +873,29 @@ function normalizeProgress(value, imported = false) {
     if (target !== key && Object.prototype.hasOwnProperty.call(input,target)) continue;
     done[target] = checked;
   }
-  return {version:2, storage_id:DATA.storage_id, done,
-    activityDates:[...new Set((Array.isArray(value.activityDates)?value.activityDates:[]).filter(progressDate))],
+  const booleanMap = key => {
+    const input=value[key]; const result=Object.create(null);
+    if(input === undefined) return result; // earlier check-in-only version 3 files
+    if(!input || typeof input!=='object' || Array.isArray(input)) throw new Error('milestone format');
+    for(const [id,checked] of Object.entries(input)) {
+      if(['__proto__','constructor','prototype'].includes(id)) continue;
+      if(typeof checked!=='boolean') throw new Error('milestone type');
+      result[id]=checked;
+    }
+    return result;
+  };
+  const milestones=booleanMap('milestones'), detailed=booleanMap('detailed');
+  const dates = key => [...new Set((Array.isArray(value[key])?value[key]:[]).filter(progressDate))];
+  if (imported && value.version === 3) {
+    if (value.storage_id !== DATA.storage_id || !Array.isArray(value.manualCheckinDates) || !Array.isArray(value.legacyActivityDates)) throw new Error('check-in format');
+    if (![...value.manualCheckinDates,...value.legacyActivityDates].every(progressDate)) throw new Error('check-in date');
+  }
+  // A version 3 file must supply provenance. Older dates remain legacy activity.
+  const manualCheckinDates = value.version === 3 ? dates('manualCheckinDates') : [];
+  const legacyActivityDates = value.version === 3 ? dates('legacyActivityDates') : dates('activityDates');
+  return {version:3, storage_id:DATA.storage_id, done, milestones, detailed,
+    manualCheckinDates, legacyActivityDates,
+    activityDates:[...new Set([...legacyActivityDates,...manualCheckinDates])],
     reminderTime:progressTime(value.reminderTime)?value.reminderTime:(DATA.reminder_time||'19:00'),
     notificationsEnabled:!imported && value.notificationsEnabled===true,
     lastNotificationDate:progressDate(value.lastNotificationDate)?value.lastNotificationDate:''};
@@ -644,15 +905,217 @@ function loadState() {
   catch (_) { return normalizeProgress({}); }
 }
 
+// Explicit attendance is separate from resource completion. No timers award credit.
+function renderDailyCheckin() {
+  const today = localDateKey();
+  const manual = state.manualCheckinDates.includes(today);
+  const logged = state.activityDates.includes(today);
+  document.getElementById('today-status').textContent = logged ? 'Checked in today' : 'Not checked in yet';
+  document.getElementById('reminder-summary').textContent = logged
+    ? 'Today’s study is recorded. Your roadmap progress is separate.'
+    : 'A little learning counts. You do not need to finish a lesson.';
+  const button = document.getElementById('daily-checkin');
+  if (button) { button.disabled = logged; button.textContent = logged ? 'Checked in today' : 'I studied today'; }
+  const undo = document.getElementById('undo-checkin');
+  if (undo) undo.hidden = !manual;
+}
+function changeDailyCheckin(undo = false) {
+  const today = localDateKey();
+  const candidate = normalizeProgress({...state,
+    manualCheckinDates: undo ? state.manualCheckinDates.filter(date => date !== today)
+      : [...new Set([...state.manualCheckinDates,today])]
+  });
+  // Write before replacing in-memory state: storage failures must not claim success.
+  try {
+    preserveProgressUpgradeSnapshot();
+    const old = localStorage.getItem(STORAGE_KEY);
+    if (old && !localStorage.getItem(STORAGE_KEY + ':before-checkins-v3')) {
+      localStorage.setItem(STORAGE_KEY + ':before-checkins-v3',old);
+    }
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(candidate));
+  } catch (_) { setNotice('Could not save your check-in. Existing progress was not replaced. Export a backup and retry.'); return false; }
+  state = candidate;
+  updateDashboard();
+  setNotice(undo ? 'Today’s manual check-in removed. Previous activity is preserved.' : 'Checked in for today. Roadmap progress is unchanged.');
+  return true;
+}
+function setupDailyCheckin() {
+  const panel = document.getElementById('today-status').closest('.panel');
+  const controls = el('div','daily-checkin-controls');
+  const button = el('button','','I studied today'); button.type='button'; button.id='daily-checkin';
+  const undo = el('button','','Undo today’s check-in'); undo.type='button'; undo.id='undo-checkin'; undo.hidden=true;
+  controls.append(button,undo); panel.append(controls);
+  button.addEventListener('click',()=>changeDailyCheckin());
+  undo.addEventListener('click',()=>changeDailyCheckin(true));
+  const refresh = () => { if (document.visibilityState !== 'hidden') updateDashboard(); };
+  window.addEventListener('focus',refresh);
+  document.addEventListener('visibilitychange',refresh);
+  setInterval(refresh,30000);
+  renderDailyCheckin();
+}
+
+// Each first-iteration resource has one required action tick. Progress is
+// self-reported; array positions never identify saved work.
+function isGrandfathered(resource) {
+  return state.done['resource:'+resource.id] === true && state.detailed[resource.id] !== true;
+}
+function resourceFraction(resource) {
+  if (isGrandfathered(resource)) return 1;
+  const required = resource.milestones.filter(m=>m.required);
+  return required.length ? required.filter(m=>state.milestones[m.id]===true).length / required.length : 0;
+}
+function balancedProgress(resources) {
+  const core=resources.filter(r=>!r.optional);
+  const fractions=core.map(resourceFraction);
+  const completed=fractions.filter(n=>n===1).length;
+  const fraction=core.length ? fractions.reduce((a,b)=>a+b,0)/core.length : 0;
+  return {total:core.length,completed,pct:completed===core.length && core.length ? 100 : Math.min(99,Math.floor(fraction*100+1e-9))};
+}
+function persistMilestoneState(candidate) {
+  try {
+    preserveProgressUpgradeSnapshot();
+    const old=localStorage.getItem(STORAGE_KEY);
+    if(old && !localStorage.getItem(STORAGE_KEY+':before-milestones-v3')) localStorage.setItem(STORAGE_KEY+':before-milestones-v3',old);
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(candidate));
+  } catch (_) { setNotice('Could not save task progress. Existing progress was not replaced. Export a backup and retry.'); return false; }
+  state=candidate; updateMilestoneViews(); updateDashboard(); updateStageMeters(); return true;
+}
+function changeMilestone(id,checked) {
+  const candidate=normalizeProgress({...state,milestones:{...state.milestones,[id]:checked}});
+  const saved=persistMilestoneState(candidate);
+  if(!saved) updateMilestoneViews();
+  else setNotice('Task saved.');
+  return saved;
+}
+function switchToDetailed(resource) {
+  if(!window.confirm('Use task tracking for this resource instead of its old Done mark? Your old progress stays in the backup.')) return;
+  if(persistMilestoneState(normalizeProgress({...state,detailed:{...state.detailed,[resource.id]:true}}))){
+    setNotice('Task tracking is on. Your old Done mark remains saved.');
+  }
+}
+function updateMilestoneViews() {
+  DATA.stages.forEach(stage=>stage.resources.forEach(resource=>{
+    const card=document.querySelector(`[data-resource-id="${resource.id}"]`); if(!card) return;
+    card.classList.toggle('done',resourceFraction(resource)===1);
+    const required=resource.milestones.filter(m=>m.required);
+    const n=required.filter(m=>state.milestones[m.id]===true).length;
+    const inherited=isGrandfathered(resource);
+    const status=card.querySelector('.completion');
+    status.textContent=inherited?'Done before update':`${n}/${required.length}`;
+    status.setAttribute('aria-label',inherited
+      ? 'Done before task tracking; task details are not recorded.'
+      : `${n} of ${required.length} ${required.length===1?'task':'tasks'} done`);
+    const reopen=card.querySelector('.use-detailed'); if(reopen) reopen.hidden=!inherited;
+    card.querySelectorAll('input[data-milestone-id]').forEach(input=>{input.checked=state.milestones[input.dataset.milestoneId]===true;});
+  }));
+}
+function splitAccessPoints(text) {
+  const points=[]; let start=0;
+  function push(end) {
+    const point=text.slice(start,end).trim();
+    if(point) points.push(point.replace(/^([a-z])/,(_,letter)=>letter.toUpperCase()));
+    start=end; while(/\s/.test(text[start]||'')) start++;
+  }
+  for(let i=0;i<text.length;i++) {
+    if(text[i]===';') { push(i+1); continue; }
+    if(!'.!?'.includes(text[i])) continue;
+    const next=text.slice(i+1).match(/^\s+(\S)/);
+    if(!next || !/[A-Z“\"0-9]/.test(next[1])) continue;
+    const before=text.slice(start,i+1);
+    if(/(?:^|\s)(?:Dr|Mr|Mrs|Ms|Prof|St)\.$/.test(before)) continue;
+    if(/(?:^|\s)(?:e\.g|i\.e|U\.S)\.$/.test(before)) continue;
+    push(i+1);
+  }
+  if(start<text.length) {
+    const point=text.slice(start).trim();
+    if(point) points.push(point.replace(/^([a-z])/,(_,letter)=>letter.toUpperCase()));
+  }
+  return points;
+}
+function accessList(className,text,label) {
+  const list=el('ul',className); list.setAttribute('aria-label',label);
+  splitAccessPoints(text).forEach(point=>list.append(el('li','',point)));
+  return list;
+}
+function buildRoadmap() {
+  buildLegacyRoadmap();
+  DATA.stages.forEach((stage,si)=>stage.resources.forEach((resource,ri)=>{
+    const stageNode=document.querySelectorAll('.stage')[si];
+    const card=stageNode && stageNode.querySelectorAll('.resource')[ri];
+    if(!card) throw new Error(`resource card missing for ${resource.id}`);
+    card.dataset.resourceId=resource.id;
+    const old=card.querySelector('.completion'); const status=el('span','completion');
+    status.setAttribute('aria-label','Task progress'); old.replaceWith(status);
+    const content=card.querySelector('.resource-top > div');
+    content.querySelectorAll('p').forEach(p=>{if(p.textContent.startsWith('Next action:'))p.remove();});
+    const accessNote=[...content.querySelectorAll('p')].find(p=>p.textContent===resource.access_note);
+    if(!accessNote || !resource.access_summary) throw new Error(`access summary missing for ${resource.id}`);
+    const summary=accessList('access-summary',resource.access_summary,'Access summary');
+    const firstSummaryPoint=summary.querySelector('li');
+    if(firstSummaryPoint) firstSummaryPoint.prepend(document.createTextNode('Access: '));
+    const access=el('details','resource-access');
+    access.append(el('summary','','How access was checked'));
+    content.insertBefore(summary,accessNote);
+    content.insertBefore(access,accessNote);
+    access.append(accessNote);
+    accessNote.replaceWith(accessList('access-note-list',resource.access_note,'Access and verification details'));
+    const reopen=el('button','use-detailed','Track this task');reopen.type='button';
+    reopen.addEventListener('click',()=>switchToDetailed(resource)); content.append(reopen);
+    const detail=el('details','milestones');detail.append(el('summary','','Study task'));
+    const list=el('ul','milestone-list');
+    resource.milestones.forEach(m=>{
+      if(!m.required)return;
+      const li=el('li');const label=el('label','milestone-label');const input=el('input');input.type='checkbox';
+      input.dataset.milestoneId=m.id;input.setAttribute('aria-label',`${resource.title}: ${m.label}`);
+      input.addEventListener('change',()=>changeMilestone(m.id,input.checked));
+      label.append(input,el('span','',m.label));li.append(label);list.append(li);
+    });
+    detail.append(list);content.append(detail);
+  }));
+  renderPriorLearning();
+  updateMilestoneViews();updateDashboard();updateStageMeters();
+}
+function renderPriorLearning() {
+  document.getElementById('prior-learning')?.remove();
+  const activeKeys=new Set([
+    ...DATA.stages.map(stage=>'stage:'+stage.id),
+    ...DATA.stages.flatMap(stage=>stage.resources.map(resource=>'resource:'+resource.id))
+  ]);
+  const previousCompletions=Object.entries(state.done).filter(([key,value])=>value===true&&!activeKeys.has(key)).length;
+  const activeIds=new Set(DATA.stages.flatMap(stage=>stage.resources.flatMap(resource=>resource.milestones.map(m=>m.id))));
+  const previousTicks=Object.entries(state.milestones).filter(([id,value])=>value===true&&!activeIds.has(id)).length;
+  if(!previousCompletions&&!previousTicks)return;
+  const panel=el('details','prior-learning');panel.id='prior-learning';
+  panel.append(el('summary','',`Saved from older versions: ${previousCompletions} completions, ${previousTicks} task checks`));
+  panel.append(el('p','','Older or unknown items stay in your backup but do not count here. Check-ins are separate.'));
+  panel.append(el('p','','Download a backup before clearing progress.'));
+  document.getElementById('roadmap').prepend(panel);
+}
+function updateDashboard() {
+  const resources=DATA.stages.flatMap(stage=>stage.resources), result=balancedProgress(resources);
+  document.getElementById('overall-percent').textContent=`${result.pct}%`;
+  document.getElementById('progress-label').textContent=`${result.completed} of ${result.total} tasks done`;
+  const fill=document.getElementById('progress-fill');fill.style.width=`${result.pct}%`;fill.parentElement.setAttribute('aria-valuenow',String(result.pct));
+  fill.parentElement.setAttribute('aria-valuetext',`${result.pct}% complete; ${result.completed} of ${result.total} tasks done`);
+  document.getElementById('streak-count').textContent=String(streakLength());renderDailyCheckin();
+  const next=resources.find(resource=>!resource.optional&&resourceFraction(resource)<1);
+  document.getElementById('next-step').textContent=next?`Next: ${next.title}`:'All tasks are done. Revisit any resource when you like.';
+}
+function updateStageMeters() {
+  DATA.stages.forEach((stage,si)=>{
+    const meter=document.querySelector(`[data-meter="${si}"]`);if(meter)meter.textContent=`${balancedProgress(stage.resources).pct}%`;
+  });
+}
+
 function loadLegacyState() {
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
     return { done: saved.done && typeof saved.done === 'object' ? saved.done : {}, activityDates: Array.isArray(saved.activityDates) ? saved.activityDates.filter(x => /^\d{4}-\d{2}-\d{2}$/.test(x)) : [], reminderTime: /^\d\d:\d\d$/.test(saved.reminderTime || '') ? saved.reminderTime : (DATA.reminder_time || '19:00'), notificationsEnabled: saved.notificationsEnabled === true, lastNotificationDate: saved.lastNotificationDate || '' };
   } catch (_) { return {done:{},activityDates:[],reminderTime:DATA.reminder_time||'19:00',notificationsEnabled:false,lastNotificationDate:''}; }
 }
-function saveState() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (_) { setNotice('Could not save to browser storage. Export progress or try another browser.'); } }
-function setNotice(message) { document.getElementById('notification-status').textContent = message; }
-function markActivity() { const today = localDateKey(); if (!state.activityDates.includes(today)) state.activityDates.push(today); }
+function saveState() { try { preserveProgressUpgradeSnapshot(); localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (_) { setNotice('Could not save progress. Download a backup or try another browser.'); } }
+function setNotice(message) { document.getElementById('progress-status').textContent = message; }
+function markActivity() { /* Completion is independent of attendance. */ }
 function streakLength() {
   const dates = new Set(state.activityDates); const today = localDateKey();
   let cursor = dates.has(today) ? today : previousDay(today); let length = 0;
@@ -661,7 +1124,7 @@ function streakLength() {
 }
 function resourceKey(stageIndex, resourceIndex) { return "resource:" + DATA.stages[stageIndex].resources[resourceIndex].id; }
 function stageKey(stageIndex) { return "stage:" + DATA.stages[stageIndex].id; }
-function buildRoadmap() {
+function buildLegacyRoadmap() {
   const root = document.getElementById('roadmap');
   root.replaceChildren();
   RESOURCE_ITEMS.length = 0;
@@ -671,12 +1134,11 @@ function buildRoadmap() {
     details.dataset.stage = String(stageIndex);
     const summary = el('summary');
     summary.append(el('span','stage-num',String(stageIndex+1)));
-    const heading = el('span','stage-heading');
-    const stageTitle = el('strong','',stage.title || `Stage ${stageIndex+1}`); heading.append(stageTitle);
+    const stageTitle = el('strong','stage-heading',stage.title || `Stage ${stageIndex+1}`); summary.append(stageTitle);
     const sub = [stage.duration, stage.estimated_hours ? `${stage.estimated_hours} hours` : ''].filter(Boolean).join(' · ');
-    if (sub) heading.append(el('small','',sub));
-    summary.append(heading);
+    if (sub) summary.append(el('small','stage-subheading',sub));
     const meter = el('span','stage-meter','0%'); meter.dataset.meter = String(stageIndex); summary.append(meter);
+    const indicator = el('span','stage-toggle-indicator'); indicator.setAttribute('aria-hidden','true'); summary.append(indicator);
     details.append(summary);
     const body = el('div','stage-body');
     if (stage.description) body.append(el('p','stage-description',stage.description));
@@ -723,55 +1185,107 @@ function buildRoadmap() {
 function allTrackableItems() {
   const items=[]; (DATA.stages||[]).forEach((stage,si)=>{ const resources=Array.isArray(stage.resources)?stage.resources:[]; if(resources.length) resources.forEach((_,ri)=>items.push(resourceKey(si,ri))); else items.push(stageKey(si)); }); return items;
 }
-function updateDashboard() {
+function updateLegacyDashboard() {
   const items=allTrackableItems(); const done=items.filter(key=>!!state.done[key]).length; const pct=items.length?Math.round(done/items.length*100):0;
   document.getElementById('overall-percent').textContent=`${pct}%`; document.getElementById('progress-label').textContent=`${done} of ${items.length} complete`;
   const fill=document.getElementById('progress-fill'); fill.style.width=`${pct}%`; const bar=fill.parentElement; bar.setAttribute('aria-valuenow',String(pct));
   document.getElementById('streak-count').textContent=String(streakLength());
-  const todayDone=state.activityDates.includes(localDateKey()); document.getElementById('today-status').textContent=todayDone?'Logged today':'Not logged yet';
-  document.getElementById('reminder-summary').textContent=todayDone?'Nice work — today’s learning activity is recorded.':`Complete a resource before or after ${state.reminderTime} to record today’s activity.`;
+  renderDailyCheckin(); const todayDone=state.activityDates.includes(localDateKey());
+  renderDailyCheckin();
   const next=RESOURCE_ITEMS.find(item=>!state.done[item.key]); document.getElementById('next-step').textContent=next?`Next up: ${next.title}`:(items.length?'You completed every roadmap item. Keep revisiting or add another goal.':'Add roadmap resources to start tracking.');
 }
-function updateStageMeters() {
+function updateLegacyStageMeters() {
   (DATA.stages||[]).forEach((stage,si)=>{ const resources=Array.isArray(stage.resources)?stage.resources:[]; const keys=resources.length?resources.map((_,ri)=>resourceKey(si,ri)):[stageKey(si)]; const done=keys.filter(key=>!!state.done[key]).length; const meter=document.querySelector(`[data-meter="${si}"]`); if(meter) meter.textContent=`${keys.length?Math.round(done/keys.length*100):0}%`; });
 }
-function setupReminderControls() {
-  const time=document.getElementById('reminder-time'); time.value=state.reminderTime;
-  time.addEventListener('change',()=>{state.reminderTime=time.value||'19:00';saveState();updateDashboard();setNotice(`Reminder time saved as ${state.reminderTime}. Keep the page open for browser alerts.`);});
-  document.getElementById('enable-notifications').addEventListener('click',async()=>{
-    if (!('Notification' in window)) { setNotice('This browser does not support system notifications. The in-app reminder remains available.'); return; }
-    if (!window.isSecureContext) { setNotice('Browser notifications need a secure HTTPS page or localhost. The in-app reminder remains available.'); return; }
-    try { const permission=await Notification.requestPermission(); state.notificationsEnabled=permission==='granted'; saveState();
-      if(permission==='granted') { setNotice('Browser reminders are enabled while this page stays open. They will not run after the app is closed.'); checkReminder(); }
-      else setNotice(`Notification permission ${permission}. The in-app reminder remains available.`);
-    } catch (_) { setNotice('Could not request notification permission. The in-app reminder remains available.'); }
-  });
+function setupProgressControls() {
   document.getElementById('export-progress').addEventListener('click',()=>{
-    const blob=new Blob([JSON.stringify({version:2,storage_id:DATA.storage_id,title:DATA.title,done:state.done,activityDates:state.activityDates,reminderTime:state.reminderTime},null,2)],{type:'application/json'});
+    const blob=new Blob([JSON.stringify({version:3,storage_id:DATA.storage_id,title:DATA.title,done:state.done,activityDates:state.activityDates,manualCheckinDates:state.manualCheckinDates,legacyActivityDates:state.legacyActivityDates,milestones:state.milestones,detailed:state.detailed,reminderTime:state.reminderTime},null,2)],{type:'application/json'});
     const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='learning-roadmap-progress.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
   });
   document.getElementById('import-progress').addEventListener('change',async(event)=>{
     const file=event.target.files && event.target.files[0]; if(!file) return;
     try { const incoming=normalizeProgress(JSON.parse(await file.text()),true);
-      state.done=incoming.done;state.activityDates=incoming.activityDates.filter(x=>/^\d{4}-\d{2}-\d{2}$/.test(x));if(/^\d\d:\d\d$/.test(incoming.reminderTime||''))state.reminderTime=incoming.reminderTime;saveState();buildRoadmap();time.value=state.reminderTime;setNotice('Progress imported.');
-    } catch (_) { setNotice('That file could not be read as roadmap progress JSON.'); } event.target.value='';
+      const candidate={...incoming,notificationsEnabled:state.notificationsEnabled}; preserveProgressUpgradeSnapshot(); const before=localStorage.getItem(STORAGE_KEY); if(before && !localStorage.getItem(STORAGE_KEY+':before-checkins-v3')) localStorage.setItem(STORAGE_KEY+':before-checkins-v3',before); localStorage.setItem(STORAGE_KEY,JSON.stringify(candidate)); state=candidate;buildRoadmap();setNotice('Backup restored. No new study day was added.');
+    } catch (_) { setNotice('Cannot read this backup. Choose a valid progress file.'); } event.target.value='';
   });
-  document.getElementById('reset-progress').addEventListener('click',()=>{ if(!window.confirm('Clear progress and streak history saved in this browser?')) return; state={done:{},activityDates:[],reminderTime:DATA.reminder_time||'19:00',notificationsEnabled:false,lastNotificationDate:''};saveState();buildRoadmap();time.value=state.reminderTime;setNotice('Progress reset on this device.'); });
-}
-function checkReminder() {
-  if (!state.notificationsEnabled || !('Notification' in window) || Notification.permission!=='granted') return;
-  const now=new Date(); const current=`${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`; const today=localDateKey();
-  if(current>=state.reminderTime && state.lastNotificationDate!==today && !state.activityDates.includes(today)) {
-    try { const notification=new Notification(DATA.title||'Learning roadmap',{body:'Take a few minutes to continue your learning roadmap and protect your daily streak.'}); notification.onclick=()=>{window.focus();notification.close();}; state.lastNotificationDate=today; saveState(); }
-    catch (_) { setNotice('A browser reminder could not be shown. The in-app check-in remains available.'); }
-  }
+  document.getElementById('reset-progress').addEventListener('click',()=>{ if(!window.confirm('Clear all progress and study days from this browser?')) return; state=normalizeProgress({});saveState();buildRoadmap();setNotice('Progress cleared from this browser.'); });
 }
 document.getElementById('title').textContent=DATA.title||'Learning roadmap';
-document.getElementById('subtitle').textContent=DATA.subtitle||'Work through the roadmap in order, one step at a time.';
-buildRoadmap(); setupReminderControls();
-if (state.notificationsEnabled && 'Notification' in window && Notification.permission==='granted') setNotice('Browser reminders are enabled while this page stays open.');
-checkReminder(); setInterval(checkReminder,60000); document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkReminder();});
+document.getElementById('subtitle').textContent=DATA.subtitle||'Learn recruiting, one step at a time.';
+buildRoadmap(); setupProgressControls(); setupDailyCheckin();
+
 </script>
+<button id="back-to-top" class="back-to-top" type="button" hidden aria-label="Back to top" title="Back to top"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 19V5M6 11l6-6 6 6"></path></svg></button>
+<script data-scroll-to-top-controller>
+/* Fixed scroll-to-top control for the self-contained FieldNotes tracker. */
+(function () {
+  'use strict';
+
+  var button = document.getElementById('back-to-top');
+  if (!button) return;
+
+  var SHOW_AFTER = 160;
+  var IDLE_DELAY = 3000;
+  var idleTimer = 0;
+
+  function clearIdleTimer() {
+    if (idleTimer) window.clearTimeout(idleTimer);
+    idleTimer = 0;
+  }
+
+  function hideAfterIdle() {
+    idleTimer = 0;
+    if (window.scrollY <= SHOW_AFTER && document.activeElement !== button) {
+      button.hidden = true;
+      return;
+    }
+    if (document.activeElement === button || button.matches(':hover')) {
+      idleTimer = window.setTimeout(hideAfterIdle, IDLE_DELAY);
+      return;
+    }
+    button.hidden = true;
+  }
+
+  function updateVisibility() {
+    clearIdleTimer();
+    if (window.scrollY <= SHOW_AFTER) {
+      button.hidden = document.activeElement !== button;
+      return;
+    }
+    button.hidden = false;
+    idleTimer = window.setTimeout(hideAfterIdle, IDLE_DELAY);
+  }
+
+  button.addEventListener('click', function (event) {
+    // Pointer clicks do not need to leave focus on a control that will hide
+    // when the page reaches the top. Keep keyboard focus visible until blur.
+    if (event.detail > 0) button.blur();
+    var reducedMotion = typeof window.matchMedia === 'function'
+      && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
+  });
+
+  button.addEventListener('focus', clearIdleTimer);
+  button.addEventListener('blur', updateVisibility);
+  button.addEventListener('mouseenter', clearIdleTimer);
+  button.addEventListener('mouseleave', updateVisibility);
+  window.addEventListener('scroll', updateVisibility, { passive: true });
+  window.addEventListener('pageshow', updateVisibility);
+  updateVisibility();
+})();
+</script>
+<div class="fieldnotes-dangling-spider" id="fieldnotes-spider" hidden aria-hidden="true">
+  <svg viewBox="0 0 64 108" focusable="false">
+    <path class="spider-thread" d="M52 0V70"></path>
+    <g class="spider-dangle">
+      <path class="spider-legs" d="M48 78L43 73L39 74L36 70 M47 81L41 80L37 83L34 81 M47 84L42 87L39 92L35 94 M49 87L45 93L44 99L40 102 M56 78L60 73L62 74L63 70 M57 81L61 80L63 83 M57 84L61 87L62 92 M55 87L59 93L60 99L63 102"></path>
+      <ellipse class="spider-body" cx="52" cy="81" rx="4.8" ry="5.4"></ellipse>
+      <ellipse class="spider-body" cx="52" cy="88" rx="5.4" ry="6.2"></ellipse>
+      <circle class="spider-eyes" cx="50" cy="78" r="1"></circle>
+      <circle class="spider-eyes" cx="54" cy="78" r="1"></circle>
+    </g>
+  </svg>
+</div>
 <!-- Piixpal v0.4.0 | MIT | https://github.com/diiviikk5/Piixpal -->
 <!-- Vendored byte-exactly from Field-Notes_Nature-Photography/index.html. Do not edit. -->
 <template id="pals-payload">
@@ -869,7 +1383,7 @@ canvas{display:block;pointer-events:none;image-rendering:pixelated}
     : { matches: false };
 
   /* Injected by the build layer from pals.json. */
-  var SITE_PALS = [{"pal":"bitbug","target":"#title","at":0.9,"edge":"text"},{"pal":"lurk","target":"#subtitle","at":0.88},{"pal":"moss","target":".dashboard > .panel:nth-child(1) h2","at":0.9},{"pal":"pip","target":"#next-step","at":0.85},{"pal":"capy","target":"#reminder-summary","at":0.5},{"pal":"bumble","target":".stage[data-stage=\"0\"] .stage-heading strong","at":0.9,"scale":3},{"pal":"shel","target":".stage[data-stage=\"2\"] .stage-heading strong","at":0.9,"scale":3},{"pal":"frog","target":".stage[data-stage=\"4\"] .stage-heading strong","at":0.9,"scale":3},{"pal":"moss","target":".stage[data-stage=\"6\"] .stage-heading strong","at":0.88,"hue":320,"scale":3},{"pal":"bumble","target":".app-footer","at":0.5,"hue":205,"scale":3}];
+  var SITE_PALS = [{"pal":"bitbug","target":"#title","at":0.9,"edge":"text"},{"pal":"lurk","target":"#subtitle","at":0.88},{"pal":"moss","target":".dashboard > .panel:nth-child(1) h2","at":0.9},{"pal":"pip","target":"#next-step","at":0.85},{"pal":"capy","target":"#reminder-summary","at":0.5},{"pal":"bumble","target":".stage[data-stage=\"0\"] .stage-heading","at":0.9,"scale":3},{"pal":"shel","target":".stage[data-stage=\"2\"] .stage-heading","at":0.9,"scale":3},{"pal":"frog","target":".stage[data-stage=\"4\"] .stage-heading","at":0.9,"scale":3},{"pal":"moss","target":".stage[data-stage=\"6\"] .stage-heading","at":0.88,"hue":320,"scale":3},{"pal":"bumble","target":".app-footer","at":0.5,"hue":205,"scale":3},{"pal":"dangling-spider","kind":"fixed-spider","position":"top-right"}];
   var PALS_COUNT = SITE_PALS.length;
 
   function byId(id) { return document.getElementById(id); }
@@ -905,16 +1419,32 @@ canvas{display:block;pointer-events:none;image-rendering:pixelated}
     return engineReady();
   }
 
-  function clearPals() {
+  function clearPiixPals() {
     document.querySelectorAll('piix-pal[data-fieldnotes-pal]').forEach(function (pal) {
       pal.remove();
     });
   }
 
+  function setSpiderVisible(visible) {
+    var spider = byId('fieldnotes-spider');
+    if (spider) spider.hidden = !visible;
+  }
+
+  function clearPals() {
+    clearPiixPals();
+    setSpiderVisible(false);
+  }
+
   function renderPals() {
-    clearPals();
-    if (!palsEnabled || !engineReady()) return;
+    clearPiixPals();
+    if (!palsEnabled) {
+      setSpiderVisible(false);
+      return;
+    }
+    setSpiderVisible(true);
+    if (!engineReady()) return;
     SITE_PALS.forEach(function (spec) {
+      if (spec.kind === 'fixed-spider') return;
       var options = { at: spec.at === undefined ? 0.88 : spec.at };
       if (spec.edge) options.edge = spec.edge;
       if (spec.speed) options.speed = spec.speed;
@@ -932,7 +1462,7 @@ canvas{display:block;pointer-events:none;image-rendering:pixelated}
 
   function showPals() {
     if (!palsEnabled) return;
-    if (!loadPayload()) return;
+    loadPayload();
     renderPals();
   }
 

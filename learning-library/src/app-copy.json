@@ -1,0 +1,213 @@
+{
+  "version": 1,
+  "subtitle": "Learn recruiting in Lagos, one step at a time. Plan about 5 hours a week. Free resources come first; paid options are marked.",
+  "stages": {
+    "orientation": {
+      "title": "What recruiters do",
+      "description": "Learn the hiring process from workforce planning to onboarding, and where recruiters work with hiring managers.",
+      "outcomes": [
+        "Trace hiring from workforce planning to onboarding",
+        "Compare agency and in-house recruiter roles",
+        "Use clear criteria instead of gut feel"
+      ]
+    },
+    "foundations": {
+      "title": "Fair hiring basics",
+      "description": "Learn fair hiring, job requirements, selection steps and the rules for candidate data in Nigeria.",
+      "outcomes": [
+        "Follow a fair hiring process",
+        "Separate job requirements from person specifications",
+        "Handle candidate data with care"
+      ]
+    },
+    "define-role": {
+      "title": "Define the role",
+      "description": "Define the work and what success looks like before you source candidates.",
+      "outcomes": [
+        "Turn a vague request into a job description",
+        "Set clear hiring criteria before interviews",
+        "Build a scorecard for every interviewer"
+      ]
+    },
+    "sourcing": {
+      "title": "Find candidates",
+      "description": "Find candidates, write clear outreach and treat people well throughout hiring.",
+      "outcomes": [
+        "Write Boolean searches for a real role",
+        "Compare referrals, job boards and direct search",
+        "Plan outreach and candidate updates"
+      ]
+    },
+    "screening": {
+      "title": "Screen and shortlist",
+      "description": "Use job criteria to shortlist fairly before you speak with candidates.",
+      "outcomes": [
+        "Screen CVs against the scorecard",
+        "Ask everyone the same job-related questions",
+        "Record clear reasons for each decision"
+      ]
+    },
+    "interviewing": {
+      "title": "Interview and decide",
+      "description": "Ask job-related questions and score answers against a shared rubric.",
+      "outcomes": [
+        "Write behavioural and hypothetical questions",
+        "Set clear examples for scoring answers",
+        "Run a mock interview and compare scores"
+      ]
+    },
+    "nigerian-law": {
+      "title": "Offers, onboarding and Nigerian law",
+      "description": "Learn the basics of offers, onboarding, data protection and employment law in Nigeria.",
+      "outcomes": [
+        "Explain why candidate data needs a lawful basis",
+        "Draft a short privacy notice",
+        "Know when to check the law or ask a lawyer"
+      ]
+    },
+    "career-tools": {
+      "title": "Tools, metrics and job search",
+      "description": "Bring your work together, track hiring metrics and apply for junior roles in Lagos.",
+      "outcomes": [
+        "Track a practice hiring pipeline",
+        "Show one hiring project in a portfolio",
+        "Apply with evidence, not just certificates"
+      ]
+    }
+  },
+  "resources": {
+    "hr-essentials": {
+      "why": "Learn what HR does, then see where recruiting fits in the employee life cycle.",
+      "action": "Watch lessons 1–4. Sketch the employee life cycle and mark where recruitment fits.",
+      "access_summary": "Public playlist; no sign-in to read. Playback untested. AI-assisted, introductory content.",
+      "duration": "1 hour for starter lessons and notes"
+    },
+    "talent-acquisition": {
+      "why": "Get the key terms and a quick tour of job analysis, sourcing, selection and hiring.",
+      "action": "Watch the first five lessons. Draw the hiring process in your own words.",
+      "access_summary": "Public playlist; no sign-in to read. Playback untested. AI-assisted; check key claims.",
+      "duration": "About 2 hours for selected lessons and notes"
+    },
+    "openlearn-recruitment": {
+      "why": "See how job analysis leads to a job description and person specification.",
+      "action": "Read sections 4.2–4.5. Draft a job analysis, job description and person specification for a Lagos vacancy. Tie each criterion to the work.",
+      "access_summary": "Free to read without sign-in. Account for quizzes and the free participation statement. Older UK-law examples; use Nigerian sources too.",
+      "cost": "Free; optional Statement of Participation"
+    },
+    "saylor-bus301": {
+      "why": "Review staffing plans, job analysis, interviews, tests and offers through readings, videos and practice.",
+      "action": "Complete Units 2–3: readings, videos and practice. Skip the other units.",
+      "access_summary": "Free course and certificate; account needed to enroll. U.S. law examples, not Nigerian law.",
+      "cost": "Free course and certificate"
+    },
+    "coursera-hiring": {
+      "why": "Covers workforce planning, job analysis, sourcing, selection, hiring metrics and onboarding.",
+      "action": "After the free stages, check whether a preview or no-certificate option is available. Confirm trial and billing terms before enrolling; free access is not confirmed.",
+      "access_summary": "Full-course access is not confirmed free. A preview may cover only module 1; Plus and certificates are paid. Trial terms and Nigeria pricing are unverified.",
+      "cost": "Full course not confirmed free; paid options",
+      "duration": "About 20 hours for the full course"
+    },
+    "onet-job-analysis": {
+      "why": "Set role requirements from the work, not from another job advert.",
+      "action": "Search O*NET for your practice role. Pick five duties to check against Nigerian job ads.",
+      "access_summary": "Free public database; no account needed. U.S. data, not Nigerian requirements.",
+      "cost": "Free; U.S. data",
+      "duration": "About 2 hours"
+    },
+    "workable-job-templates": {
+      "why": "See how a recruiter role summary, duties and requirements fit together.",
+      "action": "Compare the sample with a Lagos vacancy. Keep supported requirements and mark each essential or desirable.",
+      "access_summary": "Free sample; no sign-in to read. The 15-day software trial is separate and not needed.",
+      "cost": "Free sample; software trial separate",
+      "duration": "About 1 hour"
+    },
+    "greenhouse-scorecard": {
+      "why": "Learn the six steps of structured hiring, starting with clear success criteria.",
+      "action": "Download the worksheet. Build a scorecard for your practice role with up to six criteria.",
+      "access_summary": "Free article and two PDFs; no account or form. The method works beyond Greenhouse.",
+      "cost": "Free article and PDFs"
+    },
+    "workable-boolean": {
+      "why": "Use search operators to find candidates by role, skill and location.",
+      "action": "Write three Boolean strings for a Lagos role. Test with dummy terms; do not collect real CVs or personal data.",
+      "access_summary": "Free article and PDF; no sign-in or form. The software trial is separate.",
+      "cost": "Free article and PDF"
+    },
+    "hrlab-sourcing-video": {
+      "why": "Compare sourcing options such as referrals, job boards, pipelines and job fairs.",
+      "action": "Watch the video. Pick two channels for a small Lagos employer and explain why.",
+      "access_summary": "Public video and transcript; no sign-in or payment. Playback untested. AI-assisted overview.",
+      "duration": "7 minutes"
+    },
+    "google-hiring-guides": {
+      "why": "Plan clear candidate updates, interview preparation and respectful decisions.",
+      "action": "Draft a first-contact message and an update plan for a Lagos role. Include interview prep and delay updates.",
+      "access_summary": "Free guide; no account or form. Google examples, not Nigerian law or guaranteed results.",
+      "duration": "About 1 hour"
+    },
+    "openlearn-shortlisting": {
+      "why": "Practise comparing candidates against a job specification.",
+      "action": "Read section 4.10 and do its shortlisting activity. Give one job-related reason per choice; check your assumptions.",
+      "access_summary": "Free to read without sign-in. Account for course activities and the free participation statement. Older UK examples; use Nigerian sources too.",
+      "cost": "Free to read; account for course extras",
+      "duration": "About 1 hour"
+    },
+    "hrlab-screening-candidates": {
+      "why": "Review screening steps from CVs to references.",
+      "action": "Watch the video. Draft five phone-screen questions tied to job criteria. Use fictional records; do not judge protected or irrelevant traits.",
+      "access_summary": "Public video and transcript; no sign-in. Playback untested. AI-assisted; U.S. law is not Nigerian guidance.",
+      "cost": "Free public video",
+      "duration": "8 minutes"
+    },
+    "google-structured-interviews": {
+      "why": "Learn to set criteria, write interview questions and score answers consistently.",
+      "action": "Write eight questions: four behavioural and four hypothetical. Link each to your Stage 3 scorecard and add poor and strong answer examples.",
+      "access_summary": "Free guide; no account. Google examples and results are not local guarantees.",
+      "duration": "About 2 hours"
+    },
+    "google-interviewer-training": {
+      "why": "Give useful feedback with evidence and leave time for candidate questions.",
+      "action": "After the mock interview, rewrite your notes with evidence so another person can follow your decision.",
+      "access_summary": "Free guide; no account. Guidance, not a formal qualification.",
+      "duration": "About 1 hour"
+    },
+    "ndpc-gaid": {
+      "why": "Learn the data-protection rules recruiters meet when they handle CVs and references.",
+      "action": "Read Articles 15, 16, 17, 18, 27, 33 and 34. Draft a six-line privacy notice for a job application.",
+      "access_summary": "Public NDPC PDF; no sign-in or payment. Only opening provisions checked. Not legal advice.",
+      "duration": "About 3 hours"
+    },
+    "nigeria-labour-act": {
+      "why": "Review recruiting rules and the written terms employers must give workers.",
+      "action": "Read sections 7, 23, 24, 25, 26 and 71. Write three questions to ask before sourcing for an employer.",
+      "access_summary": "Public PLAC copy; no account or payment. Not a government gazette; the law may have changed. Ask a Nigerian lawyer.",
+      "duration": "About 2 hours"
+    },
+    "google-onboarding": {
+      "why": "Use new-hire check-ins to spot gaps in tools, skills and support.",
+      "action": "Draft a 30-day onboarding checklist. Give each item an owner and check-in date.",
+      "access_summary": "Free guide; no account. Google examples; adapt them for a Lagos employer.",
+      "duration": "About 1 hour"
+    },
+    "hubspot-contacts": {
+      "why": "Use a free CRM as a simple stand-in for an applicant tracking system.",
+      "action": "Create a free Academy account. Add ten fictional candidates to the free CRM, track their stages and count the funnel. Never upload real candidate data.",
+      "access_summary": "Free 20-minute lesson; Academy account needed. The CRM tier does not expire or need a credit card; paid tiers exist.",
+      "duration": "20 minutes for the lesson"
+    },
+    "hrlab-hiring-metrics": {
+      "why": "Learn key hiring measures, including time to fill and selection ratio.",
+      "action": "Watch the video. Note the selection-ratio and time-to-fill formulas, then calculate stage conversions in your fictional pipeline.",
+      "access_summary": "Public video and transcript; no sign-in. Playback untested. AI-assisted primer; verify key decisions with primary sources.",
+      "cost": "Free public video",
+      "duration": "4 minutes"
+    },
+    "greenhouse-metrics": {
+      "why": "See how hiring funnel rates vary by company size in a U.S. case study.",
+      "action": "Read the summary and funnel tables. Note how rates vary by company size, then calculate your practice-pipeline rates.",
+      "access_summary": "Free direct PDF; no account or form. U.S. Greenhouse customer data through August 2026, not a Nigerian benchmark.",
+      "cost": "Free PDF; U.S. data only",
+      "duration": "About 45 minutes"
+    }
+  }
+}

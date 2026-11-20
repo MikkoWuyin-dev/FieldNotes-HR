@@ -300,9 +300,15 @@ def check_sources() -> str:
     content.generate(check=True)
 
     md_stage_titles = re.findall(r"^## (Stage \d+:[^\n]*)", md, re.M)
+    catalogue = json.loads((SRC / "catalog.json").read_text(encoding="utf-8"))
+    catalogue_titles = [f"Stage {i}: {s['title']}" for i,s in enumerate(catalogue["stages"],1)]
+    if md_stage_titles != catalogue_titles:
+        raise AssertionError("stage headings in Markdown differ from catalog.json")
+    app_copy = json.loads((SRC / "app-copy.json").read_text(encoding="utf-8"))
+    app_titles = [f"Stage {i}: {app_copy['stages'][s['id']]['title']}" for i,s in enumerate(stages,1)]
     json_stage_titles = [s["title"] for s in stages]
-    if md_stage_titles != json_stage_titles:
-        raise AssertionError("stage headings in Markdown differ from roadmap-app.json")
+    if json_stage_titles != app_titles:
+        raise AssertionError("roadmap-app.json stage headings differ from app-copy.json")
 
     n_h3 = len(re.findall(r"^### ", md, re.M))
     if n_h3 != len(resources):
@@ -446,9 +452,18 @@ def check_pals() -> str:
     config = json.loads((PALS_DIR / "pals.json").read_text(encoding="utf-8"))
     pals = config.get("pals", [])
     sprites = set(config.get("sprites", []))
-    if len(pals) != 10:
-        problems.append(f"expected 10 pals, got {len(pals)}")
-    names = [p.get("pal") for p in pals]
+    if len(pals) != 11:
+        problems.append(f"expected 11 total pals, got {len(pals)}")
+    fixed_spiders = [p for p in pals if p.get("kind") == "fixed-spider"]
+    sprite_pals = [p for p in pals if p.get("kind") is None]
+    unexpected_kinds = [p.get("kind") for p in pals if p.get("kind") not in (None, "fixed-spider")]
+    if unexpected_kinds:
+        problems.append(f"unknown pal kinds: {unexpected_kinds}")
+    if len(fixed_spiders) != 1 or fixed_spiders[0].get("pal") != "dangling-spider" or fixed_spiders[0].get("position") != "top-right":
+        problems.append("expected one fixed dangling spider at the viewport top-right")
+    if len(sprite_pals) != 10:
+        problems.append(f"expected 10 Piixpal sprite placements, got {len(sprite_pals)}")
+    names = [p.get("pal") for p in sprite_pals]
     unknown = sorted(set(names) - sprites)
     missing = sorted(sprites - set(names))
     if unknown:
@@ -456,25 +471,25 @@ def check_pals() -> str:
     if missing:
         problems.append(f"sprites never used: {missing}")
     for name in set(names):
-        occurrences = [p for p in pals if p.get("pal") == name]
+        occurrences = [p for p in sprite_pals if p.get("pal") == name]
         # The first appearance keeps the sprite's own palette; every repeat
         # must be hue-rotated so two identical creatures don't sit together.
         if len(occurrences) > 1 and any(p.get("hue") is None for p in occurrences[1:]):
             problems.append(f"repeated sprite {name!r} needs a hue on each repeat")
 
-    targets = [p.get("target") for p in pals]
+    targets = [p.get("target") for p in sprite_pals]
     if len(set(targets)) != len(targets):
-        problems.append("two pals share a target")
+        problems.append("two Piixpal creatures share a target")
     control_word = re.compile(
         r"(?:^|[\s>,+])(?:button|input|select|textarea|label|summary|a)\b", re.I
     )
     for target in targets:
         if not target:
-            problems.append("a pal has no target")
+            problems.append("a Piixpal creature has no target")
         elif control_word.search(target):
-            problems.append(f"pal targets a control: {target}")
+            problems.append(f"Piixpal creature targets a control: {target}")
         elif not (target.startswith(("#", ".")) and len(target) > 1):
-            problems.append(f"pal target is not a CSS selector: {target}")
+            problems.append(f"Piixpal target is not a CSS selector: {target}")
 
     payload_bytes = (PALS_DIR / "piixpal-payload.html").read_bytes()
     if hashlib.sha256(payload_bytes).hexdigest() != config.get("payload_sha256"):
@@ -509,19 +524,24 @@ def check_pals() -> str:
     controller = (PALS_DIR / "pals-controller.js").read_text(encoding="utf-8")
     for marker in ("__SITE_PALS_JSON__", "prefers-reduced-motion",
                    "requestIdleCallback", "MutationObserver",
-                   "PALS_COUNT = SITE_PALS.length"):
+                   "PALS_COUNT = SITE_PALS.length", "spec.kind === 'fixed-spider'",
+                   "fieldnotes-spider"):
         if marker not in controller:
             problems.append(f"controller missing: {marker}")
     css = (PALS_DIR / "pals.css").read_text(encoding="utf-8")
     if "position: absolute !important" not in css:
         problems.append("pals.css is missing the document-layer rule")
+    if ".fieldnotes-dangling-spider" not in css or "position: fixed;" not in css or "pointer-events: none;" not in css:
+        problems.append("pals.css is missing the fixed, pointer-transparent spider layer")
+    if "@media (prefers-reduced-motion: reduce)" not in css or ".spider-dangle" not in css:
+        problems.append("pals.css does not stop spider motion for reduced-motion users")
     if re.search(r"url\s*\(", css, re.I):
         problems.append("pals.css contains a url() reference")
 
     tracker_html = TRACKER.read_text(encoding="utf-8")
     for marker in ('data-pals="fieldnotes"', 'id="pals-payload"',
                    'id="pals-controls"', 'id="pals-toggle"',
-                   "data-fieldnotes-pals-controller"):
+                   'id="fieldnotes-spider"', "data-fieldnotes-pals-controller"):
         if tracker_html.count(marker) != 1:
             problems.append(f"tracker marker missing or duplicated: {marker}")
     if "Piixpal v0.4.0" not in tracker_html:
@@ -531,7 +551,8 @@ def check_pals() -> str:
         raise AssertionError("; ".join(problems[:8]) + (
             f" … and {len(problems) - 8} more" if len(problems) > 8 else ""
         ))
-    return (f"10 pals / {len(set(names))} sprites / {len(set(targets))} prose targets; "
+    return (f"11 total pals (10 Piixpal + {len(fixed_spiders)} fixed spider) / "
+            f"{len(set(names))} sprites / {len(set(targets))} prose targets; "
             "payload SHA-256 + MIT notice verified")
 
 
