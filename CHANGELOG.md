@@ -1,10 +1,17 @@
 # Changelog
 
+## Unreleased — exclude unverified full-course access
+
+- Removed the University of Minnesota Coursera course from active Stage 2 because ongoing full-course access without payment was not confirmed; the preview is limited, the trial is temporary, and Full Course, No Certificate was not confirmed for this course.
+- Preserved its detailed access findings in the catalogue's research index and generated verification manifest, and kept the `coursera-hiring` progress-compatibility mapping for saved progress.
+- Kept Workable's public samples because its separate software trial is not needed to study them; the active roadmap now has 20 cards.
+
 ## Unreleased — restore the first-iteration tracker and align headers
 
-- Restored the active source to the first-iteration 8-stage, 21-card roadmap.
-- Removed redundant outcome/lesson-objective lists from tracker accordions;
-  full outcomes remain in the generated library document.
+- Restored the first-iteration 8-stage roadmap and its progress identities.
+- Kept tracker accordions concise by omitting stage intro descriptions and
+  outcome/lesson-objective lists; full stage copy remains in the generated
+  library document.
 - Aligned the circular sun/moon theme toggle with the eyebrow at the hero's
   far-right content edge on desktop and mobile; it matches the eyebrow's height
   and retains a transparent 44px pointer target.

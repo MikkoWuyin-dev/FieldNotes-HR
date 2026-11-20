@@ -5,23 +5,23 @@
 
 ## Start here
 
-This library has 8 stages and 21 resource cards, with 94 planned study hours across 20 weeks. Study budgets include practice and selected lessons, not every full course. Free study, certificates and professional qualifications are separate findings.
+This library has 8 stages and 20 resource cards, with 94 planned study hours across 20 weeks. Study budgets include practice and selected lessons, not every full course. Free study, certificates and professional qualifications are separate findings.
 
 The most useful idea in the whole plan sits in Stage 6: ask every candidate the same well-designed questions and score the answers against a rubric you wrote before you met them. Stages 1 to 5 exist so that you can do that well. Stage 7 keeps you on the right side of Nigerian law. Stage 8 turns the practice into evidence you can show an employer.
 
-Prioritise confirmed-free study for the required path. Access notes distinguish account, form, trial and certificate conditions; the conditional Coursera option in Stage 2 remains optional and is not counted as free. Stages 3–8 retain no paid resource cards. None of the free statements or certificates here is a professional HR qualification.
+Every resource retained in the active roadmap has a confirmed free-study route. Accounts may still be needed, optional certificates may cost extra, and software trials mentioned alongside public samples are not required to study those samples. Paid or conditional products discussed below are not active learning cards. None of the free study or certificates here is a professional HR qualification.
 
 ## How this library was checked
 
 I used a web-search tool and a page-retrieval tool to read provider pages on 26 October 2026. Search results were treated as leads. A resource only entered the confirmed-free list when the provider's own course page, syllabus, FAQ or policy page described the learning material as available without payment.
 
-No account was created on any provider site, so I could not see anything behind a login. That means free claims rest on public provider statements rather than on a completed enrolment. Where a provider's own FAQ contradicted a marketing button, I followed the FAQ and said so on the card.
+No account was created on any provider site, so I could not see anything behind a login. That means free claims rest on public provider statements rather than on a completed enrolment. Where a provider's own FAQ contradicted a marketing button, I followed the detailed access terms and recorded the limits in the verification evidence.
 
 Three distinctions matter throughout:
 
 - **Free to study** means the lessons, readings and assessments are available without payment. It says nothing about a certificate.
 - **Free certificate** means the provider issues a completion document at no cost. Saylor does this. OpenLearn issues a free statement of participation instead. Alison charges for its branded certificate but gives a free Learner Record.
-- **Professional qualification** is a different category again. CIPM’s exam route is paid and is not included as a Stage 3–8 learning card. A free course certificate is evidence of study, not a licence to practise.
+- **Professional qualification** is a different category again. CIPM’s exam route is paid and excluded from the learning roadmap. A free course certificate is evidence of study, not a licence to practise.
 
 Prices are quoted in the currency the provider publishes. No currency conversion or total-cost estimate is implied. The LinkedIn figures come from third-party 2026 pricing guides and are marked as unconfirmed, because LinkedIn's own help pages failed when I tried to read them. I did not add taxes, bank charges or data costs.
 
@@ -106,7 +106,7 @@ Build the ground rules: equal opportunity, job and person requirements, the recr
 
 **Level:** Beginner; Stage 1 vocabulary assumed.
 
-**Effort:** about 14 hours across weeks 3-5. The 14-hour figure is a planning allowance for the selected OpenLearn sections, Saylor Units 2–3 and practice; the full 20-hour Coursera course is optional and not included. Do not add full-course estimates together.
+**Effort:** about 14 hours across weeks 3-5. The 14-hour figure is a planning allowance for the selected OpenLearn sections, Saylor Units 2–3 and practice.
 
 **Outcomes:**
 
@@ -116,7 +116,7 @@ Build the ground rules: equal opportunity, job and person requirements, the recr
 
 **Practice task:** Write a one-page fair-process checklist for a small Lagos employer hiring its first employee.
 
-**Resources in this stage:** 3.
+**Resources in this stage:** 2.
 
 ### Human resources: recruitment and selection
 
@@ -153,24 +153,6 @@ Build the ground rules: equal opportunity, job and person requirements, the recr
 **Do this:** Complete Units 2 and 3 only (about five hours), including their linked readings, videos and practice assessments. Skip performance, compensation and the other units for this stage.
 
 **Access and verification (2026-10-26):** Checked 2026-10-26 on the official BUS301 page and Saylor FAQ: no tuition or fees; a free account is required to enroll; course materials and the course-completion certificate are free, subject to completing the course requirements. U.S. employment-law material is not Nigerian law.
-
-### Recruiting, Hiring, and Onboarding Employees
-
-**Provider:** University of Minnesota on Coursera
-
-**Link:** https://www.coursera.org/learn/recruiting-hiring-onboarding-employees
-
-**Format:** University video course
-
-**Cost:** Full-course access is not confirmed free; a limited first-module preview may be free. Coursera Plus and the certificate route are paid; a free trial is temporary.
-
-**Time:** About 2 weeks at 10 hours a week (about 20 hours)
-
-**Why:** The syllabus is a strong match for this roadmap: workforce planning, job analysis, legal selection, sourcing, hiring analytics and onboarding. Four modules with 14 videos in module 1 alone.
-
-**Do this:** Only consider it after the free stages. Check the enrollment page for a free Preview (typically the first module only) or a Full Course, No Certificate option; confirm any trial duration and billing/cancellation terms. Coursera Plus is a paid subscription. Neither full-course no-certificate access nor Nigeria-specific checkout pricing has been confirmed. Do not treat “Enroll for free” or a time-limited trial as proof of a free full course.
-
-**Access and verification (2026-10-26):** NOT confirmed free for the full course. Checked 2026-10-26 on the course page and Coursera Help Center: “Enroll for free” does not establish permanent free access. The page lists inclusion with Coursera Plus (a paid subscription); the course FAQ says course materials are available through paid Certificate access, a free trial, or Full Course, No Certificate where available. A Coursera account may be required to enroll or use a preview; no account-free full-course route was verified. Coursera Help says previews for most courses are limited to the first module and provide no certificate; Full Course, No Certificate is offered only for selected courses. I could not confirm that this course offers that option. A free trial is temporary, not proof of ongoing free access; the course-specific duration, post-trial billing/cancellation terms, and Nigeria checkout price were not verified. Financial aid is mentioned in the FAQ. Eligibility and course-specific coverage were not confirmed; it is not counted as free. Treat as paid/conditional, not confirmed free. Prices vary by region and promotion.
 
 ## Stage 3: Define the role - job analysis, descriptions and success criteria
 
@@ -568,13 +550,11 @@ Pull the pieces into a portfolio, learn the numbers recruiters are judged on, an
 
 **Access and verification (2026-10-26):** Checked 2026-10-26 on Greenhouse’s report page and direct PDF. Study: the provider advertises free access and the direct PDF opened without account, payment or a submitted form; the landing page has a free-access/download CTA. Account: not required for the direct file. Form: no form submission was needed at the PDF URL. Trial: none. Certificate: none offered. Data covers U.S. organizations using Greenhouse through August 2026 and is not a Nigerian benchmark.
 
-## Paid extras, kept separate
+## Paid extras and conditional routes
 
-These paid or conditional routes are separated from the free required path. Coursera remains an optional, conditional Stage 2 card; no paid Stage 3–8 option is retained.
+These products and routes are not active learning cards. They are described here for context only; the active roadmap contains resources with confirmed free-study access.
 
-**University of Minnesota, Recruiting, Hiring, and Onboarding Employees (Coursera).** The Stage 2 card explains the access ambiguity in full: the page shows an "Enroll for free" button while the same page's FAQ says full access needs a paid Certificate experience, a free trial, or a "Full Course, No Certificate" option where available. Coursera Plus was advertised on the page in US dollars, but the exact price depends on region and promotion. Financial aid is mentioned in the FAQ. The course asks for about ten hours a week, which is twice your budget, so treat it as an optional deepening rather than a core stage.
-
-**CIPM Nigeria membership by examination — excluded.** The provider publishes fees for its exam stages, so this paid professional qualification was removed from Stage 8 under the free-first rule. It is not a study resource in this roadmap.
+**CIPM Nigeria membership by examination — excluded.** The provider publishes fees for its exam stages, so this paid professional qualification was removed from the roadmap under the free-first rule. It is not a study resource in this roadmap.
 
 **LinkedIn Learning, bundled with LinkedIn Premium Career.** Third-party 2026 pricing guides put individual access around USD 39.99 a month or USD 239.88 a year, with a one-month trial that requires a card. LinkedIn's own help page returned HTTP 500 when I tried to read it on 26 October 2026, so those figures are not provider-confirmed. Recruiter and talent sourcing learning paths live here. Some public libraries, universities and employers provide free access; check locally before paying.
 
@@ -586,6 +566,7 @@ These paid or conditional routes are separated from the free required path. Cour
 
 ## What was excluded, and why
 
+- **University of Minnesota, Recruiting, Hiring, and Onboarding Employees (Coursera) — removed from Stage 2.** Full-course access was not confirmed free. Although the course page said “Enroll for free”, its FAQ tied course-material access to paid Certificate access, a temporary free trial, or Full Course, No Certificate where available. Coursera Help says previews for most courses are limited to the first module with no certificate and the no-certificate route is available only for selected courses; I could not confirm it for this course. A Coursera account may be required for enrollment or preview, and no account-free full-course route was verified. The course-specific trial duration, post-trial billing/cancellation terms and Nigeria checkout price remain unverified. Financial aid is mentioned, but course-specific coverage and eligibility were not confirmed. It is excluded from active study; the course and help-page findings remain in the verification manifest.
 - **Simplilearn SkillUp, LearnTube.ai, LearnCafe and similar "free HR certificate" listings.** Their free-certificate claims came from roundup articles rather than provider pages. One provider page stated that the course was available to subscribers. I could not confirm that the full learning material opens without payment, so they do not count as free here.
 - **SHRM, CIPD and HRCI member toolkits.** Their public articles are useful, but the templates and exam preparation sit behind membership or a paid assessment. Excluded from the free list; no judgement on their quality.
 - **The long directories of "best recruiter YouTube channels".** Only HR Learning Lab was verified directly. I did not add the other channels, because a list of unverified links would pad the library without teaching anything.
@@ -607,7 +588,7 @@ Primary provider pages read on 26 October 2026:
 | Saylor University | PRDV226 syllabus and general FAQ | No tuition; free materials; free completion certificate at 70 percent. |
 | Alison | Help centre FAQ and certification page | All courses free to study; branded certificate optional and paid; free Learner Record. |
 | Alison | Recruitment tag page | 15 free recruitment courses listed, including the HR diploma. |
-| Coursera | Course page and its FAQ | "Enroll for free" button, but FAQ ties full access to purchase, trial or a no-certificate option. Not counted as free. |
+| Coursera | Course page and official enrollment-options help | Full-course access was not confirmed free. A preview is usually limited to the first module; trials are temporary, and Full Course, No Certificate is only offered for selected courses. Excluded from the active roadmap; see the verification manifest. |
 | Google re:Work | Guides index; structured-interviewing, interviewer-training, candidate-experience and onboarding guides | Four retained English guides were read directly; no account, form, payment or trial shown. The English Review resumes page returned 404, so it was excluded. |
 | Workable | Recruiter job-description sample and HR Director Boolean-search article | Public samples are readable without an account or content form. Workable’s 15-day software trial is separate and not needed to study them. |
 | Greenhouse | Structured-hiring support article and direct Fall 2026 report PDF | The article/worksheets and direct PDF are free; some other guidance pages use contact-form gates. The benchmarks are U.S.-only. |

@@ -178,43 +178,6 @@
           ],
           "learning_notes": [],
           "references": []
-        },
-        {
-          "title": "Recruiting, Hiring, and Onboarding Employees",
-          "provider": "University of Minnesota on Coursera",
-          "url": "https://www.coursera.org/learn/recruiting-hiring-onboarding-employees",
-          "modality": "University video course",
-          "cost": "Full course not confirmed free; paid options",
-          "duration": "About 20 hours for the full course",
-          "why": "Covers workforce planning, job analysis, sourcing, selection, hiring metrics and onboarding.",
-          "action": "After the free stages, check whether a preview or no-certificate option is available. Confirm trial and billing terms before enrolling; free access is not confirmed.",
-          "access_note": "NOT confirmed free for the full course. Checked 2026-10-26 on the course page and Coursera Help Center: “Enroll for free” does not establish permanent free access. The page lists inclusion with Coursera Plus (a paid subscription); the course FAQ says course materials are available through paid Certificate access, a free trial, or Full Course, No Certificate where available. A Coursera account may be required to enroll or use a preview; no account-free full-course route was verified. Coursera Help says previews for most courses are limited to the first module and provide no certificate; Full Course, No Certificate is offered only for selected courses. I could not confirm that this course offers that option. A free trial is temporary, not proof of ongoing free access; the course-specific duration, post-trial billing/cancellation terms, and Nigeria checkout price were not verified. Financial aid is mentioned in the FAQ. Eligibility and course-specific coverage were not confirmed; it is not counted as free. Treat as paid/conditional, not confirmed free. Prices vary by region and promotion.",
-          "link_label": "Check the enrolment options",
-          "id": "coursera-hiring",
-          "access": {
-            "study": "conditional",
-            "certificate": "paid_optional",
-            "account": "conditional",
-            "evidence_urls": [
-              "https://www.coursera.org/learn/recruiting-hiring-onboarding-employees",
-              "https://learner.coursera.help/hc/en-us/articles/209818613-Enrollment-options"
-            ]
-          },
-          "access_summary": "Full-course access is not confirmed free. A preview may cover only module 1; Plus and certificates are paid. Trial terms and Nigeria pricing are unverified.",
-          "verification_date": "2026-10-26",
-          "optional": false,
-          "milestone_note": "",
-          "milestones": [
-            {
-              "id": "first-iteration:coursera-hiring:action",
-              "label": "After the free stages, check whether a preview or no-certificate option is available. Confirm trial and billing terms before enrolling; free access is not confirmed.",
-              "kind": "task",
-              "required": true,
-              "url": null
-            }
-          ],
-          "learning_notes": [],
-          "references": []
         }
       ],
       "id": "foundations",
@@ -222,7 +185,7 @@
       "focus": "Run a full and fair recruitment and selection process.",
       "level": "Beginner; Stage 1 vocabulary assumed.",
       "practice": "Write a one-page fair-process checklist for a small Lagos employer hiring its first employee.",
-      "effort_note": " The 14-hour figure is a planning allowance for the selected OpenLearn sections, Saylor Units 2–3 and practice; the full 20-hour Coursera course is optional and not included. Do not add full-course estimates together."
+      "effort_note": " The 14-hour figure is a planning allowance for the selected OpenLearn sections, Saylor Units 2–3 and practice."
     },
     {
       "title": "Stage 3: Define the role",

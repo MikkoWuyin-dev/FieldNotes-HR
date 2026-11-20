@@ -20,6 +20,26 @@ class ContentTests(unittest.TestCase):
         self.assertEqual(hashlib.sha256((content.SRC/'progress-compatibility.json').read_bytes()).hexdigest(), '3a91f90d7d163d8975ca358a2d85d3da8ef3b91e1b6614c93c6438997fee1a48')
         self.assertEqual(hashlib.sha256((content.SRC/'history/first-link-sweep.json').read_bytes()).hexdigest(), '60c7195ed156f0c4d973a12bbbb932d99f5ff5464538daf1cc0265077cc720cd')
 
+    def test_retired_coursera_evidence_and_progress_alias(self):
+        data=content.load()
+        active_ids={r['id'] for stage in data['stages'] for r in stage['resources']}
+        self.assertNotIn('coursera-hiring',active_ids)
+        self.assertEqual(content.totals(data)['cards'],20)
+        self.assertEqual(content.totals(data)['free'],20)
+
+        course_url='https://www.coursera.org/learn/recruiting-hiring-onboarding-employees'
+        help_url='https://learner.coursera.help/hc/en-us/articles/209818613-Enrollment-options'
+        indexed={item['url']:item for item in data['verification']['urls']}
+        self.assertEqual(indexed[course_url]['status'],'ambiguous')
+        self.assertIn('trial',indexed[course_url]['note'].lower())
+        manifest=json.loads((content.SRC/'verification-manifest.json').read_text())
+        projected={item['url']:item for item in manifest['urls']}
+        self.assertIn(course_url,projected)
+        self.assertIn(help_url,projected)
+
+        ledger=json.loads((content.SRC/'progress-compatibility.json').read_text())
+        self.assertEqual(ledger['resources']['coursera-hiring'],['s1-r3'])
+
     def test_projections_current(self):
         content.generate(check=True)
 

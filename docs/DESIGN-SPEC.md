@@ -91,9 +91,9 @@ progress and is not part of progress backups.
   1.25rem indicator is larger than the percentage counter. The visual harness
   measures number/title top-edge drift and percentage/icon center drift at all
   13 widths, requiring ≤1.1px for each pair.
-- **Stage intro** has equal 14px top and bottom margins. Stage accordions omit
-  the repeated outcome/learning-objective lists; full outcomes remain in the
-  generated library document.
+- **Stage bodies** omit the introductory description and repeated outcome/
+  learning-objective list from tracker accordions; the stage title and duration
+  remain in the header. Full stage copy remains in the generated library document.
 - **Resource cards** pin the link bottom-left and the Done checkbox
   bottom-right on one card-foot row. Every resource link carries a decorative
   ↗ via `::after` with CSS alt text, so screen readers do not announce it;
