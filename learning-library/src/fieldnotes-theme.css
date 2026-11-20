@@ -354,8 +354,6 @@ button{cursor:pointer}
 .stage-toggle-indicator::before{content:"+"}
 .stage[open] .stage-toggle-indicator::before{content:"−"}
 .stage-body{padding:clamp(11px,3.15vw,16px);background:var(--fn-paper)}
-/* Top margin now equals the bottom margin (was 0 / 14px). */
-.stage-description{max-width:78ch;margin:14px 0 14px;color:var(--fn-ink);font:.94rem/1.55 var(--fn-prose)}
 .stage-empty{
   padding:12px;border:2px dashed var(--fn-line);border-radius:0;
   background:var(--fn-cream);color:var(--fn-muted);font:.88rem/1.5 var(--fn-prose);

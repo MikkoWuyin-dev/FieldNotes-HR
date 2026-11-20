@@ -39,7 +39,7 @@ const EXPECTED = {
   eyebrowInk: 'rgb(17, 20, 43)',
   eyebrowFill: 'rgb(255, 225, 104)',
   footer: 'Made with love and fried plantain, by Moyinoluwa',
-  cards: 21,
+  cards: 20,
   stages: 8,
 };
 
@@ -838,11 +838,11 @@ try {
   const copySurface = await page.evaluate(() => {
     const first=document.querySelector('[data-resource-id="hr-essentials"]');
     const access=[...document.querySelectorAll('.resource-access')];
-    const stageDescriptions=[...document.querySelectorAll('.stage .stage-description')].map(item=>item.textContent.trim());
     return {
       stageOutcomeLists:document.querySelectorAll('.stage .outcomes').length,
-      stageIntrosPreserved:stageDescriptions.length===DATA.stages.length &&
-        stageDescriptions.every((description,index)=>description===DATA.stages[index].description),
+      stageIntroLines:document.querySelectorAll('.stage .stage-description').length,
+      stageDescriptionSourcePreserved:DATA.stages.length===8 &&
+        DATA.stages.every(stage=>typeof stage.description==='string' && stage.description.trim().length>0),
       cards:document.querySelectorAll('.resource').length,
       taskBoxes:document.querySelectorAll('input[data-milestone-id]').length,
       summaries:document.querySelectorAll('.access-summary').length,
@@ -862,14 +862,17 @@ try {
       firstTask:first?.querySelector('.milestone-label')?.textContent.trim()||'',
     };
   });
-  if(copySurface.cards!==21 || copySurface.taskBoxes!==21 || copySurface.summaries!==21 || copySurface.evidenceLists!==21 || !copySurface.summaryLists || !copySurface.evidenceBullets || !copySurface.accessCopyPreserved || !copySurface.accessClosed) {
+  if(copySurface.cards!==20 || copySurface.taskBoxes!==20 || copySurface.summaries!==20 || copySurface.evidenceLists!==20 || !copySurface.summaryLists || !copySurface.evidenceBullets || !copySurface.accessCopyPreserved || !copySurface.accessClosed) {
     functional.push('concise copy, square-bullet access details, or collapsed evidence missing: '+JSON.stringify(copySurface));
   }
   if(copySurface.stageOutcomeLists!==0) {
     functional.push(`${copySurface.stageOutcomeLists} redundant stage outcome list(s) remain in the tracker`);
   }
-  if(!copySurface.stageIntrosPreserved) {
-    functional.push('stage intro copy is missing or changed while removing outcomes');
+  if(copySurface.stageIntroLines!==0) {
+    functional.push(`${copySurface.stageIntroLines} stage intro line(s) remain in the tracker`);
+  }
+  if(!copySurface.stageDescriptionSourcePreserved) {
+    functional.push('stage description source copy is missing');
   }
   if(!copySurface.firstSummary.includes('Public playlist') || !copySurface.firstTask.startsWith('Watch lessons 1–4')) {
     functional.push('plain-language resource copy did not reach the tracker: '+JSON.stringify(copySurface));
@@ -890,9 +893,9 @@ try {
     today: document.getElementById('today-status').textContent,
     stored: JSON.parse(localStorage.getItem(STORAGE_KEY)),
   }));
-  if (!before.includes('0 of 21')) functional.push(`initial label unexpected: ${before}`);
-  if (!after.label.includes('1 of 21')) functional.push(`after task: ${after.label}`);
-  if (after.pct !== '4%') functional.push(`after task percent: ${after.pct}`);
+  if (!before.includes('0 of 20')) functional.push(`initial label unexpected: ${before}`);
+  if (!after.label.includes('1 of 20')) functional.push(`after task: ${after.label}`);
+  if (after.pct !== '5%') functional.push(`after task percent: ${after.pct}`);
   if (!after.stored || after.stored.version!==3 || !after.stored.milestones) functional.push('version 3 task progress was not written to localStorage');
   if (after.stored.activityDates.length || after.stored.manualCheckinDates.length) functional.push('task completion incorrectly created a daily check-in');
   if (after.today !== 'Not checked in yet') functional.push('task completion changed today’s check-in status');
@@ -938,7 +941,7 @@ try {
     manual:JSON.parse(localStorage.getItem(STORAGE_KEY)).manualCheckinDates,
     checkin:document.getElementById('today-status').textContent,
   }));
-  if (!reset.label.includes('0 of 21')) functional.push(`after reset: ${reset.label}`);
+  if (!reset.label.includes('0 of 20')) functional.push(`after reset: ${reset.label}`);
   if (reset.manual.length || reset.checkin!=='Not checked in yet') functional.push('reset did not clear current attendance');
 
   // 10. Pause toggle removes every pal; enabling brings them back.

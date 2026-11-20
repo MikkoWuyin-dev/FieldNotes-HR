@@ -79,7 +79,7 @@ are not a reason to weaken TLS or install unpinned packages.
 ## Sources and generated outputs
 
 <!-- content-summary:start -->
-8 stages, 21 resource cards, 21 distinct card URLs, 94 planned hours.
+8 stages, 20 resource cards, 20 distinct card URLs, 94 planned hours.
 20 planned weeks; 20 cards have confirmed free-study evidence.
 Certificate, account and professional-qualification terms are separate; partial findings are not counted as verified free.
 <!-- content-summary:end -->
